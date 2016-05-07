@@ -1,0 +1,24 @@
+{
+    "alias": "code-insight.phar",
+    "chmod": "0755",
+    "directories": ["src", "bin"],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "tests",
+                "*Test.php",
+                "test",
+                "Tests",
+                "Test",
+                "*.lock"
+            ],
+            "in": "vendor"
+        }
+    ],
+	"blacklist": ["vendor/aik099/coding-standard"],
+    "main": "bin/code-insight",
+	"git-version": "git-version",
+    "output": "build/code-insight.phar",
+    "stub": true
+}

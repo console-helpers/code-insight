@@ -1,0 +1,25 @@
+{
+	"name": "console-helpers/code-insight",
+	"description": "A tool for analysing other project code bases",
+	"license": "BSD-3-Clause",
+	"require": {
+		"console-helpers/console-kit": "^0.1",
+		"symfony/finder": "^2.8"
+	},
+	"require-dev": {
+		"aik099/coding-standard": "dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+			"ConsoleHelpers\\CodeInsight\\": "src/CodeInsight/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\ConsoleHelpers\\CodeInsight\\": "tests/CodeInsight/"
+		}
+	},
+	"bin": [
+		"bin/code-insight"
+	]
+}
