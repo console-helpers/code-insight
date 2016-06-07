@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1468a5029e472a61a47cd97a7e2e4a3e",
-    "content-hash": "386bc02c6885cdad4de1c95c6a94105f",
+    "hash": "8de213d1c0ecc857bef5cd1fba2ef458",
+    "content-hash": "43dfc128ea1e447cf48adb1b418195e7",
     "packages": [
         {
             "name": "console-helpers/console-kit",
@@ -148,16 +148,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.5",
+            "version": "v2.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "48221d3de4dc22d2cd57c97e8b9361821da86609"
+                "reference": "5ac8bc9aa77bb2edf06af3a1bb6bc1020d23acd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/48221d3de4dc22d2cd57c97e8b9361821da86609",
-                "reference": "48221d3de4dc22d2cd57c97e8b9361821da86609",
+                "url": "https://api.github.com/repos/symfony/console/zipball/5ac8bc9aa77bb2edf06af3a1bb6bc1020d23acd3",
+                "reference": "5ac8bc9aa77bb2edf06af3a1bb6bc1020d23acd3",
                 "shasum": ""
             },
             "require": {
@@ -204,20 +204,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-04-26 12:00:47"
+            "time": "2016-06-06 15:06:25"
         },
         {
             "name": "symfony/finder",
-            "version": "v2.8.5",
+            "version": "v2.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "ca24cf2cd4e3826f571e0067e535758e73807aa1"
+                "reference": "3ec095fab1800222732ca522a95dce8fa124007b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/ca24cf2cd4e3826f571e0067e535758e73807aa1",
-                "reference": "ca24cf2cd4e3826f571e0067e535758e73807aa1",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/3ec095fab1800222732ca522a95dce8fa124007b",
+                "reference": "3ec095fab1800222732ca522a95dce8fa124007b",
                 "shasum": ""
             },
             "require": {
@@ -253,20 +253,20 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-10 10:53:53"
+            "time": "2016-06-06 11:11:27"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "1289d16209491b584839022f29257ad859b8532d"
+                "reference": "dff51f72b0706335131b00a7f49606168c582594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
-                "reference": "1289d16209491b584839022f29257ad859b8532d",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/dff51f72b0706335131b00a7f49606168c582594",
+                "reference": "dff51f72b0706335131b00a7f49606168c582594",
                 "shasum": ""
             },
             "require": {
@@ -278,7 +278,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -312,7 +312,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20 09:13:37"
+            "time": "2016-05-18 14:26:46"
         }
     ],
     "packages-dev": [
@@ -322,12 +322,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/aik099/CodingStandard.git",
-                "reference": "c7ef78c8ad44b8d00275b223a94d7781a1eeb808"
+                "reference": "3455e4d487e2cdd6460d2414d946de5cfabcd69f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aik099/CodingStandard/zipball/c7ef78c8ad44b8d00275b223a94d7781a1eeb808",
-                "reference": "c7ef78c8ad44b8d00275b223a94d7781a1eeb808",
+                "url": "https://api.github.com/repos/aik099/CodingStandard/zipball/3455e4d487e2cdd6460d2414d946de5cfabcd69f",
+                "reference": "3455e4d487e2cdd6460d2414d946de5cfabcd69f",
                 "shasum": ""
             },
             "require-dev": {
@@ -354,7 +354,7 @@
                 "PHP_CodeSniffer",
                 "codesniffer"
             ],
-            "time": "2016-03-30 10:51:46"
+            "time": "2016-05-21 12:59:53"
         }
     ],
     "aliases": [],
