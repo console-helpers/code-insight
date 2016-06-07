@@ -3,7 +3,7 @@ namespace ConsoleHelpers\CodeInsight;
 
 
 use ConsoleHelpers\ConsoleKit\Application as BaseApplication;
-use ConsoleHelpers\CodeInsight\Command\TestsCommand;
+use ConsoleHelpers\CodeInsight\Command\MissingTestsCommand;
 use Symfony\Component\Console\Command\Command;
 
 class Application extends BaseApplication
@@ -17,7 +17,7 @@ class Application extends BaseApplication
 	protected function getDefaultCommands()
 	{
 		$default_commands = parent::getDefaultCommands();
-		$default_commands[] = new TestsCommand();
+		$default_commands[] = new MissingTestsCommand();
 
 		return $default_commands;
 	}

@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-class TestsCommand extends AbstractCommand
+class MissingTestsCommand extends AbstractCommand
 {
 
 	/**
@@ -16,7 +16,7 @@ class TestsCommand extends AbstractCommand
 	protected function configure()
 	{
 		$this
-			->setName('tests')
+			->setName('missing-tests')
 			->setDescription('Shows classes without tests')
 			->addArgument(
 				'src-path',
@@ -63,7 +63,7 @@ class TestsCommand extends AbstractCommand
 			$this->io->writeln('<info>Tests for all source files are found.</info>');
 		}
 		else {
-			$this->io->writeln(array('<error>Tests for following source files are missing:</error>', ''));
+			$this->io->writeln('<error>Tests for following source files are missing:</error>');
 
 			foreach ( $missing_tests as $missing_test ) {
 				$this->io->writeln(' * ' . $missing_test);
