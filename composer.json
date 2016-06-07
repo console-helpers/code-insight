@@ -3,8 +3,10 @@
 	"description": "A tool for analysing other project code bases",
 	"license": "BSD-3-Clause",
 	"require": {
+		"php": ">=5.4.7",
 		"console-helpers/console-kit": "^0.1",
-		"symfony/finder": "^2.8"
+		"symfony/finder": "^2.8",
+		"goaop/parser-reflection": "dev-master"
 	},
 	"require-dev": {
 		"aik099/coding-standard": "dev-master"
@@ -21,5 +23,11 @@
 	},
 	"bin": [
 		"bin/code-insight"
+	],
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/console-helpers/parser-reflection"
+		}
 	]
 }

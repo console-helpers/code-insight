@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8de213d1c0ecc857bef5cd1fba2ef458",
-    "content-hash": "43dfc128ea1e447cf48adb1b418195e7",
+    "hash": "476beb66a2b06208aca6aeb37c59f213",
+    "content-hash": "a6011eea606f1d0014579a82b2b74994",
     "packages": [
         {
             "name": "console-helpers/console-kit",
@@ -54,6 +54,110 @@
             ],
             "description": "Toolkit for creating command line applications using Symfony Console component",
             "time": "2016-03-19 21:40:46"
+        },
+        {
+            "name": "goaop/parser-reflection",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/console-helpers/parser-reflection.git",
+                "reference": "1f29af30e1bb583b8ce55681b51e88b11f8ceffa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/console-helpers/parser-reflection/zipball/1f29af30e1bb583b8ce55681b51e88b11f8ceffa",
+                "reference": "1f29af30e1bb583b8ce55681b51e88b11f8ceffa",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^1.2|^2.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Go\\ParserReflection\\": "src"
+                },
+                "files": [
+                    "src/bootstrap.php"
+                ],
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Go\\ParserReflection\\": "tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Lisachenko",
+                    "email": "lisachenko.it@gmail.com"
+                }
+            ],
+            "description": "Provides reflection information, based on raw source",
+            "support": {
+                "source": "https://github.com/console-helpers/parser-reflection/tree/master"
+            },
+            "time": "2016-06-07 17:05:46"
+        },
+        {
+            "name": "nikic/php-parser",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "47b254ea51f1d6d5dc04b9b299e88346bf2369e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/47b254ea51f1d6d5dc04b9b299e88346bf2369e3",
+                "reference": "47b254ea51f1d6d5dc04b9b299e88346bf2369e3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "time": "2016-04-19 13:41:41"
         },
         {
             "name": "pimple/pimple",
@@ -360,10 +464,13 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "goaop/parser-reflection": 20,
         "aik099/coding-standard": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=5.4.7"
+    },
     "platform-dev": []
 }
