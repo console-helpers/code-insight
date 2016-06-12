@@ -4,9 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "476beb66a2b06208aca6aeb37c59f213",
-    "content-hash": "a6011eea606f1d0014579a82b2b74994",
+    "hash": "1b514769ad3db61eca8b06c82681cb99",
+    "content-hash": "b48702f8100fd32b3f637b8fd80e8358",
     "packages": [
+        {
+            "name": "aura/sql",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/auraphp/Aura.Sql.git",
+                "reference": "842ea73ed132dcee8c0a3a896aae57c01568782f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/auraphp/Aura.Sql/zipball/842ea73ed132dcee8c0a3a896aae57c01568782f",
+                "reference": "842ea73ed132dcee8c0a3a896aae57c01568782f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "aura": {
+                    "type": "library"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aura\\Sql\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Aura.Sql Contributors",
+                    "homepage": "https://github.com/auraphp/Aura.Sql/contributors"
+                }
+            ],
+            "description": "A PDO extension that provides lazy connections, array quoting, identifier quoting, query profiling, value binding, and convenience methods for common fetch styles. Because it extends PDO, existing code that uses PDO can use this without any changes to the existing code.",
+            "homepage": "https://github.com/auraphp/Aura.Sql",
+            "keywords": [
+                "mysql",
+                "pdo",
+                "pgsql",
+                "postgres",
+                "postgresql",
+                "sql server",
+                "sqlite",
+                "sqlserver",
+                "sqlsrv"
+            ],
+            "time": "2016-05-01 14:56:48"
+        },
         {
             "name": "console-helpers/console-kit",
             "version": "v0.1.0",
@@ -56,17 +109,67 @@
             "time": "2016-03-19 21:40:46"
         },
         {
-            "name": "goaop/parser-reflection",
+            "name": "console-helpers/db-migration",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/console-helpers/db-migration.git",
+                "reference": "8579ed3ea861bd4e49a4dbb4979fb1149cf2b370"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/console-helpers/db-migration/zipball/8579ed3ea861bd4e49a4dbb4979fb1149cf2b370",
+                "reference": "8579ed3ea861bd4e49a4dbb4979fb1149cf2b370",
+                "shasum": ""
+            },
+            "require": {
+                "aura/sql": "^2.5",
+                "php": ">=5.3.7"
+            },
+            "require-dev": {
+                "aik099/coding-standard": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ConsoleHelpers\\DatabaseMigration\\": "src/DatabaseMigration/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Obuhovich",
+                    "email": "aik.bold@gmail.com"
+                }
+            ],
+            "description": "Database migrations made simple",
+            "keywords": [
+                "database",
+                "migration",
+                "sqlite"
+            ],
+            "time": "2016-06-09 19:50:38"
+        },
+        {
+            "name": "console-helpers/parser-reflection",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/console-helpers/parser-reflection.git",
-                "reference": "1f29af30e1bb583b8ce55681b51e88b11f8ceffa"
+                "reference": "13b5ea888e66128d8a3c5fc864e8d541347947c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/console-helpers/parser-reflection/zipball/1f29af30e1bb583b8ce55681b51e88b11f8ceffa",
-                "reference": "1f29af30e1bb583b8ce55681b51e88b11f8ceffa",
+                "url": "https://api.github.com/repos/console-helpers/parser-reflection/zipball/13b5ea888e66128d8a3c5fc864e8d541347947c9",
+                "reference": "13b5ea888e66128d8a3c5fc864e8d541347947c9",
                 "shasum": ""
             },
             "require": {
@@ -77,22 +180,20 @@
                 "phpunit/phpunit": "~4.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Go\\ParserReflection\\": "src"
                 },
-                "files": [
-                    "src/bootstrap.php"
-                ],
                 "exclude-from-classmap": [
                     "/tests/"
                 ]
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Go\\ParserReflection\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -103,10 +204,7 @@
                 }
             ],
             "description": "Provides reflection information, based on raw source",
-            "support": {
-                "source": "https://github.com/console-helpers/parser-reflection/tree/master"
-            },
-            "time": "2016-06-07 17:05:46"
+            "time": "2016-06-12 10:47:32"
         },
         {
             "name": "nikic/php-parser",
@@ -464,7 +562,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "goaop/parser-reflection": 20,
+        "console-helpers/parser-reflection": 20,
         "aik099/coding-standard": 20
     },
     "prefer-stable": false,

@@ -6,7 +6,9 @@
 		"php": ">=5.4.7",
 		"console-helpers/console-kit": "^0.1",
 		"symfony/finder": "^2.8",
-		"goaop/parser-reflection": "dev-master"
+		"console-helpers/parser-reflection": "^1.0@dev",
+		"console-helpers/db-migration": "^0.1.0",
+		"aura/sql": "^2.5"
 	},
 	"require-dev": {
 		"aik099/coding-standard": "dev-master"
@@ -14,7 +16,8 @@
 	"autoload": {
 		"psr-4": {
 			"ConsoleHelpers\\CodeInsight\\": "src/CodeInsight/"
-		}
+		},
+		"files": ["src/ReflectionType.php"]
 	},
 	"autoload-dev": {
 		"psr-4": {
@@ -23,11 +26,5 @@
 	},
 	"bin": [
 		"bin/code-insight"
-	],
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/console-helpers/parser-reflection"
-		}
 	]
 }
