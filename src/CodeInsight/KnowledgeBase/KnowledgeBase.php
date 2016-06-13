@@ -217,9 +217,13 @@ class KnowledgeBase
 
 		$sql = 'SELECT COUNT(*)
 				FROM Files';
-		$file_count = $this->db->fetchValue($sql);
+		$ret['Files'] = $this->db->fetchValue($sql);
 
-		$ret['Files'] = $file_count;
+		$sql = 'SELECT FileId
+				FROM Classes
+				GROUP BY FileId
+				HAVING COUNT(*) > 1';
+		$ret['Files With Multiple Classes'] = count($this->db->fetchCol($sql));
 
 		$sql = 'SELECT ClassType, COUNT(*)
 				FROM Classes
