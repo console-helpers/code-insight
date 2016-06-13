@@ -621,10 +621,10 @@ class KnowledgeBase
 			'class_id' => $class_id,
 		));
 
-		$insert_sql = '	INSERT INTO ClassMethods (ClassId, Name, ParameterCount, RequiredParameterCount, Scope, IsAbstract, IsFinal, IsStatic, ReturnsReference, HasReturnType, ReturnType)
-						VALUES (:class_id, :name, :parameter_count, :required_parameter_count, :scope, :is_abstract, :is_final, :is_static, :returns_reference, :has_return_type, :return_type)';
+		$insert_sql = '	INSERT INTO ClassMethods (ClassId, Name, ParameterCount, RequiredParameterCount, Scope, IsAbstract, IsFinal, IsStatic, IsVariadic, ReturnsReference, HasReturnType, ReturnType)
+						VALUES (:class_id, :name, :parameter_count, :required_parameter_count, :scope, :is_abstract, :is_final, :is_static, :is_variadic, :returns_reference, :has_return_type, :return_type)';
 		$update_sql = '	UPDATE ClassMethods
-						SET ParameterCount = :parameter_count, RequiredParameterCount = :required_parameter_count, Scope = :scope, IsAbstract = :is_abstract, IsFinal = :is_final, IsStatic = :is_static, ReturnsReference = :returns_reference, ReturnType = :return_type, HasReturnType = :has_return_type
+						SET ParameterCount = :parameter_count, RequiredParameterCount = :required_parameter_count, Scope = :scope, IsAbstract = :is_abstract, IsFinal = :is_final, IsStatic = :is_static, IsVariadic = :is_variadic, ReturnsReference = :returns_reference, ReturnType = :return_type, HasReturnType = :has_return_type
 						WHERE ClassId = :class_id AND Name = :name';
 
 		$new_methods = array();
@@ -653,6 +653,7 @@ class KnowledgeBase
 					'is_abstract' => (int)$method->isAbstract(),
 					'is_final' => (int)$method->isFinal(),
 					'is_static' => (int)$method->isStatic(),
+					'is_variadic' => (int)$method->isVariadic(),
 					'returns_reference' => (int)$method->returnsReference(),
 					'has_return_type' => (int)$has_return_type,
 					'return_type' => $return_type,

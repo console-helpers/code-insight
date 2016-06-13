@@ -67,6 +67,7 @@ CREATE TABLE "ClassMethods" (
 	"IsAbstract" integer NOT NULL DEFAULT 0,
 	"IsFinal" integer NOT NULL DEFAULT 0,
 	"IsStatic" integer NOT NULL DEFAULT 0,
+	"IsVariadic" integer NOT NULL DEFAULT 0,
 	"ReturnsReference" integer NOT NULL DEFAULT 0,
 	"HasReturnType" integer NOT NULL DEFAULT 0,
 	"ReturnType" text,
