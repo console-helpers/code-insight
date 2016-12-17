@@ -21,13 +21,6 @@ class ReportCommand extends AbstractCommand
 {
 
 	/**
-	 * Path to a project.
-	 *
-	 * @var string
-	 */
-	protected $projectPath;
-
-	/**
 	 * Knowledge base factory.
 	 *
 	 * @var KnowledgeBaseFactory
