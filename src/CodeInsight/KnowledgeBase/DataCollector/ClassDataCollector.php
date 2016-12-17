@@ -838,7 +838,11 @@ class ClassDataCollector extends AbstractDataCollector
 				}
 
 				if ( $source_method_data['Scope'] > $target_method_data['Scope'] ) {
-					$ret['Method Scope Reduced'][] = $method_name;
+					$incident = '<fg=white;options=bold>' . $method_name . '</>' . PHP_EOL;
+					$incident .= 'OLD: ' . $this->getScopeName($source_method_data['Scope']) . PHP_EOL;
+					$incident .= 'NEW: ' . $this->getScopeName($target_method_data['Scope']) . PHP_EOL;
+
+					$ret['Method Scope Reduced'][] = $incident;
 				}
 
 				$source_signature = $this->calculateMethodParameterSignature($source_db, $source_method_data['Id']);
@@ -855,6 +859,24 @@ class ClassDataCollector extends AbstractDataCollector
 		}
 
 		return array_filter($ret);
+	}
+
+	/**
+	 * Returns scope name.
+	 *
+	 * @param integer $scope Scope.
+	 *
+	 * @return string
+	 */
+	protected function getScopeName($scope)
+	{
+		$mapping = array(
+			self::SCOPE_PRIVATE => 'private',
+			self::SCOPE_PROTECTED => 'protected',
+			self::SCOPE_PUBLIC => 'public',
+		);
+
+		return $mapping[$scope];
 	}
 
 	/**
