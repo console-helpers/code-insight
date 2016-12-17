@@ -8,6 +8,55 @@ CREATE TABLE "Files" (
 
 CREATE INDEX "IDX_FILES_FOUND" ON Files ("Found");
 
+-- The "Functions" table
+CREATE TABLE "Functions" (
+	"Id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"FileId" integer NOT NULL,
+	"Name" text NOT NULL,
+	"ParameterCount" integer NOT NULL DEFAULT 0,
+	"RequiredParameterCount" integer NOT NULL DEFAULT 0,
+	"IsVariadic" integer NOT NULL DEFAULT 0,
+	"ReturnsReference" integer NOT NULL DEFAULT 0,
+	"HasReturnType" integer NOT NULL DEFAULT 0,
+	"ReturnType" text,
+	CONSTRAINT "FK_FUNCTIONS_FILEID" FOREIGN KEY ("FileId") REFERENCES "Files" ("Id")
+);
+
+CREATE UNIQUE INDEX "IDX_FUNCTIONS_FUNCTION" ON Functions ("FileId" ASC, "Name" ASC);
+
+-- The "FunctionParameters" table
+CREATE TABLE "FunctionParameters" (
+	"FunctionId" integer NOT NULL,
+	"Name" text NOT NULL,
+	"Position" integer,
+	"TypeClass" text,
+	"HasType" integer NOT NULL DEFAULT 0,
+	"TypeName" text,
+	"AllowsNull" integer NOT NULL DEFAULT 0,
+	"IsArray" integer NOT NULL DEFAULT 0,
+	"IsCallable" integer NOT NULL DEFAULT 0,
+	"IsOptional" integer NOT NULL DEFAULT 0,
+	"IsVariadic" integer NOT NULL DEFAULT 0,
+	"CanBePassedByValue" integer NOT NULL DEFAULT 0,
+	"IsPassedByReference" integer NOT NULL DEFAULT 0,
+	"HasDefaultValue" integer NOT NULL DEFAULT 0,
+	"DefaultValue" text,
+	"DefaultConstant" text,
+	PRIMARY KEY("FunctionId","Name"),
+	CONSTRAINT "FK_FUNCTIONPARAMETERS_FUNCTIONID" FOREIGN KEY ("FunctionId") REFERENCES "Functions" ("Id")
+);
+
+CREATE UNIQUE INDEX "IDX_FUNCTIONPARAMETERS_NAME" ON FunctionParameters ("FunctionId", "Name");
+
+-- The "Constants" table
+CREATE TABLE "Constants" (
+	"FileId" integer NOT NULL,
+	"Name" text NOT NULL,
+	"Value" text,
+	PRIMARY KEY("FileId","Name"),
+	CONSTRAINT "FK_CONSTANTS_FILEID" FOREIGN KEY ("FileId") REFERENCES "Files" ("Id")
+);
+
 -- The "Classes" table
 CREATE TABLE "Classes" (
 	"Id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -63,7 +112,7 @@ CREATE TABLE "ClassMethods" (
 	"Name" text NOT NULL,
 	"ParameterCount" integer NOT NULL DEFAULT 0,
 	"RequiredParameterCount" integer NOT NULL DEFAULT 0,
-	"Scope" text NOT NULL,
+	"Scope" integer NOT NULL,
 	"IsAbstract" integer NOT NULL DEFAULT 0,
 	"IsFinal" integer NOT NULL DEFAULT 0,
 	"IsStatic" integer NOT NULL DEFAULT 0,
@@ -71,7 +120,7 @@ CREATE TABLE "ClassMethods" (
 	"ReturnsReference" integer NOT NULL DEFAULT 0,
 	"HasReturnType" integer NOT NULL DEFAULT 0,
 	"ReturnType" text,
-	CONSTRAINT "FK_METHODS_CLASSID" FOREIGN KEY ("ClassId") REFERENCES "Classes" ("Id")
+	CONSTRAINT "FK_CLASSMETHODS_CLASSID" FOREIGN KEY ("ClassId") REFERENCES "Classes" ("Id")
 );
 
 CREATE UNIQUE INDEX "IDX_CLASSMETHODS_METHOD" ON ClassMethods ("ClassId" ASC, "Name" ASC);
@@ -80,6 +129,7 @@ CREATE UNIQUE INDEX "IDX_CLASSMETHODS_METHOD" ON ClassMethods ("ClassId" ASC, "N
 CREATE TABLE "MethodParameters" (
 	"MethodId" integer NOT NULL,
 	"Name" text NOT NULL,
+	"Position" integer,
 	"TypeClass" text,
 	"HasType" integer NOT NULL DEFAULT 0,
 	"TypeName" text,
