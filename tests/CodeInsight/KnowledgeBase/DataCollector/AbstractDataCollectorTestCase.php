@@ -46,11 +46,60 @@ abstract class AbstractDataCollectorTestCase extends AbstractDatabaseAwareTestCa
 	 */
 	protected $fixtureLocatorMapping = array();
 
+	/**
+	 * All tables in a database.
+	 *
+	 * @var array
+	 */
+	private $_allTables = array(
+		'Files',
+		'Functions', 'FunctionParameters', 'Constants',
+		'Classes', 'ClassRelations', 'ClassConstants', 'ClassProperties', 'ClassMethods', 'MethodParameters',
+	);
+
+	/**
+	 * Tables, that are supposed to be non-empty.
+	 *
+	 * @var array
+	 */
+	private $_nonEmptyTables = array();
+
 	protected function setUp()
 	{
 		parent::setUp();
 
 		$this->dataCollector = $this->createDataCollector();
+	}
+
+	/**
+	 * Checks, table content.
+	 *
+	 * @param string $table_name       Table name.
+	 * @param array  $expected_content Expected content.
+	 *
+	 * @return void
+	 */
+	protected function assertTableContent($table_name, array $expected_content)
+	{
+		$this->_nonEmptyTables[] = $table_name;
+
+		parent::assertTableContent($table_name, $expected_content);
+	}
+
+	/**
+	 * Checks, that database table is empty.
+	 *
+	 * @param array $table_names Table names.
+	 *
+	 * @return void
+	 */
+	protected function assertTablesEmpty(array $table_names = array())
+	{
+		if ( !$table_names ) {
+			$table_names = array_diff($this->_allTables, $this->_nonEmptyTables);
+		}
+
+		parent::assertTablesEmpty($table_names);
 	}
 
 	/**
@@ -63,6 +112,8 @@ abstract class AbstractDataCollectorTestCase extends AbstractDatabaseAwareTestCa
 	 */
 	protected function createFileMention($filename, $size = 0)
 	{
+		$this->_nonEmptyTables[] = 'Files';
+
 		$sql = 'INSERT INTO Files (Name, Size) VALUES (:name, :size)';
 		$this->database->perform($sql, array(
 			'name' => $filename,
@@ -75,14 +126,14 @@ abstract class AbstractDataCollectorTestCase extends AbstractDatabaseAwareTestCa
 	/**
 	 * Collects data from a given fixture's namespace.
 	 *
-	 * @param        $file_id
-	 * @param string $filename  Filename.
 	 * @param string $namespace Namespace.
+	 *
+	 * @return void
 	 */
-	protected function collectData($file_id, $filename, $namespace = '')
+	protected function collectData($namespace = '')
 	{
-		$file = new ReflectionFile($filename);
-		$this->dataCollector->collectData($file_id, $file->getFileNamespace($namespace));
+		$file = new ReflectionFile($this->fixturePath);
+		$this->dataCollector->collectData($this->fileId, $file->getFileNamespace($namespace));
 	}
 
 	/**

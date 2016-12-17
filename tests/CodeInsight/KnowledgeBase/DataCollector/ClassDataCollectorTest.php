@@ -52,13 +52,9 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 	public function testNoClasses()
 	{
 		$this->initFixture('NoClasses');
+		$this->collectData();
 
-		$this->collectData($this->fileId, $this->fixturePath);
-
-		$this->assertTablesEmpty(array(
-			'Classes', 'ClassRelations', 'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testNamespacedClass()
@@ -67,7 +63,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 		// Repeat twice to ensure existing DB record was reused.
 		for ( $i = 0; $i < 2; $i++ ) {
-			$this->collectData($this->fileId, $this->fixturePath, 'LevelOne\LevelTwo');
+			$this->collectData('LevelOne\LevelTwo');
 
 			$this->assertTableContent(
 				'Classes',
@@ -83,10 +79,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					),
 				)
 			);
-			$this->assertTablesEmpty(array(
-				'ClassRelations', 'ClassConstants',
-				'ClassProperties', 'ClassMethods', 'MethodParameters',
-			));
+			$this->assertTablesEmpty();
 		}
 	}
 
@@ -96,7 +89,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 		// Repeat twice to ensure existing DB record was reused.
 		for ( $i = 0; $i < 2; $i++ ) {
-			$this->collectData($this->fileId, $this->fixturePath);
+			$this->collectData();
 
 			$this->assertTableContent(
 				'Classes',
@@ -112,18 +105,14 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					),
 				)
 			);
-			$this->assertTablesEmpty(array(
-				'ClassRelations', 'ClassConstants',
-				'ClassProperties', 'ClassMethods', 'MethodParameters',
-			));
+			$this->assertTablesEmpty();
 		}
 	}
 
 	public function testClassFlagChanges()
 	{
 		$this->initFixture('ClassFlagsBefore');
-
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -157,13 +146,11 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 
 		// Confirm, that existing DB records are updated.
-		$this->collectData($this->fileId, $this->locateFixtureClass('ClassFlagsAfter'));
+		$this->initFixture('ClassFlagsAfter');
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -197,17 +184,13 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testClassTypeChanges()
 	{
 		$this->initFixture('ClassTypesBefore');
-
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -241,13 +224,11 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 
 		// Confirm, that existing DB records are updated.
-		$this->collectData($this->fileId, $this->locateFixtureClass('ClassTypesAfter'));
+		$this->initFixture('ClassTypesAfter');
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -281,10 +262,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testClassProperties()
@@ -293,7 +271,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 		// Repeat twice to ensure existing DB record was reused.
 		for ( $i = 0; $i < 2; $i++ ) {
-			$this->collectData($this->fileId, $this->fixturePath);
+			$this->collectData();
 
 			$this->assertTableContent(
 				'Classes',
@@ -356,18 +334,14 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					),
 				)
 			);
-			$this->assertTablesEmpty(array(
-				'ClassRelations', 'ClassConstants',
-				'ClassMethods', 'MethodParameters',
-			));
+			$this->assertTablesEmpty();
 		}
 	}
 
 	public function testClassPropertyChanges()
 	{
 		$this->initFixture('ClassPropertiesBefore');
-
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -416,12 +390,10 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 
-		$this->collectData($this->fileId, $this->locateFixtureClass('ClassPropertiesAfter'));
+		$this->initFixture('ClassPropertiesAfter');
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -470,17 +442,13 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testClassConstantChanges()
 	{
 		$this->initFixture('ClassConstantsBefore');
-
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -511,12 +479,10 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 
-		$this->collectData($this->fileId, $this->locateFixtureClass('ClassConstantsAfter'));
+		$this->initFixture('ClassConstantsAfter');
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -547,17 +513,13 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testClassMethodFlagChanges()
 	{
 		$this->initFixture('ClassMethodFlagsBefore');
-
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -736,12 +698,10 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties',
-		));
+		$this->assertTablesEmpty();
 
-		$this->collectData($this->fileId, $this->locateFixtureClass('ClassMethodFlagsAfter'));
+		$this->initFixture('ClassMethodFlagsAfter');
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -920,18 +880,13 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties',
-		));
-
+		$this->assertTablesEmpty();
 	}
 
 	public function testMethodParameterChanges()
 	{
 		$this->initFixture('MethodParametersBefore');
-
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -1167,12 +1122,10 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties',
-		));
+		$this->assertTablesEmpty();
 
-		$this->collectData($this->fileId, $this->locateFixtureClass('MethodParametersAfter'));
+		$this->initFixture('MethodParametersAfter');
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -1408,10 +1361,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 			)
 		);
-		$this->assertTablesEmpty(array(
-			'ClassRelations', 'ClassConstants',
-			'ClassProperties',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testClassRelations()
@@ -1422,7 +1372,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 		// Repeat twice to ensure existing DB record was reused.
 		for ( $i = 0; $i < 2; $i++ ) {
-			$this->collectData($this->fileId, $this->fixturePath);
+			$this->collectData();
 
 			$this->assertTableContent(
 				'Classes',
@@ -1528,10 +1478,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					),
 				)
 			);
-			$this->assertTablesEmpty(array(
-				'ClassRelations', 'ClassConstants',
-				'MethodParameters',
-			));
+			$this->assertTablesEmpty();
 		}
 
 		$this->dataCollector->aggregateData($knowledge_base);
@@ -1579,7 +1526,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 		$knowledge_base = $this->expectClassRelationProcessing();
 
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 		$this->dataCollector->aggregateData($knowledge_base);
 
 		$this->assertTableContent(
@@ -1647,17 +1594,15 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 			)
 		);
 
-		$this->assertTablesEmpty(array(
-			'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 
 		$this->classMapping['ClassRelationChangesA'] = 'ClassRelationsAfter.php';
 		$this->classMapping['ClassRelationChangesB'] = 'ClassRelationsAfter.php';
 		$this->classMapping['ClassRelationChangesC'] = 'ClassRelationsAfter.php';
 		$this->classMapping['ClassRelationChangesD'] = 'ClassRelationsAfter.php';
 
-		$this->collectData($this->fileId, $this->locateFixtureClass('ClassRelationsAfter'));
+		$this->initFixture('ClassRelationsAfter');
+		$this->collectData();
 		$this->dataCollector->aggregateData($knowledge_base);
 
 		$this->assertTableContent(
@@ -1725,10 +1670,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 			)
 		);
 
-		$this->assertTablesEmpty(array(
-			'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testDynamicDataRemoval()
@@ -1737,7 +1679,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 		$knowledge_base = $this->expectClassRelationProcessing();
 
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -2050,7 +1992,8 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 			)
 		);
 
-		$this->collectData($this->fileId, $this->locateFixtureClass('DynamicDataRemovalDone'));
+		$this->initFixture('DynamicDataRemovalDone');
+		$this->collectData();
 
 		$this->assertTableContent(
 			'Classes',
@@ -2142,7 +2085,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 		$this->initFixture('DynamicDataRemoval');
 
 		$knowledge_base = $this->expectClassRelationProcessing();
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 		$this->dataCollector->aggregateData($knowledge_base);
 
 		$this->assertTableCount('Classes', 2);
@@ -2154,17 +2097,13 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 		$this->dataCollector->deleteData(array($this->fileId));
 
-		$this->assertTablesEmpty(array(
-			'Classes', 'ClassRelations', 'ClassConstants',
-			'ClassProperties', 'ClassMethods', 'MethodParameters',
-		));
+		$this->assertTablesEmpty();
 	}
 
 	public function testGetStatistics()
 	{
 		$this->initFixture('Statistics');
-
-		$this->collectData($this->fileId, $this->fixturePath);
+		$this->collectData();
 
 		$this->assertSame(
 			array(
@@ -2194,14 +2133,17 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 	/**
 	 * Initializes fixture.
 	 *
-	 * @param string $class Class.
+	 * @param string $fixture Fixture.
 	 *
 	 * @return void
 	 */
-	protected function initFixture($class)
+	protected function initFixture($fixture)
 	{
-		$this->fixturePath = $this->locateFixtureClass($class);
-		$this->fileId = $this->createFileMention($this->fixturePath);
+		$this->fixturePath = $this->locateFixtureClass($fixture);
+
+		if ( !$this->fileId ) {
+			$this->fileId = $this->createFileMention($this->fixturePath);
+		}
 	}
 
 	/**
