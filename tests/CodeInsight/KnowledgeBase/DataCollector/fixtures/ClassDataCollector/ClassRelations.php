@@ -21,7 +21,7 @@ class ClassRelations extends UserClass implements UserInterface
 	public function classRelationsMethod() {}
 }
 
-class ClassRelations2 extends Exception implements Traversable
+class ClassRelations2 extends stdClass implements Serializable
 {
 
 }

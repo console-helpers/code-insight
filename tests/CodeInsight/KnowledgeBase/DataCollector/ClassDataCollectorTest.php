@@ -1420,7 +1420,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 						'ClassType' => (string)ClassDataCollector::TYPE_CLASS,
 						'IsAbstract' => '0',
 						'IsFinal' => '0',
-						'RawRelations' => '[["Exception",1,true],["Traversable",2,true]]',
+						'RawRelations' => '[["stdClass",1,true],["Serializable",2,true]]',
 					),
 				)
 			);
@@ -1506,13 +1506,13 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				),
 				array(
 					'ClassId' => '5',
-					'RelatedClass' => 'Exception',
+					'RelatedClass' => 'stdClass',
 					'RelatedClassId' => '0',
 					'RelationType' => (string)ClassDataCollector::RELATION_TYPE_EXTENDS,
 				),
 				array(
 					'ClassId' => '5',
-					'RelatedClass' => 'Traversable',
+					'RelatedClass' => 'Serializable',
 					'RelatedClassId' => '0',
 					'RelationType' => (string)ClassDataCollector::RELATION_TYPE_IMPLEMENTS,
 				),
