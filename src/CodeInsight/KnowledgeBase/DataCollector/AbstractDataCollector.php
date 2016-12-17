@@ -76,4 +76,16 @@ abstract class AbstractDataCollector
 		return array();
 	}
 
+	/**
+	 * Finds backward compatibility breaks.
+	 *
+	 * @param ExtendedPdoInterface $source_db Source database.
+	 *
+	 * @return array
+	 */
+	public function getBackwardsCompatibilityBreaks(ExtendedPdoInterface $source_db)
+	{
+		return array();
+	}
+
 }

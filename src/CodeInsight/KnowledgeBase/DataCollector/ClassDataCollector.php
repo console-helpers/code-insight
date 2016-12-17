@@ -11,6 +11,7 @@
 namespace ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector;
 
 
+use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBase;
 use Go\ParserReflection\ReflectionEngine;
 use Go\ParserReflection\ReflectionFileNamespace;
@@ -759,6 +760,159 @@ class ClassDataCollector extends AbstractDataCollector
 		);
 
 		return $related_class;
+	}
+
+	/**
+	 * Finds backward compatibility breaks.
+	 *
+	 * @param ExtendedPdoInterface $source_db Source database.
+	 *
+	 * @return array
+	 */
+	public function getBackwardsCompatibilityBreaks(ExtendedPdoInterface $source_db)
+	{
+		$ret = array(
+			'Class Deleted' => array(),
+			'Class Made Abstract' => array(),
+			'Class Made Final' => array(),
+			'Method Deleted' => array(),
+			'Method Made Abstract' => array(),
+			'Method Made Final' => array(),
+			'Method Scope Reduced' => array(),
+			'Method Signature Changed' => array(),
+		);
+
+		// 1. Get old->new class id mapping.
+		$classes_sql = 'SELECT Name, Id, IsAbstract, IsFinal 
+						FROM Classes';
+		$source_classes = $source_db->fetchAssoc($classes_sql);
+		$target_classes = $this->db->fetchAssoc($classes_sql);
+
+		// 2. Deleted methods in kept classes.
+		$source_class_methods_sql = '	SELECT Name, Id, Scope, IsAbstract, IsFinal
+										FROM ClassMethods
+										WHERE ClassId = :class_id AND Scope IN (' . self::SCOPE_PUBLIC . ',' . self::SCOPE_PROTECTED . ')';
+		$target_class_methods_sql = '	SELECT Name, Id, Scope, IsAbstract, IsFinal
+										FROM ClassMethods
+										WHERE ClassId = :class_id';
+
+		foreach ( $source_classes as $class_name => $source_class_data ) {
+			// Deleted classes.
+			if ( !isset($target_classes[$class_name]) ) {
+				$ret['Class Deleted'][] = $class_name;
+				continue;
+			}
+
+			$target_class_data = $target_classes[$class_name];
+
+			if ( !$source_class_data['IsAbstract'] && $target_class_data['IsAbstract'] ) {
+				$ret['Class Made Abstract'][] = $class_name;
+			}
+
+			if ( !$source_class_data['IsFinal'] && $target_class_data['IsFinal'] ) {
+				$ret['Class Made Final'][] = $class_name;
+			}
+
+			$target_class_id = $target_class_data['Id'];
+
+			$source_methods = $source_db->fetchAssoc($source_class_methods_sql, array('class_id' => $source_class_data['Id']));
+			$target_methods = $this->db->fetchAssoc($target_class_methods_sql, array('class_id' => $target_class_id));
+
+			foreach ( $source_methods as $source_method_name => $source_method_data ) {
+				$method_name = $class_name . '::' . $source_method_name;
+
+				// Deleted methods.
+				if ( !isset($target_methods[$source_method_name]) ) {
+					$ret['Method Deleted'][] = $method_name;
+					continue;
+				}
+
+				$target_method_data = $target_methods[$source_method_name];
+
+				if ( !$source_method_data['IsAbstract'] && $target_method_data['IsAbstract'] ) {
+					$ret['Method Made Abstract'][] = $method_name;
+				}
+
+				if ( !$source_method_data['IsFinal'] && $target_method_data['IsFinal'] ) {
+					$ret['Method Made Final'][] = $method_name;
+				}
+
+				if ( $source_method_data['Scope'] > $target_method_data['Scope'] ) {
+					$ret['Method Scope Reduced'][] = $method_name;
+				}
+
+				$source_signature = $this->calculateMethodParameterSignature($source_db, $source_method_data['Id']);
+				$target_signature = $this->calculateMethodParameterSignature($this->db, $target_method_data['Id']);
+
+				if ( $source_signature !== $target_signature ) {
+					$incident = '<fg=white;options=bold>' . $method_name . '</>' . PHP_EOL;
+					$incident .= 'OLD: ' . $source_signature . PHP_EOL;
+					$incident .= 'NEW: ' . $target_signature . PHP_EOL;
+
+					$ret['Method Signature Changed'][] = $incident;
+				}
+			}
+		}
+
+		return array_filter($ret);
+	}
+
+	/**
+	 * Calculates method parameter signature.
+	 *
+	 * @param ExtendedPdoInterface $db        Database.
+	 * @param integer              $method_id Method ID.
+	 *
+	 * @return integer
+	 */
+	protected function calculateMethodParameterSignature(ExtendedPdoInterface $db, $method_id)
+	{
+		$sql = 'SELECT *
+				FROM MethodParameters
+				WHERE MethodId = :method_id
+				ORDER BY Position ASC';
+		$method_parameters = $db->fetchAll($sql, array('method_id' => $method_id));
+
+		$hash_parts = array();
+
+		foreach ( $method_parameters as $method_parameter_data ) {
+			if ( $method_parameter_data['HasType'] ) {
+				$type = $method_parameter_data['TypeName'];
+			}
+			elseif ( $method_parameter_data['IsArray'] ) {
+				$type = 'array';
+			}
+			elseif ( $method_parameter_data['IsCallable'] ) {
+				$type = 'callable';
+			}
+			else {
+				$type = $method_parameter_data['TypeClass'];
+			}
+
+			$hash_part = strlen($type) ? $type . ' ' : '';
+
+			if ( $method_parameter_data['IsPassedByReference'] ) {
+				$hash_part .= '&$' . $method_parameter_data['Name'];
+			}
+			else {
+				$hash_part .= '$' . $method_parameter_data['Name'];
+			}
+
+			if ( $method_parameter_data['HasDefaultValue'] ) {
+				$hash_part .= ' = ';
+
+				if ( $method_parameter_data['DefaultConstant'] ) {
+					$hash_part .= $method_parameter_data['DefaultConstant'];
+				}
+				else {
+					$hash_part .= $method_parameter_data['DefaultValue'];
+				}
+			}
+
+			$hash_parts[] = $hash_part;
+		}
+
+		return implode(', ', $hash_parts);
 	}
 
 }

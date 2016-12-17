@@ -98,6 +98,16 @@ class KnowledgeBase
 	}
 
 	/**
+	 * Returns database.
+	 *
+	 * @return ExtendedPdoInterface
+	 */
+	public function getDatabase()
+	{
+		return $this->db;
+	}
+
+	/**
 	 * Returns project configuration.
 	 *
 	 * @return array
@@ -401,6 +411,27 @@ class KnowledgeBase
 	protected function removeProjectPath($absolute_path)
 	{
 		return preg_replace($this->projectPathRegExp, '', $absolute_path, 1);
+	}
+
+	/**
+	 * Finds backward compatibility breaks.
+	 *
+	 * @param ExtendedPdoInterface $source_db Source database.
+	 *
+	 * @return array
+	 */
+	public function getBackwardsCompatibilityBreaks(ExtendedPdoInterface $source_db)
+	{
+		$breaks = array();
+
+		foreach ( $this->dataCollectors as $data_collector ) {
+			$breaks = array_merge(
+				$breaks,
+				$data_collector->getBackwardsCompatibilityBreaks($source_db)
+			);
+		}
+
+		return $breaks;
 	}
 
 }

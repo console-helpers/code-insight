@@ -11,6 +11,7 @@
 namespace ConsoleHelpers\CodeInsight;
 
 
+use ConsoleHelpers\CodeInsight\Command\BackwardsCompatibilityCommand;
 use ConsoleHelpers\CodeInsight\Command\CompletionCommand;
 use ConsoleHelpers\CodeInsight\Command\ReportCommand;
 use ConsoleHelpers\CodeInsight\Command\Dev\MigrationCreateCommand;
@@ -31,6 +32,7 @@ class Application extends BaseApplication
 		$default_commands = parent::getDefaultCommands();
 		$default_commands[] = new MissingTestsCommand();
 		$default_commands[] = new ReportCommand();
+		$default_commands[] = new BackwardsCompatibilityCommand();
 		$default_commands[] = new CompletionCommand();
 
 		if ( !$this->isPharFile() ) {
