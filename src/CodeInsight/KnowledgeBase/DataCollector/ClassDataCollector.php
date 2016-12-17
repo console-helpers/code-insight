@@ -175,7 +175,7 @@ class ClassDataCollector extends AbstractDataCollector
 				array(
 					'name' => $class->getName(),
 					'class_type' => $this->getClassType($class),
-					'is_abstract' => (int)$class->isAbstract(),
+					'is_abstract' => $class->isTrait() ? 0 : (int)$class->isAbstract(),
 					'is_final' => (int)$class->isFinal(),
 					'file_id' => $file_id,
 					'raw_relations' => $raw_class_relations ? json_encode($raw_class_relations) : null,
@@ -197,7 +197,7 @@ class ClassDataCollector extends AbstractDataCollector
 				$sql,
 				array(
 					'class_type' => $this->getClassType($class),
-					'is_abstract' => (int)$class->isAbstract(),
+					'is_abstract' => $class->isTrait() ? 0 : (int)$class->isAbstract(),
 					'is_final' => (int)$class->isFinal(),
 					'raw_relations' => json_encode($raw_class_relations),
 					'class_id' => $class_id,
