@@ -2110,6 +2110,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 				'Classes' => '1',
 				'Interfaces' => '2',
 				'Traits' => '3',
+				'Files With Multiple Classes' => 1,
 			),
 			$this->dataCollector->getStatistics()
 		);

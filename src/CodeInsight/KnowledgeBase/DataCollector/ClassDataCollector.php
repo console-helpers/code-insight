@@ -137,6 +137,12 @@ class ClassDataCollector extends AbstractDataCollector
 			$ret[$title] = $class_count;
 		}
 
+		$sql = 'SELECT FileId
+				FROM Classes
+				GROUP BY FileId
+				HAVING COUNT(*) > 1';
+		$ret['Files With Multiple Classes'] = count($this->db->fetchCol($sql));
+
 		return $ret;
 	}
 
