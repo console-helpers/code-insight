@@ -87,7 +87,7 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 		$this->io->writeln('Backward compatibility breaks:');
 
 		foreach ( $bc_breaks as $bc_break => $incidents ) {
-			$this->io->writeln('<fg=red>=== ' . $bc_break . ' ===</>');
+			$this->io->writeln('<fg=red>=== ' . $bc_break . ' (' . count($incidents) . ') ===</>');
 
 			foreach ( $incidents as $incident ) {
 				$incident = implode(PHP_EOL . '   ', explode(PHP_EOL, $incident));
