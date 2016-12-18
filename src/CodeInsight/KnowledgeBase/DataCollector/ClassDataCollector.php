@@ -933,7 +933,7 @@ class ClassDataCollector extends AbstractDataCollector
 					$hash_part .= $method_parameter_data['DefaultConstant'];
 				}
 				else {
-					$hash_part .= $method_parameter_data['DefaultValue'];
+					$hash_part .= var_export($method_parameter_data['DefaultValue'], true);
 				}
 			}
 
