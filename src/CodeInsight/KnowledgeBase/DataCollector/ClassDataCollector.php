@@ -819,15 +819,21 @@ class ClassDataCollector extends AbstractDataCollector
 			$target_methods = $this->db->fetchAssoc($target_class_methods_sql, array('class_id' => $target_class_id));
 
 			foreach ( $source_methods as $source_method_name => $source_method_data ) {
+				$target_method_name = $source_method_name;
 				$method_name = $class_name . '::' . $source_method_name;
 
+				// Constructor renamed.
+				if ( !isset($target_methods[$target_method_name]) && $target_method_name === $class_name ) {
+					$target_method_name = '__construct';
+				}
+
 				// Deleted methods.
-				if ( !isset($target_methods[$source_method_name]) ) {
+				if ( !isset($target_methods[$target_method_name]) ) {
 					$ret['Method Deleted'][] = $method_name;
 					continue;
 				}
 
-				$target_method_data = $target_methods[$source_method_name];
+				$target_method_data = $target_methods[$target_method_name];
 
 				if ( !$source_method_data['IsAbstract'] && $target_method_data['IsAbstract'] ) {
 					$ret['Method Made Abstract'][] = $method_name;
