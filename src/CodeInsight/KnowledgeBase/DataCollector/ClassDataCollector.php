@@ -843,14 +843,6 @@ class ClassDataCollector extends AbstractDataCollector
 					$ret['Method Made Final'][] = $method_name;
 				}
 
-				if ( $source_method_data['Scope'] > $target_method_data['Scope'] ) {
-					$incident = '<fg=white;options=bold>' . $method_name . '</>' . PHP_EOL;
-					$incident .= 'OLD: ' . $this->getScopeName($source_method_data['Scope']) . PHP_EOL;
-					$incident .= 'NEW: ' . $this->getScopeName($target_method_data['Scope']) . PHP_EOL;
-
-					$ret['Method Scope Reduced'][] = $incident;
-				}
-
 				$source_signature = $this->calculateMethodParameterSignature($source_db, $source_method_data['Id']);
 				$target_signature = $this->calculateMethodParameterSignature($this->db, $target_method_data['Id']);
 
@@ -860,6 +852,14 @@ class ClassDataCollector extends AbstractDataCollector
 					$incident .= 'NEW: ' . $target_signature . PHP_EOL;
 
 					$ret['Method Signature Changed'][] = $incident;
+				}
+
+				if ( $source_method_data['Scope'] > $target_method_data['Scope'] ) {
+					$incident = '<fg=white;options=bold>' . $method_name . '</>' . PHP_EOL;
+					$incident .= 'OLD: ' . $this->getScopeName($source_method_data['Scope']) . PHP_EOL;
+					$incident .= 'NEW: ' . $this->getScopeName($target_method_data['Scope']) . PHP_EOL;
+
+					$ret['Method Scope Reduced'][] = $incident;
 				}
 			}
 		}
