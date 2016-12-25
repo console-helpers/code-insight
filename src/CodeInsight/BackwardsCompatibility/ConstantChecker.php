@@ -11,10 +11,18 @@
 namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 
-use Aura\Sql\ExtendedPdoInterface;
-
 class ConstantChecker extends AbstractChecker
 {
+
+	/**
+	 * ConstantChecker constructor.
+	 */
+	public function __construct()
+	{
+		$this->defineIncidentGroups(array(
+			'Constant Deleted',
+		));
+	}
 
 	/**
 	 * Returns backwards compatibility checker name.
@@ -27,16 +35,23 @@ class ConstantChecker extends AbstractChecker
 	}
 
 	/**
-	 * Checks backwards compatibility and returns violations by category.
+	 * Collects backwards compatibility violations.
 	 *
-	 * @param ExtendedPdoInterface $source_db Source DB.
-	 * @param ExtendedPdoInterface $target_db Target DB.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function check(ExtendedPdoInterface $source_db, ExtendedPdoInterface $target_db)
+	protected function doCheck()
 	{
-		return array();
+		$sql = 'SELECT Name
+				FROM Constants';
+		$source_constants = $this->sourceDatabase->fetchCol($sql);
+		$target_constants = $this->targetDatabase->fetchCol($sql);
+
+		foreach ( $source_constants as $source_constant_name ) {
+			if ( !in_array($source_constant_name, $target_constants) ) {
+				$this->addIncident('Constant Deleted', $source_constant_name);
+				continue;
+			}
+		}
 	}
 
 }

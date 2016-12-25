@@ -17,6 +17,31 @@ class FunctionChecker extends AbstractChecker
 {
 
 	/**
+	 * Source function data.
+	 *
+	 * @var array
+	 */
+	protected $sourceFunctionData = array();
+
+	/**
+	 * Target function data.
+	 *
+	 * @var array
+	 */
+	protected $targetFunctionData = array();
+
+	/**
+	 * FunctionChecker constructor.
+	 */
+	public function __construct()
+	{
+		$this->defineIncidentGroups(array(
+			'Function Deleted',
+			'Function Signature Changed',
+		));
+	}
+
+	/**
 	 * Returns backwards compatibility checker name.
 	 *
 	 * @return string
@@ -27,16 +52,81 @@ class FunctionChecker extends AbstractChecker
 	}
 
 	/**
-	 * Checks backwards compatibility and returns violations by category.
+	 * Collects backwards compatibility violations.
 	 *
-	 * @param ExtendedPdoInterface $source_db Source DB.
-	 * @param ExtendedPdoInterface $target_db Target DB.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function check(ExtendedPdoInterface $source_db, ExtendedPdoInterface $target_db)
+	protected function doCheck()
 	{
-		return array();
+		$sql = 'SELECT Name, Id
+				FROM Functions';
+		$source_functions = $this->sourceDatabase->fetchAssoc($sql);
+		$target_functions = $this->targetDatabase->fetchAssoc($sql);
+
+		foreach ( $source_functions as $source_function_name => $source_function_data ) {
+			if ( !isset($target_functions[$source_function_name]) ) {
+				$this->addIncident('Function Deleted', $source_function_name);
+				continue;
+			}
+
+			$this->sourceFunctionData = $source_function_data;
+			$this->sourceFunctionData['ParameterSignature'] = $this->getFunctionParameterSignature(
+				$this->sourceDatabase,
+				$this->sourceFunctionData['Id']
+			);
+
+			$this->targetFunctionData = $target_functions[$source_function_name];
+			$this->targetFunctionData['ParameterSignature'] = $this->getFunctionParameterSignature(
+				$this->targetDatabase,
+				$this->targetFunctionData['Id']
+			);
+
+			$this->processFunction();
+		}
+	}
+
+	/**
+	 * Calculates function parameter signature.
+	 *
+	 * @param ExtendedPdoInterface $db          Database.
+	 * @param integer              $function_id Function ID.
+	 *
+	 * @return integer
+	 */
+	protected function getFunctionParameterSignature(ExtendedPdoInterface $db, $function_id)
+	{
+		$sql = 'SELECT *
+				FROM FunctionParameters
+				WHERE FunctionId = :function_id
+				ORDER BY Position ASC';
+		$function_parameters = $db->fetchAll($sql, array('function_id' => $function_id));
+
+		$hash_parts = array();
+
+		foreach ( $function_parameters as $function_parameter_data ) {
+			$hash_parts[] = $this->paramToString($function_parameter_data);
+		}
+
+		return implode(', ', $hash_parts);
+	}
+
+	/**
+	 * Processes function.
+	 *
+	 * @return void
+	 */
+	protected function processFunction()
+	{
+		$function_name = $this->sourceFunctionData['Name'];
+
+		if ( $this->sourceFunctionData['ParameterSignature'] !== $this->targetFunctionData['ParameterSignature'] ) {
+			$this->addIncident(
+				'Function Signature Changed',
+				$function_name,
+				$this->sourceFunctionData['ParameterSignature'],
+				$this->targetFunctionData['ParameterSignature']
+			);
+		}
 	}
 
 }

@@ -64,22 +64,22 @@ class ClassChecker extends AbstractChecker
 	 */
 	public function __construct()
 	{
-		$this->incidents = array(
-			'Class Deleted' => array(),
-			'Class Made Abstract' => array(),
-			'Class Made Final' => array(),
+		$this->defineIncidentGroups(array(
+			'Class Deleted',
+			'Class Made Abstract',
+			'Class Made Final',
 
-			'Constant Deleted' => array(),
+			'Class Constant Deleted',
 
-			'Property Deleted' => array(),
-			'Property Scope Reduced' => array(),
+			'Property Deleted',
+			'Property Scope Reduced',
 
-			'Method Deleted' => array(),
-			'Method Made Abstract' => array(),
-			'Method Made Final' => array(),
-			'Method Scope Reduced' => array(),
-			'Method Signature Changed' => array(),
-		);
+			'Method Deleted',
+			'Method Made Abstract',
+			'Method Made Final',
+			'Method Scope Reduced',
+			'Method Signature Changed',
+		));
 	}
 
 	/**
@@ -93,19 +93,13 @@ class ClassChecker extends AbstractChecker
 	}
 
 	/**
-	 * Checks backwards compatibility and returns violations by category.
+	 * Collects backwards compatibility violations.
 	 *
-	 * @param ExtendedPdoInterface $source_db Source DB.
-	 * @param ExtendedPdoInterface $target_db Target DB.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function check(ExtendedPdoInterface $source_db, ExtendedPdoInterface $target_db)
+	protected function doCheck()
 	{
-		$this->sourceDatabase = $source_db;
-		$this->targetDatabase = $target_db;
-
-		$classes_sql = 'SELECT Name, Id, IsAbstract, IsFinal 
+		$classes_sql = 'SELECT Name, Id, IsAbstract, IsFinal
 						FROM Classes';
 		$source_classes = $this->sourceDatabase->fetchAssoc($classes_sql);
 		$target_classes = $this->targetDatabase->fetchAssoc($classes_sql);
@@ -131,8 +125,6 @@ class ClassChecker extends AbstractChecker
 			$this->processProperties();
 			$this->processMethods();
 		}
-
-		return array_filter($this->incidents);
 	}
 
 	/**
@@ -154,7 +146,7 @@ class ClassChecker extends AbstractChecker
 			$full_constant_name = $class_name . '::' . $source_constant_name;
 
 			if ( !in_array($source_constant_name, $target_constants) ) {
-				$this->addIncident('Constant Deleted', $full_constant_name);
+				$this->addIncident('Class Constant Deleted', $full_constant_name);
 				continue;
 			}
 		}
@@ -266,6 +258,31 @@ class ClassChecker extends AbstractChecker
 	}
 
 	/**
+	 * Calculates method parameter signature.
+	 *
+	 * @param ExtendedPdoInterface $db        Database.
+	 * @param integer              $method_id Method ID.
+	 *
+	 * @return integer
+	 */
+	protected function getMethodParameterSignature(ExtendedPdoInterface $db, $method_id)
+	{
+		$sql = 'SELECT *
+				FROM MethodParameters
+				WHERE MethodId = :method_id
+				ORDER BY Position ASC';
+		$method_parameters = $db->fetchAll($sql, array('method_id' => $method_id));
+
+		$hash_parts = array();
+
+		foreach ( $method_parameters as $method_parameter_data ) {
+			$hash_parts[] = $this->paramToString($method_parameter_data);
+		}
+
+		return implode(', ', $hash_parts);
+	}
+
+	/**
 	 * Processes method.
 	 *
 	 * @return void
@@ -302,31 +319,6 @@ class ClassChecker extends AbstractChecker
 				$this->getScopeName($this->targetMethodData['Scope'])
 			);
 		}
-	}
-
-	/**
-	 * Calculates method parameter signature.
-	 *
-	 * @param ExtendedPdoInterface $db        Database.
-	 * @param integer              $method_id Method ID.
-	 *
-	 * @return integer
-	 */
-	protected function getMethodParameterSignature(ExtendedPdoInterface $db, $method_id)
-	{
-		$sql = 'SELECT *
-				FROM MethodParameters
-				WHERE MethodId = :method_id
-				ORDER BY Position ASC';
-		$method_parameters = $db->fetchAll($sql, array('method_id' => $method_id));
-
-		$hash_parts = array();
-
-		foreach ( $method_parameters as $method_parameter_data ) {
-			$hash_parts[] = $this->paramToString($method_parameter_data);
-		}
-
-		return implode(', ', $hash_parts);
 	}
 
 	/**

@@ -35,7 +35,7 @@ abstract class AbstractChecker
 	 *
 	 * @var array
 	 */
-	protected $incidents = array();
+	private $_incidents = array();
 
 	/**
 	 * Returns backwards compatibility checker name.
@@ -52,7 +52,22 @@ abstract class AbstractChecker
 	 *
 	 * @return array
 	 */
-	abstract public function check(ExtendedPdoInterface $source_db, ExtendedPdoInterface $target_db);
+	public function check(ExtendedPdoInterface $source_db, ExtendedPdoInterface $target_db)
+	{
+		$this->sourceDatabase = $source_db;
+		$this->targetDatabase = $target_db;
+
+		$this->doCheck();
+
+		return array_filter($this->_incidents);
+	}
+
+	/**
+	 * Collects backwards compatibility violations.
+	 *
+	 * @return void
+	 */
+	abstract protected function doCheck();
 
 	/**
 	 * Builds string representation of a parameter.
@@ -116,6 +131,22 @@ abstract class AbstractChecker
 	}
 
 	/**
+	 * Defines incident groups.
+	 *
+	 * @param array $groups Groups.
+	 *
+	 * @return void
+	 */
+	protected function defineIncidentGroups(array $groups)
+	{
+		$this->_incidents = array();
+
+		foreach ( $groups as $group ) {
+			$this->_incidents[$group] = array();
+		}
+	}
+
+	/**
 	 * Adds incident.
 	 *
 	 * @param string      $group     Incident group.
@@ -133,7 +164,7 @@ abstract class AbstractChecker
 			$incident .= 'NEW: ' . $new_value . PHP_EOL;
 		}
 
-		$this->incidents[$group][] = $incident;
+		$this->_incidents[$group][] = $incident;
 	}
 
 }
