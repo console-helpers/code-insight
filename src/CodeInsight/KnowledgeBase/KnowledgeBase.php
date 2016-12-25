@@ -13,6 +13,8 @@ namespace ConsoleHelpers\CodeInsight\KnowledgeBase;
 
 use Aura\Sql\ExtendedPdoInterface;
 use Composer\Autoload\ClassLoader;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\AbstractChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\CheckerFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\AbstractDataCollector;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ClassDataCollector;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ConstantDataCollector;
@@ -416,24 +418,22 @@ class KnowledgeBase
 	}
 
 	/**
-	 * Finds backward compatibility breaks.
+	 * Returns backwards compatibility checkers.
 	 *
-	 * @param ExtendedPdoInterface $source_db Source database.
+	 * @param CheckerFactory $factory Factory.
 	 *
-	 * @return array
+	 * @return AbstractChecker[]
 	 */
-	public function getBackwardsCompatibilityBreaks(ExtendedPdoInterface $source_db)
+	public function getBackwardsCompatibilityCheckers(CheckerFactory $factory)
 	{
-		$breaks = array();
+		$ret = array();
+		$default_names = array('class', 'function', 'constant');
 
-		foreach ( $this->dataCollectors as $data_collector ) {
-			$breaks = array_merge(
-				$breaks,
-				$data_collector->getBackwardsCompatibilityBreaks($source_db)
-			);
+		foreach ( $this->getConfigSetting('bc_checkers', $default_names) as $name ) {
+			$ret[] = $factory->get($name);
 		}
 
-		return $breaks;
+		return $ret;
 	}
 
 	/**

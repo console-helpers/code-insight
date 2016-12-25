@@ -11,6 +11,11 @@
 namespace ConsoleHelpers\CodeInsight;
 
 
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\CheckerFactory;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\ClassChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\ConstantChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\FunctionChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\InPortalClassChecker;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DatabaseManager;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
 use ConsoleHelpers\DatabaseMigration\MigrationManager;
@@ -53,6 +58,17 @@ class Container extends \ConsoleHelpers\ConsoleKit\Container
 
 		$this['knowledge_base_factory'] = function ($c) {
 			return new KnowledgeBaseFactory($c['db_manager']);
+		};
+
+		$this['bc_checker_factory'] = function ($c) {
+			$factory = new CheckerFactory();
+			$factory->add(new ClassChecker());
+			$factory->add(new FunctionChecker());
+			$factory->add(new ConstantChecker());
+
+			$factory->add(new InPortalClassChecker());
+
+			return $factory;
 		};
 	}
 

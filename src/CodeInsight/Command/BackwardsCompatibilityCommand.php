@@ -11,6 +11,9 @@
 namespace ConsoleHelpers\CodeInsight\Command;
 
 
+use Aura\Sql\ExtendedPdoInterface;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\AbstractChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\CheckerFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +28,13 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 	 * @var KnowledgeBaseFactory
 	 */
 	private $_knowledgeBaseFactory;
+
+	/**
+	 * Backwards compatibility checker factory.
+	 *
+	 * @var CheckerFactory
+	 */
+	private $_checkerFactory;
 
 	/**
 	 * {@inheritdoc}
@@ -60,6 +70,7 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 		$container = $this->getContainer();
 
 		$this->_knowledgeBaseFactory = $container['knowledge_base_factory'];
+		$this->_checkerFactory = $container['bc_checker_factory'];
 	}
 
 	/**
@@ -76,7 +87,11 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 			$this->io
 		);
 
-		$bc_breaks = $target_knowledge_base->getBackwardsCompatibilityBreaks($source_knowledge_base->getDatabase());
+		$bc_breaks = $this->getBackwardsCompatibilityBreaks(
+			$source_knowledge_base->getDatabase(),
+			$target_knowledge_base->getDatabase(),
+			$target_knowledge_base->getBackwardsCompatibilityCheckers($this->_checkerFactory)
+		);
 
 		if ( !$bc_breaks ) {
 			$this->io->writeln('No backwards compatibility breaks detected.');
@@ -97,6 +112,29 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 
 			$this->io->writeln('');
 		}
+	}
+
+	/**
+	 * Finds backward compatibility breaks.
+	 *
+	 * @param ExtendedPdoInterface $source_db Source database.
+	 * @param ExtendedPdoInterface $target_db Target database.
+	 * @param AbstractChecker[]    $checkers  Checkers.
+	 *
+	 * @return array
+	 */
+	protected function getBackwardsCompatibilityBreaks(
+		ExtendedPdoInterface $source_db,
+		ExtendedPdoInterface $target_db,
+		array $checkers
+	) {
+		$breaks = array();
+
+		foreach ( $checkers as $checker ) {
+			$breaks = array_merge($breaks, $checker->check($source_db, $target_db));
+		}
+
+		return $breaks;
 	}
 
 }
