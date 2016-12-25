@@ -12,7 +12,6 @@ namespace ConsoleHelpers\CodeInsight\Command;
 
 
 use Stecman\Component\Symfony\Console\BashCompletion\Completion;
-use Stecman\Component\Symfony\Console\BashCompletion\Completion\CompletionInterface;
 use Stecman\Component\Symfony\Console\BashCompletion\Completion\ShellPathCompletion;
 use Stecman\Component\Symfony\Console\BashCompletion\CompletionCommand as SymfonyCompletionCommand;
 use Stecman\Component\Symfony\Console\BashCompletion\CompletionHandler;

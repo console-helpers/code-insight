@@ -162,7 +162,6 @@ class KnowledgeBase
 		$file_count = count($files);
 		$this->io->writeln(array('<info>' . $file_count . ' found</info>', ''));
 
-
 		$progress_bar = $this->io->createProgressBar($file_count + 2);
 		$progress_bar->setMessage('');
 		$progress_bar->setFormat(
