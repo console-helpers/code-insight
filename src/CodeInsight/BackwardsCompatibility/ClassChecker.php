@@ -32,6 +32,20 @@ class ClassChecker extends AbstractChecker
 	protected $targetClassData = array();
 
 	/**
+	 * Source property data.
+	 *
+	 * @var array
+	 */
+	protected $sourcePropertyData = array();
+
+	/**
+	 * Target property data.
+	 *
+	 * @var array
+	 */
+	protected $targetPropertyData = array();
+
+	/**
 	 * Source method data.
 	 *
 	 * @var array
@@ -54,6 +68,12 @@ class ClassChecker extends AbstractChecker
 			'Class Deleted' => array(),
 			'Class Made Abstract' => array(),
 			'Class Made Final' => array(),
+
+			'Constant Deleted' => array(),
+
+			'Property Deleted' => array(),
+			'Property Scope Reduced' => array(),
+
 			'Method Deleted' => array(),
 			'Method Made Abstract' => array(),
 			'Method Made Final' => array(),
@@ -107,10 +127,93 @@ class ClassChecker extends AbstractChecker
 				$this->addIncident('Class Made Final', $class_name);
 			}
 
+			$this->processConstants();
+			$this->processProperties();
 			$this->processMethods();
 		}
 
 		return array_filter($this->incidents);
+	}
+
+	/**
+	 * Checks constants.
+	 *
+	 * @return void
+	 */
+	protected function processConstants()
+	{
+		$class_name = $this->sourceClassData['Name'];
+
+		$sql = 'SELECT Name
+				FROM ClassConstants
+				WHERE ClassId = :class_id';
+		$source_constants = $this->sourceDatabase->fetchCol($sql, array('class_id' => $this->sourceClassData['Id']));
+		$target_constants = $this->targetDatabase->fetchCol($sql, array('class_id' => $this->targetClassData['Id']));
+
+		foreach ( $source_constants as $source_constant_name ) {
+			$full_constant_name = $class_name . '::' . $source_constant_name;
+
+			if ( !in_array($source_constant_name, $target_constants) ) {
+				$this->addIncident('Constant Deleted', $full_constant_name);
+				continue;
+			}
+		}
+	}
+
+	/**
+	 * Checks properties.
+	 *
+	 * @return void
+	 */
+	protected function processProperties()
+	{
+		$class_name = $this->sourceClassData['Name'];
+
+		$sql = 'SELECT Name, Scope
+				FROM ClassProperties
+				WHERE ClassId = :class_id AND Scope IN (' . $this->coveredScopes() . ')';
+		$source_properties = $this->sourceDatabase->fetchAssoc($sql, array('class_id' => $this->sourceClassData['Id']));
+
+		$sql = 'SELECT Name, Scope
+				FROM ClassProperties
+				WHERE ClassId = :class_id';
+		$target_properties = $this->targetDatabase->fetchAssoc($sql, array('class_id' => $this->targetClassData['Id']));
+
+		foreach ( $source_properties as $source_property_name => $source_property_data ) {
+			$full_property_name = $class_name . '::' . $source_property_name;
+
+			if ( !isset($target_properties[$source_property_name]) ) {
+				$this->addIncident('Property Deleted', $full_property_name);
+				continue;
+			}
+
+			$this->sourcePropertyData = $source_property_data;
+			$this->targetPropertyData = $target_properties[$source_property_name];
+
+			$this->processProperty();
+		}
+	}
+
+	/**
+	 * Processes property.
+	 *
+	 * @return void
+	 */
+	protected function processProperty()
+	{
+		$class_name = $this->sourceClassData['Name'];
+		$property_name = $this->sourcePropertyData['Name'];
+
+		$full_property_name = $class_name . '::' . $property_name;
+
+		if ( $this->sourcePropertyData['Scope'] > $this->targetPropertyData['Scope'] ) {
+			$this->addIncident(
+				'Property Scope Reduced',
+				$full_property_name,
+				$this->getScopeName($this->sourcePropertyData['Scope']),
+				$this->getScopeName($this->targetPropertyData['Scope'])
+			);
+		}
 	}
 
 	/**
@@ -121,8 +224,16 @@ class ClassChecker extends AbstractChecker
 	protected function processMethods()
 	{
 		$class_name = $this->sourceClassData['Name'];
-		$source_methods = $this->_getSourceMethods($this->sourceClassData['Id']);
-		$target_methods = $this->_getTargetMethods($this->targetClassData['Id']);
+
+		$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal
+				FROM ClassMethods
+				WHERE ClassId = :class_id AND Scope IN (' . $this->coveredScopes() . ')';
+		$source_methods = $this->sourceDatabase->fetchAssoc($sql, array('class_id' => $this->sourceClassData['Id']));
+
+		$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal
+				FROM ClassMethods
+				WHERE ClassId = :class_id';
+		$target_methods = $this->targetDatabase->fetchAssoc($sql, array('class_id' => $this->targetClassData['Id']));
 
 		foreach ( $source_methods as $source_method_name => $source_method_data ) {
 			$target_method_name = $source_method_name;
@@ -152,39 +263,6 @@ class ClassChecker extends AbstractChecker
 
 			$this->processMethod();
 		}
-	}
-
-	/**
-	 * Returns source methods.
-	 *
-	 * @param integer $class_id Class ID.
-	 *
-	 * @return array
-	 */
-	private function _getSourceMethods($class_id)
-	{
-		$scopes = ClassDataCollector::SCOPE_PUBLIC . ',' . ClassDataCollector::SCOPE_PROTECTED;
-		$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal
-				FROM ClassMethods
-				WHERE ClassId = :class_id AND Scope IN (' . $scopes . ')';
-
-		return $this->sourceDatabase->fetchAssoc($sql, array('class_id' => $class_id));
-	}
-
-	/**
-	 * Returns target methods.
-	 *
-	 * @param integer $class_id Class ID.
-	 *
-	 * @return array
-	 */
-	private function _getTargetMethods($class_id)
-	{
-		$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal
-				FROM ClassMethods
-				WHERE ClassId = :class_id';
-
-		return $this->targetDatabase->fetchAssoc($sql, array('class_id' => $class_id));
 	}
 
 	/**
@@ -267,6 +345,16 @@ class ClassChecker extends AbstractChecker
 		);
 
 		return $mapping[$scope];
+	}
+
+	/**
+	 * Scopes covered by backwards compatibility checks.
+	 *
+	 * @return string
+	 */
+	protected function coveredScopes()
+	{
+		return ClassDataCollector::SCOPE_PUBLIC . ',' . ClassDataCollector::SCOPE_PROTECTED;
 	}
 
 }
