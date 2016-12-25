@@ -305,13 +305,14 @@ class KnowledgeBase
 	protected function detectClassLocator()
 	{
 		$class_locator = null;
+		$raw_class_locator_file = $this->getConfigSetting('class_locator');
 
-		if ( isset($this->config['class_locator']) ) {
-			$class_locator_file = $this->resolveProjectPath($this->config['class_locator']);
+		if ( $raw_class_locator_file !== null ) {
+			$class_locator_file = $this->resolveProjectPath($raw_class_locator_file);
 
 			if ( !file_exists($class_locator_file) || !is_file($class_locator_file) ) {
 				throw new \LogicException(
-					'The "' . $this->config['class_locator'] . '" class locator doesn\'t exist.'
+					'The "' . $raw_class_locator_file . '" class locator doesn\'t exist.'
 				);
 			}
 
@@ -349,14 +350,16 @@ class KnowledgeBase
 	 */
 	protected function getFinders()
 	{
+		$finder_config = $this->getConfigSetting('finder');
+
 		// Process "finder" config setting.
-		if ( !isset($this->config['finder']) ) {
+		if ( $finder_config === null ) {
 			throw new \LogicException('The "finder" setting must be present in config file.');
 		}
 
 		$finders = array();
 
-		foreach ( $this->config['finder'] as $methods ) {
+		foreach ( $finder_config as $methods ) {
 			$finder = Finder::create()->files();
 
 			if ( isset($methods['in']) ) {
@@ -431,6 +434,19 @@ class KnowledgeBase
 		}
 
 		return $breaks;
+	}
+
+	/**
+	 * Returns value of configuration setting.
+	 *
+	 * @param string     $name    Name.
+	 * @param mixed|null $default Default value.
+	 *
+	 * @return mixed
+	 */
+	protected function getConfigSetting($name, $default = null)
+	{
+		return array_key_exists($name, $this->config) ? $this->config[$name] : $default;
 	}
 
 }
