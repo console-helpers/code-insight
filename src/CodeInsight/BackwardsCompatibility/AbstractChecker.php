@@ -12,6 +12,7 @@ namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 
 use Aura\Sql\ExtendedPdoInterface;
+use Doctrine\Common\Cache\CacheProvider;
 
 abstract class AbstractChecker
 {
@@ -31,11 +32,28 @@ abstract class AbstractChecker
 	protected $targetDatabase;
 
 	/**
+	 * Cache.
+	 *
+	 * @var CacheProvider
+	 */
+	protected $cache;
+
+	/**
 	 * Incidents.
 	 *
 	 * @var array
 	 */
 	private $_incidents = array();
+
+	/**
+	 * AbstractChecker constructor.
+	 *
+	 * @param CacheProvider $cache Cache provider.
+	 */
+	public function __construct(CacheProvider $cache)
+	{
+		$this->cache = $cache;
+	}
 
 	/**
 	 * Returns backwards compatibility checker name.

@@ -16,8 +16,10 @@ use ConsoleHelpers\CodeInsight\BackwardsCompatibility\ClassChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\ConstantChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\FunctionChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\InPortalClassChecker;
+use ConsoleHelpers\CodeInsight\Cache\CacheFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DatabaseManager;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
+use ConsoleHelpers\ConsoleKit\Config\ConfigEditor;
 use ConsoleHelpers\DatabaseMigration\MigrationManager;
 use ConsoleHelpers\DatabaseMigration\PhpMigrationRunner;
 use ConsoleHelpers\DatabaseMigration\SqlMigrationRunner;
@@ -37,7 +39,9 @@ class Container extends \ConsoleHelpers\ConsoleKit\Container
 
 		$this['working_directory_sub_folder'] = '.code-insight';
 
-		$this['config_defaults'] = array();
+		$this['config_defaults'] = array(
+			'cache.provider' => '',
+		);
 
 		$this['project_root_folder'] = function () {
 			return dirname(dirname(__DIR__));
@@ -61,14 +65,26 @@ class Container extends \ConsoleHelpers\ConsoleKit\Container
 		};
 
 		$this['bc_checker_factory'] = function ($c) {
-			$factory = new CheckerFactory();
-			$factory->add(new ClassChecker());
-			$factory->add(new FunctionChecker());
-			$factory->add(new ConstantChecker());
+			$cache = $c['cache'];
 
-			$factory->add(new InPortalClassChecker());
+			$factory = new CheckerFactory();
+			$factory->add(new ClassChecker($cache));
+			$factory->add(new FunctionChecker($cache));
+			$factory->add(new ConstantChecker($cache));
+
+			$factory->add(new InPortalClassChecker($cache));
 
 			return $factory;
+		};
+
+		$this['cache'] = function ($c) {
+			/** @var ConfigEditor $config_editor */
+			$config_editor = $c['config_editor'];
+			$cache_provider = $config_editor->get('cache.provider');
+
+			$cache_factory = new CacheFactory('');
+
+			return $cache_factory->create('chain', array('array', $cache_provider));
 		};
 	}
 

@@ -13,6 +13,7 @@ namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ClassDataCollector;
+use Doctrine\Common\Cache\CacheProvider;
 
 class ClassChecker extends AbstractChecker
 {
@@ -61,9 +62,13 @@ class ClassChecker extends AbstractChecker
 
 	/**
 	 * ClassChecker constructor.
+	 *
+	 * @param CacheProvider $cache Cache provider.
 	 */
-	public function __construct()
+	public function __construct(CacheProvider $cache)
 	{
+		parent::__construct($cache);
+
 		$this->defineIncidentGroups(array(
 			'Class Deleted',
 			'Class Made Abstract',

@@ -12,6 +12,7 @@ namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 
 use Aura\Sql\ExtendedPdoInterface;
+use Doctrine\Common\Cache\CacheProvider;
 
 class FunctionChecker extends AbstractChecker
 {
@@ -32,9 +33,13 @@ class FunctionChecker extends AbstractChecker
 
 	/**
 	 * FunctionChecker constructor.
+	 *
+	 * @param CacheProvider $cache Cache provider.
 	 */
-	public function __construct()
+	public function __construct(CacheProvider $cache)
 	{
+		parent::__construct($cache);
+
 		$this->defineIncidentGroups(array(
 			'Function Deleted',
 			'Function Signature Changed',
