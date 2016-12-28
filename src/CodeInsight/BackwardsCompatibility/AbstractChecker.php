@@ -185,4 +185,17 @@ abstract class AbstractChecker
 		$this->_incidents[$group][] = $incident;
 	}
 
+	/**
+	 * Returns cache key valid for specific database only.
+	 *
+	 * @param ExtendedPdoInterface $db        Database.
+	 * @param string               $cache_key Cache key.
+	 *
+	 * @return string
+	 */
+	protected function getCacheKey(ExtendedPdoInterface $db, $cache_key)
+	{
+		return sha1($db->getDsn()) . ':' . $cache_key;
+	}
+
 }

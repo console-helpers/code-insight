@@ -18,6 +18,8 @@ use Doctrine\Common\Cache\CacheProvider;
 class ClassChecker extends AbstractChecker
 {
 
+	const CACHE_DURATION = 3600;
+
 	/**
 	 * Source class data.
 	 *
@@ -141,20 +143,56 @@ class ClassChecker extends AbstractChecker
 	{
 		$class_name = $this->sourceClassData['Name'];
 
-		$sql = 'SELECT Name
-				FROM ClassConstants
-				WHERE ClassId = :class_id';
-		$source_constants = $this->sourceDatabase->fetchCol($sql, array('class_id' => $this->sourceClassData['Id']));
-		$target_constants = $this->targetDatabase->fetchCol($sql, array('class_id' => $this->targetClassData['Id']));
+		$source_constants = $this->getConstantsRecursively($this->sourceDatabase, $this->sourceClassData['Id']);
+		$target_constants = $this->getConstantsRecursively($this->targetDatabase, $this->targetClassData['Id']);
 
-		foreach ( $source_constants as $source_constant_name ) {
+		foreach ( $source_constants as $source_constant_name => $source_constant_data ) {
 			$full_constant_name = $class_name . '::' . $source_constant_name;
 
-			if ( !in_array($source_constant_name, $target_constants) ) {
+			// Report incidents for processed (not inherited) constants only.
+			if ( $source_constant_data['ClassId'] !== $this->sourceClassData['Id'] ) {
+				continue;
+			}
+
+			if ( !isset($target_constants[$source_constant_name]) ) {
 				$this->addIncident('Class Constant Deleted', $full_constant_name);
 				continue;
 			}
 		}
+	}
+
+	/**
+	 * Returns class constants.
+	 *
+	 * @param ExtendedPdoInterface $db       Database.
+	 * @param integer              $class_id Class ID.
+	 *
+	 * @return array
+	 */
+	protected function getConstantsRecursively(ExtendedPdoInterface $db, $class_id)
+	{
+		$cache_key = $this->getCacheKey($db, 'class_constants[' . $class_id . ']');
+		$cached_value = $this->cache->fetch($cache_key);
+
+		if ( $cached_value === false ) {
+			$sql = 'SELECT Name, ClassId
+					FROM ClassConstants
+					WHERE ClassId = :class_id';
+			$cached_value = $db->fetchAssoc($sql, array('class_id' => $class_id));
+
+			foreach ( $this->getClassRelations($db, $class_id) as $related_class_id => $related_class_name ) {
+				foreach ( $this->getConstantsRecursively($db, $related_class_id) as $name => $data ) {
+					if ( !array_key_exists($name, $cached_value) ) {
+						$cached_value[$name] = $data;
+					}
+				}
+			}
+
+			// TODO: Cache for longer period, when DB update will invalidate associated cache.
+			$this->cache->save($cache_key, $cached_value, self::CACHE_DURATION);
+		}
+
+		return $cached_value;
 	}
 
 	/**
@@ -165,19 +203,20 @@ class ClassChecker extends AbstractChecker
 	protected function processProperties()
 	{
 		$class_name = $this->sourceClassData['Name'];
-
-		$sql = 'SELECT Name, Scope
-				FROM ClassProperties
-				WHERE ClassId = :class_id AND Scope IN (' . $this->coveredScopes() . ')';
-		$source_properties = $this->sourceDatabase->fetchAssoc($sql, array('class_id' => $this->sourceClassData['Id']));
-
-		$sql = 'SELECT Name, Scope
-				FROM ClassProperties
-				WHERE ClassId = :class_id';
-		$target_properties = $this->targetDatabase->fetchAssoc($sql, array('class_id' => $this->targetClassData['Id']));
+		$source_properties = $this->getPropertiesRecursively(
+			$this->sourceDatabase,
+			$this->sourceClassData['Id'],
+			$this->coveredScopes()
+		);
+		$target_properties = $this->getPropertiesRecursively($this->targetDatabase, $this->targetClassData['Id'], '');
 
 		foreach ( $source_properties as $source_property_name => $source_property_data ) {
 			$full_property_name = $class_name . '::' . $source_property_name;
+
+			// Report incidents for processed (not inherited) properties only.
+			if ( $source_property_data['ClassId'] !== $this->sourceClassData['Id'] ) {
+				continue;
+			}
 
 			if ( !isset($target_properties[$source_property_name]) ) {
 				$this->addIncident('Property Deleted', $full_property_name);
@@ -189,6 +228,46 @@ class ClassChecker extends AbstractChecker
 
 			$this->processProperty();
 		}
+	}
+
+	/**
+	 * Returns class properties.
+	 *
+	 * @param ExtendedPdoInterface $db       Database.
+	 * @param integer              $class_id Class ID.
+	 * @param string               $scopes   Scopes.
+	 *
+	 * @return array
+	 */
+	protected function getPropertiesRecursively(ExtendedPdoInterface $db, $class_id, $scopes)
+	{
+		$cache_key = $this->getCacheKey($db, 'class_properties[' . $class_id . ']_scopes[' . ($scopes ?: '*') . ']');
+		$cached_value = $this->cache->fetch($cache_key);
+
+		if ( $cached_value === false ) {
+			$sql = 'SELECT Name, Scope, ClassId
+					FROM ClassProperties
+					WHERE ClassId = :class_id';
+
+			if ( $scopes ) {
+				$sql .= ' AND Scope IN (' . $scopes . ')';
+			}
+
+			$cached_value = $db->fetchAssoc($sql, array('class_id' => $class_id));
+
+			foreach ( $this->getClassRelations($db, $class_id) as $related_class_id => $related_class_name ) {
+				foreach ( $this->getPropertiesRecursively($db, $related_class_id, $scopes) as $name => $data ) {
+					if ( !array_key_exists($name, $cached_value) ) {
+						$cached_value[$name] = $data;
+					}
+				}
+			}
+
+			// TODO: Cache for longer period, when DB update will invalidate associated cache.
+			$this->cache->save($cache_key, $cached_value, self::CACHE_DURATION);
+		}
+
+		return $cached_value;
 	}
 
 	/**
@@ -221,16 +300,12 @@ class ClassChecker extends AbstractChecker
 	protected function processMethods()
 	{
 		$class_name = $this->sourceClassData['Name'];
-
-		$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal
-				FROM ClassMethods
-				WHERE ClassId = :class_id AND Scope IN (' . $this->coveredScopes() . ')';
-		$source_methods = $this->sourceDatabase->fetchAssoc($sql, array('class_id' => $this->sourceClassData['Id']));
-
-		$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal
-				FROM ClassMethods
-				WHERE ClassId = :class_id';
-		$target_methods = $this->targetDatabase->fetchAssoc($sql, array('class_id' => $this->targetClassData['Id']));
+		$source_methods = $this->getMethodsRecursively(
+			$this->sourceDatabase,
+			$this->sourceClassData['Id'],
+			$this->coveredScopes()
+		);
+		$target_methods = $this->getMethodsRecursively($this->targetDatabase, $this->targetClassData['Id'], '');
 
 		foreach ( $source_methods as $source_method_name => $source_method_data ) {
 			$target_method_name = $source_method_name;
@@ -239,6 +314,11 @@ class ClassChecker extends AbstractChecker
 			// Ignore PHP4 constructor rename into PHP5 constructor.
 			if ( !isset($target_methods[$target_method_name]) && $target_method_name === $class_name ) {
 				$target_method_name = '__construct';
+			}
+
+			// Report incidents for processed (not inherited) methods only.
+			if ( $source_method_data['ClassId'] !== $this->sourceClassData['Id'] ) {
+				continue;
 			}
 
 			if ( !isset($target_methods[$target_method_name]) ) {
@@ -260,6 +340,46 @@ class ClassChecker extends AbstractChecker
 
 			$this->processMethod();
 		}
+	}
+
+	/**
+	 * Returns class methods.
+	 *
+	 * @param ExtendedPdoInterface $db       Database.
+	 * @param integer              $class_id Class ID.
+	 * @param string               $scopes   Scopes.
+	 *
+	 * @return array
+	 */
+	protected function getMethodsRecursively(ExtendedPdoInterface $db, $class_id, $scopes)
+	{
+		$cache_key = $this->getCacheKey($db, 'class_methods[' . $class_id . ']_scopes[' . ($scopes ?: '*') . ']');
+		$cached_value = $this->cache->fetch($cache_key);
+
+		if ( $cached_value === false ) {
+			$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal, ClassId
+					FROM ClassMethods
+					WHERE ClassId = :class_id';
+
+			if ( $scopes ) {
+				$sql .= ' AND Scope IN (' . $scopes . ')';
+			}
+
+			$cached_value = $db->fetchAssoc($sql, array('class_id' => $class_id));
+
+			foreach ( $this->getClassRelations($db, $class_id) as $related_class_id => $related_class_name ) {
+				foreach ( $this->getMethodsRecursively($db, $related_class_id, $scopes) as $name => $data ) {
+					if ( !array_key_exists($name, $cached_value) ) {
+						$cached_value[$name] = $data;
+					}
+				}
+			}
+
+			// TODO: Cache for longer period, when DB update will invalidate associated cache.
+			$this->cache->save($cache_key, $cached_value, self::CACHE_DURATION);
+		}
+
+		return $cached_value;
 	}
 
 	/**
@@ -352,6 +472,32 @@ class ClassChecker extends AbstractChecker
 	protected function coveredScopes()
 	{
 		return ClassDataCollector::SCOPE_PUBLIC . ',' . ClassDataCollector::SCOPE_PROTECTED;
+	}
+
+	/**
+	 * Returns class constants.
+	 *
+	 * @param ExtendedPdoInterface $db       Database.
+	 * @param integer              $class_id Class ID.
+	 *
+	 * @return array
+	 */
+	protected function getClassRelations(ExtendedPdoInterface $db, $class_id)
+	{
+		$cache_key = $this->getCacheKey($db, 'class_relations[' . $class_id . ']');
+		$cached_value = $this->cache->fetch($cache_key);
+
+		if ( $cached_value === false ) {
+			$sql = 'SELECT RelatedClassId, RelatedClass
+					FROM ClassRelations
+					WHERE ClassId = :class_id AND RelatedClassId <> 0';
+			$cached_value = $db->fetchPairs($sql, array('class_id' => $class_id));
+
+			// TODO: Cache for longer period, when DB update will invalidate associated cache.
+			$this->cache->save($cache_key, $cached_value, self::CACHE_DURATION);
+		}
+
+		return $cached_value;
 	}
 
 }
