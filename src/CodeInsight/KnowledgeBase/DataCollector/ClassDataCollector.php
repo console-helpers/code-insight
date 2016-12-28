@@ -306,6 +306,7 @@ class ClassDataCollector extends AbstractDataCollector
 	 */
 	protected function processClassConstants($class_id, \ReflectionClass $class)
 	{
+		// TODO: Find a way, how to get only constants from current class without related classes.
 		$constants = $class->getConstants();
 
 		$sql = 'SELECT Name
