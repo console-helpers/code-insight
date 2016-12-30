@@ -211,7 +211,7 @@ class ClassChecker extends AbstractChecker
 		$target_properties = $this->getPropertiesRecursively($this->targetDatabase, $this->targetClassData['Id'], '');
 
 		foreach ( $source_properties as $source_property_name => $source_property_data ) {
-			$full_property_name = $class_name . '::' . $source_property_name;
+			$full_property_name = $class_name . '::$' . $source_property_name;
 
 			// Report incidents for processed (not inherited) properties only.
 			if ( $source_property_data['ClassId'] !== $this->sourceClassData['Id'] ) {
@@ -280,7 +280,7 @@ class ClassChecker extends AbstractChecker
 		$class_name = $this->sourceClassData['Name'];
 		$property_name = $this->sourcePropertyData['Name'];
 
-		$full_property_name = $class_name . '::' . $property_name;
+		$full_property_name = $class_name . '::$' . $property_name;
 
 		if ( $this->sourcePropertyData['Scope'] > $this->targetPropertyData['Scope'] ) {
 			$this->addIncident(
