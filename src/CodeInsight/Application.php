@@ -15,6 +15,7 @@ use ConsoleHelpers\CodeInsight\Command\BackwardsCompatibilityCommand;
 use ConsoleHelpers\CodeInsight\Command\CompletionCommand;
 use ConsoleHelpers\CodeInsight\Command\ReportCommand;
 use ConsoleHelpers\CodeInsight\Command\Dev\MigrationCreateCommand;
+use ConsoleHelpers\CodeInsight\Command\SyncCommand;
 use ConsoleHelpers\ConsoleKit\Application as BaseApplication;
 use ConsoleHelpers\CodeInsight\Command\MissingTestsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -31,6 +32,7 @@ class Application extends BaseApplication
 	{
 		$default_commands = parent::getDefaultCommands();
 		$default_commands[] = new MissingTestsCommand();
+		$default_commands[] = new SyncCommand();
 		$default_commands[] = new ReportCommand();
 		$default_commands[] = new BackwardsCompatibilityCommand();
 		$default_commands[] = new CompletionCommand();

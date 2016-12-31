@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReportCommand extends AbstractCommand
+class SyncCommand extends AbstractCommand
 {
 
 	/**
@@ -32,8 +32,8 @@ class ReportCommand extends AbstractCommand
 	protected function configure()
 	{
 		$this
-			->setName('report')
-			->setDescription('Analyzes project and shows the report')
+			->setName('sync')
+			->setDescription('Synchronizes collected information about code with actual code')
 			->addArgument(
 				'project-path',
 				InputArgument::OPTIONAL,
@@ -66,11 +66,9 @@ class ReportCommand extends AbstractCommand
 			$this->io
 		);
 
-		$this->io->writeln('<comment>Results:</comment>');
+		$knowledge_base->refresh();
 
-		foreach ( $knowledge_base->getStatistics() as $name => $value ) {
-			$this->io->writeln(' * ' . $name . ': <info>' . $value . '</info>');
-		}
+		$this->io->writeln('Done.');
 	}
 
 }
