@@ -66,7 +66,7 @@ class ReportCommand extends AbstractCommand
 			$this->io
 		);
 
-		$this->io->writeln('<comment>Results:</comment>');
+		$this->io->writeln('<comment>Report:</comment>');
 
 		foreach ( $knowledge_base->getStatistics() as $name => $value ) {
 			$this->io->writeln(' * ' . $name . ': <info>' . $value . '</info>');
