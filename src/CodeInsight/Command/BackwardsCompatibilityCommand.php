@@ -42,8 +42,7 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 	protected function configure()
 	{
 		$this
-			->setName('backwards-compatibility')
-			->setAliases(array('bc'))
+			->setName('bc')
 			->setDescription('Detects backwards compatibility breaks between 2 project versions')
 			->addArgument(
 				'source-project-path',
