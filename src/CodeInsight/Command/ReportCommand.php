@@ -14,6 +14,7 @@ namespace ConsoleHelpers\CodeInsight\Command;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportCommand extends AbstractCommand
@@ -39,6 +40,12 @@ class ReportCommand extends AbstractCommand
 				InputArgument::OPTIONAL,
 				'Path to project root folder (where <comment>.code-insight.json</comment> is located)',
 				'.'
+			)
+			->addOption(
+				'project-fork',
+				null,
+				InputOption::VALUE_REQUIRED,
+				'Project fork name'
 			);
 	}
 
@@ -63,6 +70,7 @@ class ReportCommand extends AbstractCommand
 	{
 		$knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
 			$this->getPath('project-path'),
+			$this->io->getOption('project-fork'),
 			$this->io
 		);
 

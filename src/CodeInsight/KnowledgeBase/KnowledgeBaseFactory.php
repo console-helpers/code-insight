@@ -37,15 +37,16 @@ class KnowledgeBaseFactory
 	/**
 	 * Returns knowledge base for project path.
 	 *
-	 * @param string    $project_path Project path.
-	 * @param ConsoleIO $io           Console IO.
+	 * @param string      $project_path Project path.
+	 * @param string|null $fork         Fork name.
+	 * @param ConsoleIO   $io           Console IO.
 	 *
 	 * @return KnowledgeBase
 	 */
-	public function getKnowledgeBase($project_path, ConsoleIO $io = null)
+	public function getKnowledgeBase($project_path, $fork = null, ConsoleIO $io = null)
 	{
 		// Gets database for given project path.
-		$database = $this->_databaseManager->getDatabase($project_path);
+		$database = $this->_databaseManager->getDatabase($project_path, $fork);
 
 		// Create blank revision log.
 		$knowledge_base = new KnowledgeBase($project_path, $database, $io);

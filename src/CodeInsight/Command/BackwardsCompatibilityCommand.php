@@ -17,6 +17,7 @@ use ConsoleHelpers\CodeInsight\BackwardsCompatibility\CheckerFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class BackwardsCompatibilityCommand extends AbstractCommand
@@ -54,6 +55,18 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 				InputArgument::OPTIONAL,
 				'Path to target project root folder (where <comment>.code-insight.json</comment> is located)',
 				'.'
+			)
+			->addOption(
+				'source-project-fork',
+				null,
+				InputOption::VALUE_REQUIRED,
+				'Source project fork name'
+			)
+			->addOption(
+				'target-project-fork',
+				null,
+				InputOption::VALUE_REQUIRED,
+				'Target project fork name'
 			);
 	}
 
@@ -79,10 +92,12 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 	{
 		$source_knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
 			$this->getPath('source-project-path'),
+			$this->io->getOption('source-project-fork'),
 			$this->io
 		);
 		$target_knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
 			$this->getPath('target-project-path'),
+			$this->io->getOption('target-project-fork'),
 			$this->io
 		);
 
