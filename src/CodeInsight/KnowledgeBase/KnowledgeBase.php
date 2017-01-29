@@ -278,10 +278,11 @@ class KnowledgeBase
 		}
 
 		$sql = 'UPDATE Files
-				SET Found = 1
+				SET Found = 1, Size = :size
 				WHERE Id = :file_id';
 		$this->db->perform($sql, array(
 			'file_id' => $file_data['Id'],
+			'size' => $size,
 		));
 
 		$parsed_file = new ReflectionFile($file);
