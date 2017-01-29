@@ -57,7 +57,7 @@ class Container extends \ConsoleHelpers\ConsoleKit\Container
 		};
 
 		$this['db_manager'] = function ($c) {
-			return new DatabaseManager($c['migration_manager']);
+			return new DatabaseManager($c['migration_manager'], $c['working_directory']);
 		};
 
 		$this['knowledge_base_factory'] = function ($c) {
