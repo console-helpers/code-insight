@@ -36,42 +36,45 @@ abstract class AbstractDatabaseAwareTestCase extends \PHPUnit_Framework_TestCase
 	/**
 	 * Checks, that database table is empty.
 	 *
-	 * @param array $table_names Table names.
+	 * @param array                $table_names Table names.
+	 * @param ExtendedPdoInterface $db          Database.
 	 *
 	 * @return void
 	 */
-	protected function assertTablesEmpty(array $table_names)
+	protected function assertTablesEmpty(array $table_names, ExtendedPdoInterface $db = null)
 	{
 		foreach ( $table_names as $table_name ) {
-			$this->assertTableCount($table_name, 0);
+			$this->assertTableCount($table_name, 0, $db);
 		}
 	}
 
 	/**
 	 * Checks, that database table is empty.
 	 *
-	 * @param string $table_name Table name.
+	 * @param string               $table_name Table name.
+	 * @param ExtendedPdoInterface $db         Database.
 	 *
 	 * @return void
 	 */
-	protected function assertTableEmpty($table_name)
+	protected function assertTableEmpty($table_name, ExtendedPdoInterface $db = null)
 	{
-		$this->assertTableCount($table_name, 0);
+		$this->assertTableCount($table_name, 0, $db);
 	}
 
 	/**
 	 * Checks, table content.
 	 *
-	 * @param string $table_name       Table name.
-	 * @param array  $expected_content Expected content.
+	 * @param string               $table_name       Table name.
+	 * @param array                $expected_content Expected content.
+	 * @param ExtendedPdoInterface $db               Database.
 	 *
 	 * @return void
 	 */
-	protected function assertTableContent($table_name, array $expected_content)
+	protected function assertTableContent($table_name, array $expected_content, ExtendedPdoInterface $db = null)
 	{
 		$this->assertSame(
 			$expected_content,
-			$this->_dumpTable($table_name),
+			$this->_dumpTable($table_name, $db),
 			'Table "' . $table_name . '" content isn\'t correct.'
 		);
 	}
@@ -79,15 +82,18 @@ abstract class AbstractDatabaseAwareTestCase extends \PHPUnit_Framework_TestCase
 	/**
 	 * Returns contents of the table.
 	 *
-	 * @param string $table_name Table name.
+	 * @param string               $table_name Table name.
+	 * @param ExtendedPdoInterface $db         Database.
 	 *
 	 * @return array
 	 */
-	private function _dumpTable($table_name)
+	private function _dumpTable($table_name, ExtendedPdoInterface $db = null)
 	{
+		$db = $db ?: $this->database;
+
 		$sql = 'SELECT *
 				FROM ' . $table_name;
-		$table_content = $this->database->fetchAll($sql);
+		$table_content = $db->fetchAll($sql);
 
 		return $table_content;
 	}
@@ -95,16 +101,19 @@ abstract class AbstractDatabaseAwareTestCase extends \PHPUnit_Framework_TestCase
 	/**
 	 * Checks, that database table contains given number of records.
 	 *
-	 * @param string  $table_name            Table name.
-	 * @param integer $expected_record_count Expected record count.
+	 * @param string               $table_name            Table name.
+	 * @param integer              $expected_record_count Expected record count.
+	 * @param ExtendedPdoInterface $db                    Database.
 	 *
 	 * @return void
 	 */
-	protected function assertTableCount($table_name, $expected_record_count)
+	protected function assertTableCount($table_name, $expected_record_count, ExtendedPdoInterface $db = null)
 	{
+		$db = $db ?: $this->database;
+
 		$sql = 'SELECT COUNT(*)
 				FROM ' . $table_name;
-		$actual_record_count = $this->database->fetchValue($sql);
+		$actual_record_count = $db->fetchValue($sql);
 
 		$this->assertEquals(
 			$expected_record_count,
