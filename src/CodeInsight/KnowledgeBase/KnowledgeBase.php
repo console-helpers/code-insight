@@ -210,6 +210,46 @@ class KnowledgeBase
 	}
 
 	/**
+	 * Refreshes database silently.
+	 *
+	 * @return void
+	 */
+	public function silentRefresh()
+	{
+		ReflectionEngine::setMaximumCachedFiles(20);
+		ReflectionEngine::init($this->detectClassLocator());
+
+		$sql = 'UPDATE Files
+				SET Found = 0';
+		$this->db->perform($sql);
+
+		$files = array();
+
+		foreach ( $this->getFinders() as $finder ) {
+			$files = array_merge($files, array_keys(iterator_to_array($finder)));
+		}
+
+		foreach ( $files as $file ) {
+			$this->processFile($file);
+		}
+
+		$sql = 'SELECT Id
+				FROM Files
+				WHERE Found = 0';
+		$deleted_files = $this->db->fetchCol($sql);
+
+		if ( $deleted_files ) {
+			foreach ( $this->dataCollectors as $data_collector ) {
+				$data_collector->deleteData($deleted_files);
+			}
+		}
+
+		foreach ( $this->dataCollectors as $data_collector ) {
+			$data_collector->aggregateData($this);
+		}
+	}
+
+	/**
 	 * Prints statistics about the code.
 	 *
 	 * @return array
