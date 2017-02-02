@@ -9,7 +9,8 @@
 		"console-helpers/parser-reflection": "^1.0@dev",
 		"console-helpers/db-migration": "^0.1.0",
 		"aura/sql": "^2.5",
-		"doctrine/cache": "^1.5"
+		"doctrine/cache": "^1.5",
+		"camspiers/json-pretty": "^1.0"
 	},
 	"require-dev": {
 		"aik099/coding-standard": "dev-master"
