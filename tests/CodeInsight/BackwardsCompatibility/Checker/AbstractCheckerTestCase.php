@@ -8,11 +8,10 @@
  * @link      https://github.com/console-helpers/code-insight
  */
 
-namespace Tests\ConsoleHelpers\CodeInsight\BackwardsCompatibility;
+namespace Tests\ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker;
 
 
-use Aura\Sql\ExtendedPdoInterface;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\AbstractChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\AbstractChecker;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBase;
 use Doctrine\Common\Cache\CacheProvider;
 use Prophecy\Argument;

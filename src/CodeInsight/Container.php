@@ -11,11 +11,11 @@
 namespace ConsoleHelpers\CodeInsight;
 
 
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\CheckerFactory;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\ClassChecker;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\ConstantChecker;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\FunctionChecker;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\InPortalClassChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\CheckerFactory;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ClassChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ConstantChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\FunctionChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\InPortalClassChecker;
 use ConsoleHelpers\CodeInsight\Cache\CacheFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DatabaseManager;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;

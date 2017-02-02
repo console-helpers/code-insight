@@ -8,7 +8,7 @@
  * @link      https://github.com/console-helpers/code-insight
  */
 
-namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility;
+namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker;
 
 
 class ConstantChecker extends AbstractChecker

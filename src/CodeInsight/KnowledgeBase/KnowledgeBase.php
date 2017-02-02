@@ -13,8 +13,8 @@ namespace ConsoleHelpers\CodeInsight\KnowledgeBase;
 
 use Aura\Sql\ExtendedPdoInterface;
 use Composer\Autoload\ClassLoader;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\AbstractChecker;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\CheckerFactory;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\AbstractChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\CheckerFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\AbstractDataCollector;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ClassDataCollector;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ConstantDataCollector;

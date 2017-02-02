@@ -12,8 +12,8 @@ namespace ConsoleHelpers\CodeInsight\Command;
 
 
 use Aura\Sql\ExtendedPdoInterface;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\AbstractChecker;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\CheckerFactory;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\AbstractChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\CheckerFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

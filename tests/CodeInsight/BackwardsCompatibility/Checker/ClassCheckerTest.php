@@ -8,11 +8,11 @@
  * @link      https://github.com/console-helpers/code-insight
  */
 
-namespace Tests\ConsoleHelpers\CodeInsight\BackwardsCompatibility;
+namespace Tests\ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker;
 
 
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\AbstractChecker;
-use ConsoleHelpers\CodeInsight\BackwardsCompatibility\ClassChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\AbstractChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ClassChecker;
 
 class ClassCheckerTest extends AbstractCheckerTestCase
 {
