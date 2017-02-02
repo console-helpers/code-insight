@@ -30,7 +30,7 @@ abstract class AbstractDatabaseAwareTestCase extends \PHPUnit_Framework_TestCase
 	{
 		parent::setUp();
 
-		$this->database = $this->createDatabase();
+		$this->database = self::createDatabase();
 	}
 
 	/**
@@ -127,7 +127,7 @@ abstract class AbstractDatabaseAwareTestCase extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return ExtendedPdoInterface
 	 */
-	protected function createDatabase()
+	protected static function createDatabase()
 	{
 		$db = new ExtendedPdo('sqlite::memory:');
 
