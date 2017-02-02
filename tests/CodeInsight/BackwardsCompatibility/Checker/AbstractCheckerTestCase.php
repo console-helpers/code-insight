@@ -48,6 +48,17 @@ abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 	 */
 	protected static $newKnowledgeBase;
 
+	public static function setUpBeforeClass()
+	{
+		parent::setUpBeforeClass();
+
+		static::$oldKnowledgeBase = new KnowledgeBase(__DIR__ . '/fixtures/OldProject', static::createDatabase());
+		static::$oldKnowledgeBase->silentRefresh();
+
+		static::$newKnowledgeBase = new KnowledgeBase(__DIR__ . '/fixtures/NewProject', static::createDatabase());
+		static::$newKnowledgeBase->silentRefresh();
+	}
+
 	protected function setUp()
 	{
 		parent::setUp();
@@ -57,24 +68,13 @@ abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 		$cache->save(Argument::cetera())->willReturn(true);
 
 		$this->cache = $cache->reveal();
-
-		if ( !isset(static::$oldKnowledgeBase) ) {
-			static::$oldKnowledgeBase = new KnowledgeBase(__DIR__ . '/fixtures/OldProject', $this->createDatabase());
-			static::$oldKnowledgeBase->silentRefresh();
-		}
-
-		if ( !isset(static::$newKnowledgeBase) ) {
-			static::$newKnowledgeBase = new KnowledgeBase(__DIR__ . '/fixtures/NewProject', $this->createDatabase());
-			static::$newKnowledgeBase->silentRefresh();
-		}
-
 		$this->checker = $this->createChecker();
 	}
 
 	public function testEmptyCheck()
 	{
 		$this->assertEmpty(
-			$this->checker->check(self::$oldKnowledgeBase->getDatabase(), self::$oldKnowledgeBase->getDatabase())
+			$this->checker->check(static::$oldKnowledgeBase->getDatabase(), static::$oldKnowledgeBase->getDatabase())
 		);
 	}
 
