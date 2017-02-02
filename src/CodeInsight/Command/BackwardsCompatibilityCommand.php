@@ -115,13 +115,19 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 
 		$this->io->writeln('Backward compatibility breaks:');
 
-		foreach ( $bc_breaks as $bc_break => $incidents ) {
+		foreach ( $this->groupByType($bc_breaks) as $bc_break => $incidents ) {
+			$bc_break = ucwords(str_replace(array('.', '_'), ' ', $bc_break));
 			$this->io->writeln('<fg=red>=== ' . $bc_break . ' (' . count($incidents) . ') ===</>');
 
-			foreach ( $incidents as $incident ) {
-				$incident = implode(PHP_EOL . '   ', explode(PHP_EOL, $incident));
-
-				$this->io->writeln(' * ' . $incident);
+			foreach ( $incidents as $incident_data ) {
+				if ( array_key_exists('old', $incident_data) ) {
+					$this->io->writeln(' * <fg=white;options=bold>' . $incident_data['element'] . '</>');
+					$this->io->writeln('   OLD: ' . $incident_data['old']);
+					$this->io->writeln('   NEW: ' . $incident_data['new']);
+				}
+				else {
+					$this->io->writeln(' * ' . $incident_data['element']);
+				}
 			}
 
 			$this->io->writeln('');
@@ -149,6 +155,30 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 		}
 
 		return $breaks;
+	}
+
+	/**
+	 * Groups BC breaks by type.
+	 *
+	 * @param array $bc_breaks BC breaks.
+	 *
+	 * @return array
+	 */
+	protected function groupByType(array $bc_breaks)
+	{
+		$ret = array();
+
+		foreach ( $bc_breaks as $bc_break_data ) {
+			$type = $bc_break_data['type'];
+
+			if ( !isset($ret[$type]) ) {
+				$ret[$type] = array();
+			}
+
+			$ret[$type][] = $bc_break_data;
+		}
+
+		return $ret;
 	}
 
 }
