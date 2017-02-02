@@ -244,7 +244,7 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 					'new' => 'protected',
 				),
 			),
-			$this->checker->check(self::$oldKnowledgeBase->getDatabase(), self::$newKnowledgeBase->getDatabase())
+			$this->checker->check(static::$oldKnowledgeBase->getDatabase(), static::$newKnowledgeBase->getDatabase())
 		);
 	}
 

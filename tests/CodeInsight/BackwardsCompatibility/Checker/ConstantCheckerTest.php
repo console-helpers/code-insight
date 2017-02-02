@@ -31,7 +31,7 @@ class ConstantCheckerTest extends AbstractCheckerTestCase
 					'element' => 'SOME_CONST',
 				),
 			),
-			$this->checker->check(self::$oldKnowledgeBase->getDatabase(), self::$newKnowledgeBase->getDatabase())
+			$this->checker->check(static::$oldKnowledgeBase->getDatabase(), static::$newKnowledgeBase->getDatabase())
 		);
 	}
 

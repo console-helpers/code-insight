@@ -1,4 +1,6 @@
 <?php
-return function ($class) {
-	return __DIR__ . '/example.php';
+$base_path = __DIR__;
+
+return function ($class) use ($base_path) {
+	return $base_path . '/example.php';
 };

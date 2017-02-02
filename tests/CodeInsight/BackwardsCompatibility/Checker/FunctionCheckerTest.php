@@ -49,7 +49,7 @@ class FunctionCheckerTest extends AbstractCheckerTestCase
 					'new' => '$p1, $p2',
 				),
 			),
-			$this->checker->check(self::$oldKnowledgeBase->getDatabase(), self::$newKnowledgeBase->getDatabase())
+			$this->checker->check(static::$oldKnowledgeBase->getDatabase(), static::$newKnowledgeBase->getDatabase())
 		);
 	}
 
