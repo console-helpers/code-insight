@@ -13,12 +13,23 @@ namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ClassDataCollector;
-use Doctrine\Common\Cache\CacheProvider;
 
 class ClassChecker extends AbstractChecker
 {
 
 	const CACHE_DURATION = 3600;
+
+	const TYPE_CLASS_DELETED = 'class.deleted';
+	const TYPE_CLASS_MADE_ABSTRACT = 'class.made_abstract';
+	const TYPE_CLASS_MADE_FINAL = 'class.made_final';
+	const TYPE_CLASS_CONSTANT_DELETED = 'class.constant.deleted';
+	const TYPE_PROPERTY_DELETED = 'property.deleted';
+	const TYPE_PROPERTY_SCOPE_REDUCED = 'property.scope_reduced';
+	const TYPE_METHOD_DELETED = 'method.deleted';
+	const TYPE_METHOD_MADE_ABSTRACT = 'method.made_abstract';
+	const TYPE_METHOD_MADE_FINAL = 'method.made_final';
+	const TYPE_METHOD_SCOPE_REDUCED = 'method.scope_reduced';
+	const TYPE_METHOD_SIGNATURE_CHANGED = 'method.signature_changed';
 
 	/**
 	 * Source class data.
@@ -63,33 +74,6 @@ class ClassChecker extends AbstractChecker
 	protected $targetMethodData = array();
 
 	/**
-	 * ClassChecker constructor.
-	 *
-	 * @param CacheProvider $cache Cache provider.
-	 */
-	public function __construct(CacheProvider $cache)
-	{
-		parent::__construct($cache);
-
-		$this->defineIncidentGroups(array(
-			'Class Deleted',
-			'Class Made Abstract',
-			'Class Made Final',
-
-			'Class Constant Deleted',
-
-			'Property Deleted',
-			'Property Scope Reduced',
-
-			'Method Deleted',
-			'Method Made Abstract',
-			'Method Made Final',
-			'Method Scope Reduced',
-			'Method Signature Changed',
-		));
-	}
-
-	/**
 	 * Returns backwards compatibility checker name.
 	 *
 	 * @return string
@@ -113,7 +97,7 @@ class ClassChecker extends AbstractChecker
 
 		foreach ( $source_classes as $class_name => $source_class_data ) {
 			if ( !isset($target_classes[$class_name]) ) {
-				$this->addIncident('Class Deleted', $class_name);
+				$this->addIncident(self::TYPE_CLASS_DELETED, $class_name);
 				continue;
 			}
 
@@ -121,11 +105,11 @@ class ClassChecker extends AbstractChecker
 			$this->targetClassData = $target_classes[$class_name];
 
 			if ( !$this->sourceClassData['IsAbstract'] && $this->targetClassData['IsAbstract'] ) {
-				$this->addIncident('Class Made Abstract', $class_name);
+				$this->addIncident(self::TYPE_CLASS_MADE_ABSTRACT, $class_name);
 			}
 
 			if ( !$this->sourceClassData['IsFinal'] && $this->targetClassData['IsFinal'] ) {
-				$this->addIncident('Class Made Final', $class_name);
+				$this->addIncident(self::TYPE_CLASS_MADE_FINAL, $class_name);
 			}
 
 			$this->processConstants();
@@ -149,13 +133,15 @@ class ClassChecker extends AbstractChecker
 		foreach ( $source_constants as $source_constant_name => $source_constant_data ) {
 			$full_constant_name = $class_name . '::' . $source_constant_name;
 
+			// @codeCoverageIgnoreStart
 			// Report incidents for processed (not inherited) constants only.
 			if ( $source_constant_data['ClassId'] !== $this->sourceClassData['Id'] ) {
 				continue;
 			}
+			// @codeCoverageIgnoreEnd
 
 			if ( !isset($target_constants[$source_constant_name]) ) {
-				$this->addIncident('Class Constant Deleted', $full_constant_name);
+				$this->addIncident(self::TYPE_CLASS_CONSTANT_DELETED, $full_constant_name);
 				continue;
 			}
 		}
@@ -182,9 +168,11 @@ class ClassChecker extends AbstractChecker
 
 			foreach ( $this->getClassRelations($db, $class_id) as $related_class_id => $related_class_name ) {
 				foreach ( $this->getConstantsRecursively($db, $related_class_id) as $name => $data ) {
+					// @codeCoverageIgnoreStart
 					if ( !array_key_exists($name, $cached_value) ) {
 						$cached_value[$name] = $data;
 					}
+					// @codeCoverageIgnoreEnd
 				}
 			}
 
@@ -219,7 +207,7 @@ class ClassChecker extends AbstractChecker
 			}
 
 			if ( !isset($target_properties[$source_property_name]) ) {
-				$this->addIncident('Property Deleted', $full_property_name);
+				$this->addIncident(self::TYPE_PROPERTY_DELETED, $full_property_name);
 				continue;
 			}
 
@@ -284,7 +272,7 @@ class ClassChecker extends AbstractChecker
 
 		if ( $this->sourcePropertyData['Scope'] > $this->targetPropertyData['Scope'] ) {
 			$this->addIncident(
-				'Property Scope Reduced',
+				self::TYPE_PROPERTY_SCOPE_REDUCED,
 				$full_property_name,
 				$this->getScopeName($this->sourcePropertyData['Scope']),
 				$this->getScopeName($this->targetPropertyData['Scope'])
@@ -322,7 +310,7 @@ class ClassChecker extends AbstractChecker
 			}
 
 			if ( !isset($target_methods[$target_method_name]) ) {
-				$this->addIncident('Method Deleted', $full_method_name);
+				$this->addIncident(self::TYPE_METHOD_DELETED, $full_method_name);
 				continue;
 			}
 
@@ -420,16 +408,16 @@ class ClassChecker extends AbstractChecker
 		$full_method_name = $class_name . '::' . $method_name;
 
 		if ( !$this->sourceMethodData['IsAbstract'] && $this->targetMethodData['IsAbstract'] ) {
-			$this->addIncident('Method Made Abstract', $full_method_name);
+			$this->addIncident(self::TYPE_METHOD_MADE_ABSTRACT, $full_method_name);
 		}
 
 		if ( !$this->sourceMethodData['IsFinal'] && $this->targetMethodData['IsFinal'] ) {
-			$this->addIncident('Method Made Final', $full_method_name);
+			$this->addIncident(self::TYPE_METHOD_MADE_FINAL, $full_method_name);
 		}
 
 		if ( $this->sourceMethodData['ParameterSignature'] !== $this->targetMethodData['ParameterSignature'] ) {
 			$this->addIncident(
-				'Method Signature Changed',
+				self::TYPE_METHOD_SIGNATURE_CHANGED,
 				$full_method_name,
 				$this->sourceMethodData['ParameterSignature'],
 				$this->targetMethodData['ParameterSignature']
@@ -438,7 +426,7 @@ class ClassChecker extends AbstractChecker
 
 		if ( $this->sourceMethodData['Scope'] > $this->targetMethodData['Scope'] ) {
 			$this->addIncident(
-				'Method Scope Reduced',
+				self::TYPE_METHOD_SCOPE_REDUCED,
 				$full_method_name,
 				$this->getScopeName($this->sourceMethodData['Scope']),
 				$this->getScopeName($this->targetMethodData['Scope'])

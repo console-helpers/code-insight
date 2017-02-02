@@ -149,40 +149,28 @@ abstract class AbstractChecker
 	}
 
 	/**
-	 * Defines incident groups.
-	 *
-	 * @param array $groups Groups.
-	 *
-	 * @return void
-	 */
-	protected function defineIncidentGroups(array $groups)
-	{
-		$this->_incidents = array();
-
-		foreach ( $groups as $group ) {
-			$this->_incidents[$group] = array();
-		}
-	}
-
-	/**
 	 * Adds incident.
 	 *
-	 * @param string      $group     Incident group.
-	 * @param string      $incident  Incident description.
+	 * @param string      $type      Incident type.
+	 * @param string      $element   Element affected.
 	 * @param string|null $old_value Old value.
 	 * @param string|null $new_value New value.
 	 *
 	 * @return void
 	 */
-	protected function addIncident($group, $incident, $old_value = null, $new_value = null)
+	protected function addIncident($type, $element, $old_value = null, $new_value = null)
 	{
+		$incident_record = array(
+			'type' => $type,
+			'element' => $element,
+		);
+
 		if ( isset($old_value) || isset($new_value) ) {
-			$incident = '<fg=white;options=bold>' . $incident . '</>' . PHP_EOL;
-			$incident .= 'OLD: ' . $old_value . PHP_EOL;
-			$incident .= 'NEW: ' . $new_value . PHP_EOL;
+			$incident_record['old'] = $old_value;
+			$incident_record['new'] = $new_value;
 		}
 
-		$this->_incidents[$group][] = $incident;
+		$this->_incidents[] = $incident_record;
 	}
 
 	/**

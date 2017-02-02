@@ -1,0 +1,9 @@
+{
+    "finder": [
+        {
+            "name": "example.php",
+			"in": ["."]
+        }
+    ],
+    "class_locator": "class_locator.php"
+}

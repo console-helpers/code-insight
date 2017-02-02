@@ -12,10 +12,12 @@ namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 
 use Aura\Sql\ExtendedPdoInterface;
-use Doctrine\Common\Cache\CacheProvider;
 
 class FunctionChecker extends AbstractChecker
 {
+
+	const TYPE_FUNCTION_DELETED = 'function.deleted';
+	const TYPE_FUNCTION_SIGNATURE_CHANGED = 'function.signature_changed';
 
 	/**
 	 * Source function data.
@@ -30,21 +32,6 @@ class FunctionChecker extends AbstractChecker
 	 * @var array
 	 */
 	protected $targetFunctionData = array();
-
-	/**
-	 * FunctionChecker constructor.
-	 *
-	 * @param CacheProvider $cache Cache provider.
-	 */
-	public function __construct(CacheProvider $cache)
-	{
-		parent::__construct($cache);
-
-		$this->defineIncidentGroups(array(
-			'Function Deleted',
-			'Function Signature Changed',
-		));
-	}
 
 	/**
 	 * Returns backwards compatibility checker name.
@@ -70,7 +57,7 @@ class FunctionChecker extends AbstractChecker
 
 		foreach ( $source_functions as $source_function_name => $source_function_data ) {
 			if ( !isset($target_functions[$source_function_name]) ) {
-				$this->addIncident('Function Deleted', $source_function_name);
+				$this->addIncident(self::TYPE_FUNCTION_DELETED, $source_function_name);
 				continue;
 			}
 
@@ -126,7 +113,7 @@ class FunctionChecker extends AbstractChecker
 
 		if ( $this->sourceFunctionData['ParameterSignature'] !== $this->targetFunctionData['ParameterSignature'] ) {
 			$this->addIncident(
-				'Function Signature Changed',
+				self::TYPE_FUNCTION_SIGNATURE_CHANGED,
 				$function_name,
 				$this->sourceFunctionData['ParameterSignature'],
 				$this->targetFunctionData['ParameterSignature']
