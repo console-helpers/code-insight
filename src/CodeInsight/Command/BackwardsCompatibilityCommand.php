@@ -14,7 +14,9 @@ namespace ConsoleHelpers\CodeInsight\Command;
 use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\AbstractChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\CheckerFactory;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\ReporterFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
+use Stecman\Component\Symfony\Console\BashCompletion\CompletionContext;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,6 +38,13 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 	 * @var CheckerFactory
 	 */
 	private $_checkerFactory;
+
+	/**
+	 * Backwards compatibility reporter factory.
+	 *
+	 * @var ReporterFactory
+	 */
+	private $_reporterFactory;
 
 	/**
 	 * {@inheritdoc}
@@ -67,6 +76,13 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 				null,
 				InputOption::VALUE_REQUIRED,
 				'Target project fork name'
+			)
+			->addOption(
+				'format',
+				null,
+				InputOption::VALUE_REQUIRED,
+				'Output format, e.g. <comment>text</comment>, <comment>html</comment>, <comment>json</comment>',
+				'text'
 			);
 	}
 
@@ -83,6 +99,26 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 
 		$this->_knowledgeBaseFactory = $container['knowledge_base_factory'];
 		$this->_checkerFactory = $container['bc_checker_factory'];
+		$this->_reporterFactory = $container['bc_reporter_factory'];
+	}
+
+	/**
+	 * Return possible values for the named option
+	 *
+	 * @param string            $optionName Option name.
+	 * @param CompletionContext $context    Completion context.
+	 *
+	 * @return array
+	 */
+	public function completeOptionValues($optionName, CompletionContext $context)
+	{
+		$ret = parent::completeOptionValues($optionName, $context);
+
+		if ( $optionName === 'format' ) {
+			return $this->_reporterFactory->getNames();
+		}
+
+		return $ret;
 	}
 
 	/**
@@ -90,6 +126,9 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		// Get reporter upfront so that we can error out early for invalid reporters.
+		$reporter = $this->_reporterFactory->get($this->io->getOption('format'));
+
 		$source_knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
 			$this->getPath('source-project-path'),
 			$this->io->getOption('source-project-fork'),
@@ -107,31 +146,7 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 			$target_knowledge_base->getBackwardsCompatibilityCheckers($this->_checkerFactory)
 		);
 
-		if ( !$bc_breaks ) {
-			$this->io->writeln('No backwards compatibility breaks detected.');
-
-			return;
-		}
-
-		$this->io->writeln('Backward compatibility breaks:');
-
-		foreach ( $this->groupByType($bc_breaks) as $bc_break => $incidents ) {
-			$bc_break = ucwords(str_replace(array('.', '_'), ' ', $bc_break));
-			$this->io->writeln('<fg=red>=== ' . $bc_break . ' (' . count($incidents) . ') ===</>');
-
-			foreach ( $incidents as $incident_data ) {
-				if ( array_key_exists('old', $incident_data) ) {
-					$this->io->writeln(' * <fg=white;options=bold>' . $incident_data['element'] . '</>');
-					$this->io->writeln('   OLD: ' . $incident_data['old']);
-					$this->io->writeln('   NEW: ' . $incident_data['new']);
-				}
-				else {
-					$this->io->writeln(' * ' . $incident_data['element']);
-				}
-			}
-
-			$this->io->writeln('');
-		}
+		$this->io->writeln($reporter->generate($bc_breaks));
 	}
 
 	/**
@@ -155,30 +170,6 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 		}
 
 		return $breaks;
-	}
-
-	/**
-	 * Groups BC breaks by type.
-	 *
-	 * @param array $bc_breaks BC breaks.
-	 *
-	 * @return array
-	 */
-	protected function groupByType(array $bc_breaks)
-	{
-		$ret = array();
-
-		foreach ( $bc_breaks as $bc_break_data ) {
-			$type = $bc_break_data['type'];
-
-			if ( !isset($ret[$type]) ) {
-				$ret[$type] = array();
-			}
-
-			$ret[$type][] = $bc_break_data;
-		}
-
-		return $ret;
 	}
 
 }

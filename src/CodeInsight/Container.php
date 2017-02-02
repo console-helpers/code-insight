@@ -16,6 +16,10 @@ use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ClassChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ConstantChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\FunctionChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\InPortalClassChecker;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\HtmlReporter;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\JsonReporter;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\ReporterFactory;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\TextReporter;
 use ConsoleHelpers\CodeInsight\Cache\CacheFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DatabaseManager;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
@@ -73,6 +77,15 @@ class Container extends \ConsoleHelpers\ConsoleKit\Container
 			$factory->add(new ConstantChecker($cache));
 
 			$factory->add(new InPortalClassChecker($cache));
+
+			return $factory;
+		};
+
+		$this['bc_reporter_factory'] = function ($c) {
+			$factory = new ReporterFactory();
+			$factory->add(new TextReporter());
+			$factory->add(new HtmlReporter());
+			$factory->add(new JsonReporter());
 
 			return $factory;
 		};
