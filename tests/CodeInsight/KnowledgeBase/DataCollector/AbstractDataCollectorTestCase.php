@@ -11,6 +11,7 @@
 namespace Tests\ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector;
 
 
+use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\AbstractDataCollector;
 use Go\ParserReflection\ReflectionFile;
 use Tests\ConsoleHelpers\CodeInsight\AbstractDatabaseAwareTestCase;
@@ -74,32 +75,34 @@ abstract class AbstractDataCollectorTestCase extends AbstractDatabaseAwareTestCa
 	/**
 	 * Checks, table content.
 	 *
-	 * @param string $table_name       Table name.
-	 * @param array  $expected_content Expected content.
+	 * @param string               $table_name       Table name.
+	 * @param array                $expected_content Expected content.
+	 * @param ExtendedPdoInterface $db               Database.
 	 *
 	 * @return void
 	 */
-	protected function assertTableContent($table_name, array $expected_content)
+	protected function assertTableContent($table_name, array $expected_content, ExtendedPdoInterface $db = null)
 	{
 		$this->_nonEmptyTables[] = $table_name;
 
-		parent::assertTableContent($table_name, $expected_content);
+		parent::assertTableContent($table_name, $expected_content, $db);
 	}
 
 	/**
 	 * Checks, that database table is empty.
 	 *
-	 * @param array $table_names Table names.
+	 * @param array                $table_names Table names.
+	 * @param ExtendedPdoInterface $db          Database.
 	 *
 	 * @return void
 	 */
-	protected function assertTablesEmpty(array $table_names = array())
+	protected function assertTablesEmpty(array $table_names = array(), ExtendedPdoInterface $db = null)
 	{
 		if ( !$table_names ) {
 			$table_names = array_diff($this->_allTables, $this->_nonEmptyTables);
 		}
 
-		parent::assertTablesEmpty($table_names);
+		parent::assertTablesEmpty($table_names, $db);
 	}
 
 	/**
