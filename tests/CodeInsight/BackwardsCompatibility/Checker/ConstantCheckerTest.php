@@ -24,7 +24,7 @@ class ConstantCheckerTest extends AbstractCheckerTestCase
 
 	public function testCheck()
 	{
-		$this->assertSame(
+		$this->assertEquals(
 			array(
 				array(
 					'type' => ConstantChecker::TYPE_CONSTANT_DELETED,

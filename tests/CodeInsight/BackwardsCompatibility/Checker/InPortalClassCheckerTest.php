@@ -24,7 +24,7 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 
 	public function testCheck()
 	{
-		$this->assertSame(
+		$this->assertEquals(
 			array(
 				array(
 					'type' => InPortalClassChecker::TYPE_CLASS_DELETED,

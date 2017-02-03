@@ -24,7 +24,7 @@ class FunctionCheckerTest extends AbstractCheckerTestCase
 
 	public function testCheck()
 	{
-		$this->assertSame(
+		$this->assertEquals(
 			array(
 				array(
 					'type' => FunctionChecker::TYPE_FUNCTION_DELETED,
