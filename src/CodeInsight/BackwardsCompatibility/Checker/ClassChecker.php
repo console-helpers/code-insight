@@ -440,12 +440,15 @@ class ClassChecker extends AbstractChecker
 			$this->addIncident(self::TYPE_METHOD_MADE_NON_STATIC, $full_method_name);
 		}
 
-		if ( $this->sourceMethodData['ParameterSignature'] !== $this->targetMethodData['ParameterSignature'] ) {
+		$source_signature = $this->sourceMethodData['ParameterSignature'];
+		$target_signature = $this->targetMethodData['ParameterSignature'];
+
+		if ( !$this->isParamSignatureCompatible($source_signature, $target_signature) ) {
 			$this->addIncident(
 				self::TYPE_METHOD_SIGNATURE_CHANGED,
 				$full_method_name,
-				$this->sourceMethodData['ParameterSignature'],
-				$this->targetMethodData['ParameterSignature']
+				$source_signature,
+				$target_signature
 			);
 		}
 

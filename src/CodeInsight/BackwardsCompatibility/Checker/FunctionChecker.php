@@ -111,12 +111,15 @@ class FunctionChecker extends AbstractChecker
 	{
 		$function_name = $this->sourceFunctionData['Name'];
 
-		if ( $this->sourceFunctionData['ParameterSignature'] !== $this->targetFunctionData['ParameterSignature'] ) {
+		$source_signature = $this->sourceFunctionData['ParameterSignature'];
+		$target_signature = $this->targetFunctionData['ParameterSignature'];
+
+		if ( !$this->isParamSignatureCompatible($source_signature, $target_signature) ) {
 			$this->addIncident(
 				self::TYPE_FUNCTION_SIGNATURE_CHANGED,
 				$function_name,
-				$this->sourceFunctionData['ParameterSignature'],
-				$this->targetFunctionData['ParameterSignature']
+				$source_signature,
+				$target_signature
 			);
 		}
 	}

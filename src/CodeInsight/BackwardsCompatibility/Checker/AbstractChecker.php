@@ -133,6 +133,49 @@ abstract class AbstractChecker
 	}
 
 	/**
+	 * Determines if 2 param signatures are compatible.
+	 *
+	 * @param string $source_signature Source signature.
+	 * @param string $target_signature Target signature.
+	 *
+	 * @return boolean
+	 */
+	protected function isParamSignatureCompatible($source_signature, $target_signature)
+	{
+		if ( $source_signature === $target_signature ) {
+			return true;
+		}
+
+		$source_params = $source_signature ? explode(', ', $source_signature) : array();
+		$target_params = $target_signature ? explode(', ', $target_signature) : array();
+		$source_param_count = count($source_params);
+
+		// Beginning of target signature doesn't match source signature.
+		if ( $source_params !== array_slice($target_params, 0, $source_param_count) ) {
+			return false;
+		}
+
+		$added_params = array_slice($target_params, $source_param_count);
+
+		// No new parameters added.
+		if ( !$added_params ) {
+			return true;
+		}
+
+		$is_compatible = true;
+
+		// When all added parameters are optional, then signature is compatible.
+		foreach ( $added_params as $added_param ) {
+			if ( strpos($added_param, '=') === false ) {
+				$is_compatible = false;
+				break;
+			}
+		}
+
+		return $is_compatible;
+	}
+
+	/**
 	 * Decodes json-encoded PHP value.
 	 *
 	 * @param string $json_string JSON string.

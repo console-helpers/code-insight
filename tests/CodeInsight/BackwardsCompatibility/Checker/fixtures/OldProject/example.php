@@ -12,6 +12,11 @@ function functionSiFromEmptyToNonEmpty() {}
 function functionSiFromNonEmptyToEmpty($p1) {}
 function functionSiFromNonEmptyToNonEmpty($p1) {}
 
+function functionCompatibleSig1() {}
+function functionCompatibleSig2($p1) {}
+function functionCompatibleSig3($p1) {}
+function functionIncompatibleSig1($p1) {}
+
 // Class used only for type hinting.
 class kEvent {}
 
@@ -100,6 +105,22 @@ class ClassD {
 	public function publicMethodSiFromNonEmptyToNonEmpty($p1) {}
 	protected function protectedMethodSiFromNonEmptyToNonEmpty($p1) {}
 	private function privateMethodSiFromNonEmptyToNonEmpty($p1) {}
+
+	public function publicMethodCompatibleSig1() {}
+	protected function protectedMethodCompatibleSig1() {}
+	private function privateMethodCompatibleSig1() {}
+
+	public function publicMethodCompatibleSig2($p1) {}
+	protected function protectedMethodCompatibleSig2($p1) {}
+	private function privateMethodCompatibleSig2($p1) {}
+
+	public function publicMethodCompatibleSig3($p1) {}
+	protected function protectedMethodCompatibleSig3($p1) {}
+	private function privateMethodCompatibleSig3($p1) {}
+
+	public function publicMethodIncompatibleSig1($p1) {}
+	protected function protectedMethodIncompatibleSig1($p1) {}
+	private function privateMethodIncompatibleSig1($p1) {}
 }
 
 // Only report BC breaks for class, where class member is declared.
@@ -181,6 +202,22 @@ final class ClassG {
 	public function publicMethodSiFromNonEmptyToNonEmpty($p1) {}
 	protected function protectedMethodSiFromNonEmptyToNonEmpty($p1) {}
 	private function privateMethodSiFromNonEmptyToNonEmpty($p1) {}
+
+	public function publicMethodCompatibleSig1() {}
+	protected function protectedMethodCompatibleSig1() {}
+	private function privateMethodCompatibleSig1() {}
+
+	public function publicMethodCompatibleSig2($p1) {}
+	protected function protectedMethodCompatibleSig2($p1) {}
+	private function privateMethodCompatibleSig2($p1) {}
+
+	public function publicMethodCompatibleSig3($p1) {}
+	protected function protectedMethodCompatibleSig3($p1) {}
+	private function privateMethodCompatibleSig3($p1) {}
+
+	public function publicMethodIncompatibleSig1($p1) {}
+	protected function protectedMethodIncompatibleSig1($p1) {}
+	private function privateMethodIncompatibleSig1($p1) {}
 }
 
 // Class, that was made final is checking for all usual stuff.
@@ -254,6 +291,22 @@ class ClassH {
 	public function publicMethodSiFromNonEmptyToNonEmpty($p1) {}
 	protected function protectedMethodSiFromNonEmptyToNonEmpty($p1) {}
 	private function privateMethodSiFromNonEmptyToNonEmpty($p1) {}
+
+	public function publicMethodCompatibleSig1() {}
+	protected function protectedMethodCompatibleSig1() {}
+	private function privateMethodCompatibleSig1() {}
+
+	public function publicMethodCompatibleSig2($p1) {}
+	protected function protectedMethodCompatibleSig2($p1) {}
+	private function privateMethodCompatibleSig2($p1) {}
+
+	public function publicMethodCompatibleSig3($p1) {}
+	protected function protectedMethodCompatibleSig3($p1) {}
+	private function privateMethodCompatibleSig3($p1) {}
+
+	public function publicMethodIncompatibleSig1($p1) {}
+	protected function protectedMethodIncompatibleSig1($p1) {}
+	private function privateMethodIncompatibleSig1($p1) {}
 }
 
 // In-Portal specifics.

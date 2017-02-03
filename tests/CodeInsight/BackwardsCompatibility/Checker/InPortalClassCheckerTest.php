@@ -105,6 +105,12 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassD::protectedMethodFi',
 				),
 				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassD::protectedMethodIncompatibleSig1',
+					'old' => '$p1',
+					'new' => '$p2, $p1 = NULL',
+				),
+				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
 					'element' => 'ClassD::protectedMethodMns',
 				),
@@ -147,6 +153,12 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassD::publicMethodFi',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassD::publicMethodIncompatibleSig1',
+					'old' => '$p1',
+					'new' => '$p2, $p1 = NULL',
 				),
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
@@ -229,6 +241,12 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassG::publicMethodFi',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassG::publicMethodIncompatibleSig1',
+					'old' => '$p1',
+					'new' => '$p2, $p1 = NULL',
 				),
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
@@ -331,6 +349,12 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassH::protectedMethodFi',
 				),
 				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::protectedMethodIncompatibleSig1',
+					'old' => '$p1',
+					'new' => '$p2, $p1 = NULL',
+				),
+				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
 					'element' => 'ClassH::protectedMethodMns',
 				),
@@ -373,6 +397,12 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassH::publicMethodFi',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::publicMethodIncompatibleSig1',
+					'old' => '$p1',
+					'new' => '$p2, $p1 = NULL',
 				),
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,

@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - The non-tag methods in TagProcessor classes were detected as tags.
 - Renaming of PHP5 into PHP4 constructor is no longer considered a BC break.
 - Changes to protected members in final classes are no longer considered a BC break.
+- Adding new optional parameters to the function/method no longer considered a BC break.
 
 ## [0.0.1] - 2016-05-07
 ### Added
