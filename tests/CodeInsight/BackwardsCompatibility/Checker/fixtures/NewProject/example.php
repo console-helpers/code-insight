@@ -62,6 +62,10 @@ class ClassD {
 
 class ClassE extends ClassD {}
 
+class ClassF {
+	public function ClassF() {}
+}
+
 // In-Portal specifics.
 class ExampleEventHandler
 {

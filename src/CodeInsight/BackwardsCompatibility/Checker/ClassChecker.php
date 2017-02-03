@@ -304,6 +304,11 @@ class ClassChecker extends AbstractChecker
 				$target_method_name = '__construct';
 			}
 
+			// Ignore PHP5 constructor rename into PHP4 constructor.
+			if ( !isset($target_methods[$target_method_name]) && $target_method_name === '__construct' ) {
+				$target_method_name = $class_name;
+			}
+
 			// Report incidents for processed (not inherited) methods only.
 			if ( $source_method_data['ClassId'] !== $this->sourceClassData['Id'] ) {
 				continue;

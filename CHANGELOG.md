@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - The `in sync` state of changed files wasn't updated on subsquential code syncs resulting is slower syncing process.
 - The non-tag methods in TagProcessor classes were detected as tags.
+- Renaming of PHP5 into PHP4 constructor is no longer considered a BC break.
 
 ## [0.0.1] - 2016-05-07
 ### Added

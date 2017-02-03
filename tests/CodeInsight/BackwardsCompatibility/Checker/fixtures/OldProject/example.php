@@ -82,6 +82,10 @@ class ClassD {
 
 class ClassE extends ClassD {}
 
+class ClassF {
+	public function __construct() {}
+}
+
 // In-Portal specifics.
 class ExampleEventHandler
 {
