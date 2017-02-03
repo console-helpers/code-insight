@@ -464,6 +464,11 @@ class ClassChecker extends AbstractChecker
 	 */
 	protected function coveredScopes()
 	{
+		// Ignore changes in protected class members for "final" classes.
+		if ( $this->sourceClassData['IsFinal'] && $this->targetClassData['IsFinal'] ) {
+			return ClassDataCollector::SCOPE_PUBLIC;
+		}
+
 		return ClassDataCollector::SCOPE_PUBLIC . ',' . ClassDataCollector::SCOPE_PROTECTED;
 	}
 

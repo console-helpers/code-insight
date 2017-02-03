@@ -86,6 +86,120 @@ class ClassF {
 	public function __construct() {}
 }
 
+// Class that stayed final isn't checked for changes in protected class members.
+final class ClassG {
+	const SOME_CONST = 1;
+
+	const SAME_CONST = 1;
+
+	public $publicProperty;
+	protected $protectedProperty;
+	private $privateProperty;
+
+	public $publicPropertySr;
+	public $publicToPrivatePropertySr;
+	protected $protectedPropertySr;
+
+	public $publicPropertySame;
+	protected $protectedPropertySame;
+	private $privatePropertySame;
+
+	public function ClassG() {}
+
+	public function publicMethodSameEmpty() {}
+	protected function protectedMethodSameEmpty() {}
+	private function privateMethodSameEmpty() {}
+
+	public function publicMethodSameNonEmpty($p1) {}
+	protected function protectedMethodSameNonEmpty($p1) {}
+	private function privateMethodSameNonEmpty($p1) {}
+
+	public function publicMethod() {}
+	protected function protectedMethod() {}
+	private function privateMethod() {}
+
+	public function publicMethodSr() {}
+	public function publicToPrivateMethodSr() {}
+	protected function protectedMethodSr() {}
+
+	public function publicMethodAb() {}
+	protected function protectedMethodAb() {}
+	private function privateMethodAb() {}
+
+	public function publicMethodFi() {}
+	protected function protectedMethodFi() {}
+	private function privateMethodFi() {}
+
+	public function publicMethodSiFromEmptyToNonEmpty() {}
+	protected function protectedMethodSiFromEmptyToNonEmpty() {}
+	private function privateMethodSiFromEmptyToNonEmpty() {}
+
+	public function publicMethodSiFromNonEmptyToEmpty($p1) {}
+	protected function protectedMethodSiFromNonEmptyToEmpty($p1) {}
+	private function privateMethodSiFromNonEmptyToEmpty($p1) {}
+
+	public function publicMethodSiFromNonEmptyToNonEmpty($p1) {}
+	protected function protectedMethodSiFromNonEmptyToNonEmpty($p1) {}
+	private function privateMethodSiFromNonEmptyToNonEmpty($p1) {}
+}
+
+// Class, that was made final is checking for all usual stuff.
+class ClassH {
+	const SOME_CONST = 1;
+
+	const SAME_CONST = 1;
+
+	public $publicProperty;
+	protected $protectedProperty;
+	private $privateProperty;
+
+	public $publicPropertySr;
+	public $publicToPrivatePropertySr;
+	protected $protectedPropertySr;
+
+	public $publicPropertySame;
+	protected $protectedPropertySame;
+	private $privatePropertySame;
+
+	public function ClassH() {}
+
+	public function publicMethodSameEmpty() {}
+	protected function protectedMethodSameEmpty() {}
+	private function privateMethodSameEmpty() {}
+
+	public function publicMethodSameNonEmpty($p1) {}
+	protected function protectedMethodSameNonEmpty($p1) {}
+	private function privateMethodSameNonEmpty($p1) {}
+
+	public function publicMethod() {}
+	protected function protectedMethod() {}
+	private function privateMethod() {}
+
+	public function publicMethodSr() {}
+	public function publicToPrivateMethodSr() {}
+	protected function protectedMethodSr() {}
+
+	public function publicMethodAb() {}
+	protected function protectedMethodAb() {}
+	private function privateMethodAb() {}
+
+	public function publicMethodFi() {}
+	protected function protectedMethodFi() {}
+	private function privateMethodFi() {}
+
+	public function publicMethodSiFromEmptyToNonEmpty() {}
+	protected function protectedMethodSiFromEmptyToNonEmpty() {}
+	private function privateMethodSiFromEmptyToNonEmpty() {}
+
+	public function publicMethodSiFromNonEmptyToEmpty($p1) {}
+	protected function protectedMethodSiFromNonEmptyToEmpty($p1) {}
+	private function privateMethodSiFromNonEmptyToEmpty($p1) {}
+
+	public function publicMethodSiFromNonEmptyToNonEmpty($p1) {}
+	protected function protectedMethodSiFromNonEmptyToNonEmpty($p1) {}
+	private function privateMethodSiFromNonEmptyToNonEmpty($p1) {}
+}
+
 // In-Portal specifics.
 class ExampleEventHandler
 {

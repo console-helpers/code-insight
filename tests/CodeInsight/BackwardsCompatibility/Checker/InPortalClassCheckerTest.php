@@ -159,6 +159,180 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassE::SOME_CONST',
 				),
 				array(
+					'type' => InPortalClassChecker::TYPE_CLASS_CONSTANT_DELETED,
+					'element' => 'ClassG::SOME_CONST',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_DELETED,
+					'element' => 'ClassG::$publicProperty',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
+					'element' => 'ClassG::$publicPropertySr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
+					'element' => 'ClassG::$publicToPrivatePropertySr',
+					'old' => 'public',
+					'new' => 'private',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_DELETED,
+					'element' => 'ClassG::publicMethod',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_MADE_ABSTRACT,
+					'element' => 'ClassG::publicMethodAb',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_MADE_FINAL,
+					'element' => 'ClassG::publicMethodFi',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassG::publicMethodSiFromEmptyToNonEmpty',
+					'old' => '',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassG::publicMethodSiFromNonEmptyToEmpty',
+					'old' => '$p1',
+					'new' => '',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassG::publicMethodSiFromNonEmptyToNonEmpty',
+					'old' => '$p1',
+					'new' => '$p1, $p2',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ClassG::publicMethodSr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ClassG::publicToPrivateMethodSr',
+					'old' => 'public',
+					'new' => 'private',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_CLASS_MADE_FINAL,
+					'element' => 'ClassH',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_CLASS_CONSTANT_DELETED,
+					'element' => 'ClassH::SOME_CONST',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_DELETED,
+					'element' => 'ClassH::$protectedProperty',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
+					'element' => 'ClassH::$protectedPropertySr',
+					'old' => 'protected',
+					'new' => 'private',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_DELETED,
+					'element' => 'ClassH::$publicProperty',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
+					'element' => 'ClassH::$publicPropertySr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
+					'element' => 'ClassH::$publicToPrivatePropertySr',
+					'old' => 'public',
+					'new' => 'private',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_DELETED,
+					'element' => 'ClassH::protectedMethod',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_MADE_ABSTRACT,
+					'element' => 'ClassH::protectedMethodAb',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_MADE_FINAL,
+					'element' => 'ClassH::protectedMethodFi',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::protectedMethodSiFromEmptyToNonEmpty',
+					'old' => '',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::protectedMethodSiFromNonEmptyToEmpty',
+					'old' => '$p1',
+					'new' => '',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::protectedMethodSiFromNonEmptyToNonEmpty',
+					'old' => '$p1',
+					'new' => '$p1, $p2',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ClassH::protectedMethodSr',
+					'old' => 'protected',
+					'new' => 'private',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_DELETED,
+					'element' => 'ClassH::publicMethod',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_MADE_ABSTRACT,
+					'element' => 'ClassH::publicMethodAb',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_MADE_FINAL,
+					'element' => 'ClassH::publicMethodFi',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::publicMethodSiFromEmptyToNonEmpty',
+					'old' => '',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::publicMethodSiFromNonEmptyToEmpty',
+					'old' => '$p1',
+					'new' => '',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::publicMethodSiFromNonEmptyToNonEmpty',
+					'old' => '$p1',
+					'new' => '$p1, $p2',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ClassH::publicMethodSr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ClassH::publicToPrivateMethodSr',
+					'old' => 'public',
+					'new' => 'private',
+				),
+				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
 					'element' => 'ExampleTagProcessor::notTagNameOneSr',
 					'old' => 'public',
