@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added `--project-fork` options to `report` command to allow operating on different (forked) version of database for same project.
 - Added `--project-fork` options to `sync` command to allow operating on different (forked) version of database for same project.
 - Added `cache.provider` setting to `~/.code-insight/config.json` file, that can be set to `memcache` to use locally installed Memcache server for caching.
+- Adding/removing `static` from class property/method is considered as a BC break.
 
 ### Changed
 - The `refresh` option of `report` command was removed in favor of new `sync` command.

@@ -47,6 +47,14 @@ class ClassD {
 	protected $protectedPropertySame;
 	private $privatePropertySame;
 
+	public $publicPropertyMs;
+	protected $protectedPropertyMs;
+	private $privatePropertyMs;
+
+	public static $publicPropertyMns;
+	protected static $protectedPropertyMns;
+	private static $privatePropertyMns;
+
 	public function ClassD() {}
 
 	public function publicMethodSameEmpty() {}
@@ -72,6 +80,14 @@ class ClassD {
 	public function publicMethodFi() {}
 	protected function protectedMethodFi() {}
 	private function privateMethodFi() {}
+
+	public function publicMethodMs() {}
+	protected function protectedMethodMs() {}
+	private function privateMethodMs() {}
+
+	public static function publicMethodMns() {}
+	protected static function protectedMethodMns() {}
+	private static function privateMethodMns() {}
 
 	public function publicMethodSiFromEmptyToNonEmpty() {}
 	protected function protectedMethodSiFromEmptyToNonEmpty() {}
@@ -112,6 +128,14 @@ final class ClassG {
 	protected $protectedPropertySame;
 	private $privatePropertySame;
 
+	public $publicPropertyMs;
+	protected $protectedPropertyMs;
+	private $privatePropertyMs;
+
+	public static $publicPropertyMns;
+	protected static $protectedPropertyMns;
+	private static $privatePropertyMns;
+
 	public function ClassG() {}
 
 	public function publicMethodSameEmpty() {}
@@ -137,6 +161,14 @@ final class ClassG {
 	public function publicMethodFi() {}
 	protected function protectedMethodFi() {}
 	private function privateMethodFi() {}
+
+	public function publicMethodMs() {}
+	protected function protectedMethodMs() {}
+	private function privateMethodMs() {}
+
+	public static function publicMethodMns() {}
+	protected static function protectedMethodMns() {}
+	private static function privateMethodMns() {}
 
 	public function publicMethodSiFromEmptyToNonEmpty() {}
 	protected function protectedMethodSiFromEmptyToNonEmpty() {}
@@ -169,6 +201,14 @@ class ClassH {
 	protected $protectedPropertySame;
 	private $privatePropertySame;
 
+	public $publicPropertyMs;
+	protected $protectedPropertyMs;
+	private $privatePropertyMs;
+
+	public static $publicPropertyMns;
+	protected static $protectedPropertyMns;
+	private static $privatePropertyMns;
+
 	public function ClassH() {}
 
 	public function publicMethodSameEmpty() {}
@@ -194,6 +234,14 @@ class ClassH {
 	public function publicMethodFi() {}
 	protected function protectedMethodFi() {}
 	private function privateMethodFi() {}
+
+	public function publicMethodMs() {}
+	protected function protectedMethodMs() {}
+	private function privateMethodMs() {}
+
+	public static function publicMethodMns() {}
+	protected static function protectedMethodMns() {}
+	private static function privateMethodMns() {}
 
 	public function publicMethodSiFromEmptyToNonEmpty() {}
 	protected function protectedMethodSiFromEmptyToNonEmpty() {}

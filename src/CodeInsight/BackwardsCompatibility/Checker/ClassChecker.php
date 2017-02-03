@@ -24,10 +24,14 @@ class ClassChecker extends AbstractChecker
 	const TYPE_CLASS_MADE_FINAL = 'class.made_final';
 	const TYPE_CLASS_CONSTANT_DELETED = 'class.constant.deleted';
 	const TYPE_PROPERTY_DELETED = 'property.deleted';
+	const TYPE_PROPERTY_MADE_STATIC = 'property.made_static';
+	const TYPE_PROPERTY_MADE_NON_STATIC = 'property.made_non_static';
 	const TYPE_PROPERTY_SCOPE_REDUCED = 'property.scope_reduced';
 	const TYPE_METHOD_DELETED = 'method.deleted';
 	const TYPE_METHOD_MADE_ABSTRACT = 'method.made_abstract';
 	const TYPE_METHOD_MADE_FINAL = 'method.made_final';
+	const TYPE_METHOD_MADE_STATIC = 'method.made_static';
+	const TYPE_METHOD_MADE_NON_STATIC = 'method.made_non_static';
 	const TYPE_METHOD_SCOPE_REDUCED = 'method.scope_reduced';
 	const TYPE_METHOD_SIGNATURE_CHANGED = 'method.signature_changed';
 
@@ -233,7 +237,7 @@ class ClassChecker extends AbstractChecker
 		$cached_value = $this->cache->fetch($cache_key);
 
 		if ( $cached_value === false ) {
-			$sql = 'SELECT Name, Scope, ClassId
+			$sql = 'SELECT Name, Scope, IsStatic, ClassId
 					FROM ClassProperties
 					WHERE ClassId = :class_id';
 
@@ -269,6 +273,14 @@ class ClassChecker extends AbstractChecker
 		$property_name = $this->sourcePropertyData['Name'];
 
 		$full_property_name = $class_name . '::$' . $property_name;
+
+		if ( !$this->sourcePropertyData['IsStatic'] && $this->targetPropertyData['IsStatic'] ) {
+			$this->addIncident(self::TYPE_PROPERTY_MADE_STATIC, $full_property_name);
+		}
+
+		if ( $this->sourcePropertyData['IsStatic'] && !$this->targetPropertyData['IsStatic'] ) {
+			$this->addIncident(self::TYPE_PROPERTY_MADE_NON_STATIC, $full_property_name);
+		}
 
 		if ( $this->sourcePropertyData['Scope'] > $this->targetPropertyData['Scope'] ) {
 			$this->addIncident(
@@ -350,7 +362,7 @@ class ClassChecker extends AbstractChecker
 		$cached_value = $this->cache->fetch($cache_key);
 
 		if ( $cached_value === false ) {
-			$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal, ClassId
+			$sql = 'SELECT Name, Id, Scope, IsAbstract, IsFinal, IsStatic, ClassId
 					FROM ClassMethods
 					WHERE ClassId = :class_id';
 
@@ -418,6 +430,14 @@ class ClassChecker extends AbstractChecker
 
 		if ( !$this->sourceMethodData['IsFinal'] && $this->targetMethodData['IsFinal'] ) {
 			$this->addIncident(self::TYPE_METHOD_MADE_FINAL, $full_method_name);
+		}
+
+		if ( !$this->sourceMethodData['IsStatic'] && $this->targetMethodData['IsStatic'] ) {
+			$this->addIncident(self::TYPE_METHOD_MADE_STATIC, $full_method_name);
+		}
+
+		if ( $this->sourceMethodData['IsStatic'] && !$this->targetMethodData['IsStatic'] ) {
+			$this->addIncident(self::TYPE_METHOD_MADE_NON_STATIC, $full_method_name);
 		}
 
 		if ( $this->sourceMethodData['ParameterSignature'] !== $this->targetMethodData['ParameterSignature'] ) {

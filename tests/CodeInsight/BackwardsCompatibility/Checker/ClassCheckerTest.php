@@ -55,6 +55,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassD::$protectedProperty',
 				),
 				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_NON_STATIC,
+					'element' => 'ClassD::$protectedPropertyMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_STATIC,
+					'element' => 'ClassD::$protectedPropertyMs',
+				),
+				array(
 					'type' => ClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
 					'element' => 'ClassD::$protectedPropertySr',
 					'old' => 'protected',
@@ -63,6 +71,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => ClassChecker::TYPE_PROPERTY_DELETED,
 					'element' => 'ClassD::$publicProperty',
+				),
+				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_NON_STATIC,
+					'element' => 'ClassD::$publicPropertyMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_STATIC,
+					'element' => 'ClassD::$publicPropertyMs',
 				),
 				array(
 					'type' => ClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
@@ -87,6 +103,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => ClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassD::protectedMethodFi',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_NON_STATIC,
+					'element' => 'ClassD::protectedMethodMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_STATIC,
+					'element' => 'ClassD::protectedMethodMs',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
@@ -123,6 +147,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => ClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassD::publicMethodFi',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_NON_STATIC,
+					'element' => 'ClassD::publicMethodMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_STATIC,
+					'element' => 'ClassD::publicMethodMs',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
@@ -167,6 +199,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassG::$publicProperty',
 				),
 				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_NON_STATIC,
+					'element' => 'ClassG::$publicPropertyMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_STATIC,
+					'element' => 'ClassG::$publicPropertyMs',
+				),
+				array(
 					'type' => ClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
 					'element' => 'ClassG::$publicPropertySr',
 					'old' => 'public',
@@ -189,6 +229,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => ClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassG::publicMethodFi',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_NON_STATIC,
+					'element' => 'ClassG::publicMethodMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_STATIC,
+					'element' => 'ClassG::publicMethodMs',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
@@ -233,6 +281,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassH::$protectedProperty',
 				),
 				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_NON_STATIC,
+					'element' => 'ClassH::$protectedPropertyMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_STATIC,
+					'element' => 'ClassH::$protectedPropertyMs',
+				),
+				array(
 					'type' => ClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
 					'element' => 'ClassH::$protectedPropertySr',
 					'old' => 'protected',
@@ -241,6 +297,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => ClassChecker::TYPE_PROPERTY_DELETED,
 					'element' => 'ClassH::$publicProperty',
+				),
+				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_NON_STATIC,
+					'element' => 'ClassH::$publicPropertyMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_PROPERTY_MADE_STATIC,
+					'element' => 'ClassH::$publicPropertyMs',
 				),
 				array(
 					'type' => ClassChecker::TYPE_PROPERTY_SCOPE_REDUCED,
@@ -265,6 +329,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => ClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassH::protectedMethodFi',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_NON_STATIC,
+					'element' => 'ClassH::protectedMethodMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_STATIC,
+					'element' => 'ClassH::protectedMethodMs',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
@@ -301,6 +373,14 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 				array(
 					'type' => ClassChecker::TYPE_METHOD_MADE_FINAL,
 					'element' => 'ClassH::publicMethodFi',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_NON_STATIC,
+					'element' => 'ClassH::publicMethodMns',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_MADE_STATIC,
+					'element' => 'ClassH::publicMethodMs',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
