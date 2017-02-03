@@ -8,10 +8,13 @@ function functionSiFromEmptyToNonEmpty($p1) {}
 function functionSiFromNonEmptyToEmpty() {}
 function functionSiFromNonEmptyToNonEmpty($p1, $p2) {}
 
+// Class used only for type hinting.
 class kEvent {}
 
+// Class, that will be made abstract.
 abstract class ClassB {}
 
+// Class, that will be made final.
 final class ClassC {}
 
 class ClassD {
@@ -60,8 +63,10 @@ class ClassD {
 	private function privateMethodSiFromNonEmptyToNonEmpty($p1, $p2) {}
 }
 
+// Only report BC breaks for class, where class member is declared.
 class ClassE extends ClassD {}
 
+// Renaming PHP5 into PHP4 constructor isn't a BC break.
 class ClassF {
 	public function ClassF() {}
 }

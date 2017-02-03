@@ -12,16 +12,22 @@ function functionSiFromEmptyToNonEmpty() {}
 function functionSiFromNonEmptyToEmpty($p1) {}
 function functionSiFromNonEmptyToNonEmpty($p1) {}
 
+// Class used only for type hinting.
 class kEvent {}
 
+// Class, that will be removed.
 class ClassA {}
 
+// Interface, that will be removed.
 interface InterfaceA {}
 
+// Trait, that will be removed.
 trait TraitA {}
 
+// Class, that will be made abstract.
 class ClassB {}
 
+// Class, that will be made final.
 class ClassC {}
 
 class ClassD {
@@ -80,8 +86,10 @@ class ClassD {
 	private function privateMethodSiFromNonEmptyToNonEmpty($p1) {}
 }
 
+// Only report BC breaks for class, where class member is declared.
 class ClassE extends ClassD {}
 
+// Renaming PHP5 into PHP4 constructor isn't a BC break.
 class ClassF {
 	public function __construct() {}
 }
