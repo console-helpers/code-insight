@@ -39,9 +39,9 @@ class ClassD {
 	private function publicToPrivateMethodSr() {}
 	private function protectedMethodSr() {}
 
-	public abstract function publicMethodAb() {}
-	protected abstract function protectedMethodAb() {}
-	private abstract function privateMethodAb() {}
+	public abstract function publicMethodAb();
+	protected abstract function protectedMethodAb();
+	private abstract function privateMethodAb();
 
 	public final function publicMethodFi() {}
 	protected final function protectedMethodFi() {}
