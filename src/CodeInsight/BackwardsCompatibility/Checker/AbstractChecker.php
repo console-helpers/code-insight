@@ -152,7 +152,12 @@ abstract class AbstractChecker
 
 		// Beginning of target signature doesn't match source signature.
 		if ( $source_params !== array_slice($target_params, 0, $source_param_count) ) {
-			return false;
+			$target_params_wo_defaults = preg_replace('/ = [^,]*/', '', $target_params);
+
+			// Making existing parameter optional doesn't break compatibility.
+			if ( $source_params !== array_slice($target_params_wo_defaults, 0, $source_param_count) ) {
+				return false;
+			}
 		}
 
 		$added_params = array_slice($target_params, $source_param_count);

@@ -11,6 +11,9 @@ function functionSiFromNonEmptyToNonEmpty($p1, $p2) {}
 function functionCompatibleSig1($p1 = null) {}
 function functionCompatibleSig2($p1, $p2 = null) {}
 function functionCompatibleSig3($p1, $p2 = null, $p3 = null) {}
+function functionCompatibleSig4($p1, $p2 = null) {}
+function functionCompatibleSig5($p1 = null, $p2) {}
+function functionCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
 function functionIncompatibleSig1($p2, $p1 = null) {}
 
 // Class used only for type hinting.
@@ -95,6 +98,18 @@ class ClassD {
 	public function publicMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
 	protected function protectedMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
 	private function privateMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
+
+	public function publicMethodCompatibleSig4($p1, $p2 = null) {}
+	protected function protectedMethodCompatibleSig4($p1, $p2 = null) {}
+	private function privateMethodCompatibleSig4($p1, $p2 = null) {}
+
+	public function publicMethodCompatibleSig5($p1 = null, $p2) {}
+	protected function protectedMethodCompatibleSig5($p1 = null, $p2) {}
+	private function privateMethodCompatibleSig5($p1 = null, $p2) {}
+
+	public function publicMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
+	protected function protectedMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
+	private function privateMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
 
 	public function publicMethodIncompatibleSig1($p2, $p1 = null) {}
 	protected function protectedMethodIncompatibleSig1($p2, $p1 = null) {}
@@ -184,6 +199,18 @@ final class ClassG {
 	protected function protectedMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
 	private function privateMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
 
+	public function publicMethodCompatibleSig4($p1, $p2 = null) {}
+	protected function protectedMethodCompatibleSig4($p1, $p2 = null) {}
+	private function privateMethodCompatibleSig4($p1, $p2 = null) {}
+
+	public function publicMethodCompatibleSig5($p1 = null, $p2) {}
+	protected function protectedMethodCompatibleSig5($p1 = null, $p2) {}
+	private function privateMethodCompatibleSig5($p1 = null, $p2) {}
+
+	public function publicMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
+	protected function protectedMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
+	private function privateMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
+
 	public function publicMethodIncompatibleSig1($p2, $p1 = null) {}
 	protected function protectedMethodIncompatibleSig1($p2, $p1 = null) {}
 	private function privateMethodIncompatibleSig1($p2, $p1 = null) {}
@@ -262,6 +289,18 @@ final class ClassH {
 	public function publicMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
 	protected function protectedMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
 	private function privateMethodCompatibleSig3($p1, $p2 = null, $p3 = null) {}
+
+	public function publicMethodCompatibleSig4($p1, $p2 = null) {}
+	protected function protectedMethodCompatibleSig4($p1, $p2 = null) {}
+	private function privateMethodCompatibleSig4($p1, $p2 = null) {}
+
+	public function publicMethodCompatibleSig5($p1 = null, $p2) {}
+	protected function protectedMethodCompatibleSig5($p1 = null, $p2) {}
+	private function privateMethodCompatibleSig5($p1 = null, $p2) {}
+
+	public function publicMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
+	protected function protectedMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
+	private function privateMethodCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
 
 	public function publicMethodIncompatibleSig1($p2, $p1 = null) {}
 	protected function protectedMethodIncompatibleSig1($p2, $p1 = null) {}
