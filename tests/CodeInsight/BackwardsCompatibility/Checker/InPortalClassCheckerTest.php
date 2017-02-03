@@ -158,6 +158,18 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'type' => InPortalClassChecker::TYPE_CLASS_CONSTANT_DELETED,
 					'element' => 'ClassE::SOME_CONST',
 				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ExampleTagProcessor::notTagNameOneSr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ExampleTagProcessor::notTagNameTwoSr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
 			),
 			$this->checker->check(static::$oldKnowledgeBase->getDatabase(), static::$newKnowledgeBase->getDatabase())
 		);

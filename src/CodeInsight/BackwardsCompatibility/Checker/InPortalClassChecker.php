@@ -42,7 +42,7 @@ class InPortalClassChecker extends ClassChecker
 			$this->targetMethodData['Scope'] = $this->sourceMethodData['Scope'];
 		}
 
-		if ( $this->isTagProcessor() && ($this->sourceMethodData['ParameterSignature'] === 'array $params') ) {
+		if ( $this->isTagProcessor() && $this->isTag() ) {
 			$this->targetMethodData['Scope'] = $this->sourceMethodData['Scope'];
 		}
 
@@ -103,6 +103,19 @@ class InPortalClassChecker extends ClassChecker
 	protected function isEvent()
 	{
 		return substr($this->sourceMethodData['Name'], 0, 2) === 'On';
+	}
+
+	/**
+	 * Determines if current method is tag.
+	 *
+	 * @return boolean
+	 */
+	protected function isTag()
+	{
+		$first_letter = substr($this->sourceMethodData['Name'], 0, 1);
+
+		return $first_letter === strtoupper($first_letter)
+			&& $this->sourceMethodData['ParameterSignature'] === 'array $params';
 	}
 
 	/**

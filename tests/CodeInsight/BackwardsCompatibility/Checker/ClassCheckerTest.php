@@ -243,6 +243,18 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 					'old' => 'public',
 					'new' => 'protected',
 				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ExampleTagProcessor::notTagNameOneSr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
+				array(
+					'type' => ClassChecker::TYPE_METHOD_SCOPE_REDUCED,
+					'element' => 'ExampleTagProcessor::notTagNameTwoSr',
+					'old' => 'public',
+					'new' => 'protected',
+				),
 			),
 			$this->checker->check(static::$oldKnowledgeBase->getDatabase(), static::$newKnowledgeBase->getDatabase())
 		);

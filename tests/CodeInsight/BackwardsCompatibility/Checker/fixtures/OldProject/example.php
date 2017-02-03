@@ -118,4 +118,8 @@ class ExampleTagProcessor
 	function TagNameOneSr(array $params) {}
 
 	function TagNameTwoSr($params) {}
+
+	function notTagNameOneSr(array $params) {}
+
+	function notTagNameTwoSr($params) {}
 }
