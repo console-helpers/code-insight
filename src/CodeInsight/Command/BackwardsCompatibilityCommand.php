@@ -12,6 +12,7 @@ namespace ConsoleHelpers\CodeInsight\Command;
 
 
 use Aura\Sql\ExtendedPdoInterface;
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\BreakFilter;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\AbstractChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\CheckerFactory;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\ReporterFactory;
@@ -45,6 +46,13 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 	 * @var ReporterFactory
 	 */
 	private $_reporterFactory;
+
+	/**
+	 * Backwards compatibility break filter.
+	 *
+	 * @var BreakFilter
+	 */
+	private $_breakFilter;
 
 	/**
 	 * {@inheritdoc}
@@ -100,6 +108,7 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 		$this->_knowledgeBaseFactory = $container['knowledge_base_factory'];
 		$this->_checkerFactory = $container['bc_checker_factory'];
 		$this->_reporterFactory = $container['bc_reporter_factory'];
+		$this->_breakFilter = $container['bc_break_filter'];
 	}
 
 	/**
@@ -144,6 +153,10 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 			$source_knowledge_base->getDatabase(),
 			$target_knowledge_base->getDatabase(),
 			$target_knowledge_base->getBackwardsCompatibilityCheckers($this->_checkerFactory)
+		);
+		$bc_breaks = $this->_breakFilter->removeMatching(
+			$bc_breaks,
+			$target_knowledge_base->getBackwardsCompatibilityIgnoreRules()
 		);
 
 		$this->io->writeln($reporter->generate($bc_breaks));

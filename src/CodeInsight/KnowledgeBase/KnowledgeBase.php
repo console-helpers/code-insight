@@ -478,6 +478,16 @@ class KnowledgeBase
 	}
 
 	/**
+	 * Returns backwards compatibility ignore rules.
+	 *
+	 * @return array
+	 */
+	public function getBackwardsCompatibilityIgnoreRules()
+	{
+		return $this->getConfigSetting('bc_ignore', array());
+	}
+
+	/**
 	 * Returns value of configuration setting.
 	 *
 	 * @param string     $name    Name.

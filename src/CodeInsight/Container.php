@@ -11,6 +11,7 @@
 namespace ConsoleHelpers\CodeInsight;
 
 
+use ConsoleHelpers\CodeInsight\BackwardsCompatibility\BreakFilter;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\CheckerFactory;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ClassChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ConstantChecker;
@@ -88,6 +89,10 @@ class Container extends \ConsoleHelpers\ConsoleKit\Container
 			$factory->add(new JsonReporter());
 
 			return $factory;
+		};
+
+		$this['bc_break_filter'] = function ($c) {
+			return new BreakFilter();
 		};
 
 		$this['cache'] = function ($c) {
