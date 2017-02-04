@@ -15,6 +15,8 @@ function functionCompatibleSig4($p1, $p2 = null) {}
 function functionCompatibleSig5($p1 = null, $p2) {}
 function functionCompatibleSig6($p1 = null, $p2, $p3 = null, $p4 = null) {}
 function functionIncompatibleSig1($p2, $p1 = null) {}
+function functionIncompatibleSig2($p1) {}
+function functionIncompatibleSig3($p1) {}
 
 // Class used only for type hinting.
 class kEvent {}
@@ -114,6 +116,14 @@ class ClassD {
 	public function publicMethodIncompatibleSig1($p2, $p1 = null) {}
 	protected function protectedMethodIncompatibleSig1($p2, $p1 = null) {}
 	private function privateMethodIncompatibleSig1($p2, $p1 = null) {}
+
+	public function publicMethodIncompatibleSig2($p1) {}
+	protected function protectedMethodIncompatibleSig2($p1) {}
+	private function privateMethodIncompatibleSig2($p1) {}
+
+	public function publicMethodIncompatibleSig3($p1) {}
+	protected function protectedMethodIncompatibleSig3($p1) {}
+	private function privateMethodIncompatibleSig3($p1) {}
 }
 
 // Only report BC breaks for class, where class member is declared.
@@ -214,6 +224,14 @@ final class ClassG {
 	public function publicMethodIncompatibleSig1($p2, $p1 = null) {}
 	protected function protectedMethodIncompatibleSig1($p2, $p1 = null) {}
 	private function privateMethodIncompatibleSig1($p2, $p1 = null) {}
+
+	public function publicMethodIncompatibleSig2($p1) {}
+	protected function protectedMethodIncompatibleSig2($p1) {}
+	private function privateMethodIncompatibleSig2($p1) {}
+
+	public function publicMethodIncompatibleSig3($p1) {}
+	protected function protectedMethodIncompatibleSig3($p1) {}
+	private function privateMethodIncompatibleSig3($p1) {}
 }
 
 // Class, that was made final is checking for all usual stuff.
@@ -305,6 +323,14 @@ final class ClassH {
 	public function publicMethodIncompatibleSig1($p2, $p1 = null) {}
 	protected function protectedMethodIncompatibleSig1($p2, $p1 = null) {}
 	private function privateMethodIncompatibleSig1($p2, $p1 = null) {}
+
+	public function publicMethodIncompatibleSig2($p1) {}
+	protected function protectedMethodIncompatibleSig2($p1) {}
+	private function privateMethodIncompatibleSig2($p1) {}
+
+	public function publicMethodIncompatibleSig3($p1) {}
+	protected function protectedMethodIncompatibleSig3($p1) {}
+	private function privateMethodIncompatibleSig3($p1) {}
 }
 
 // In-Portal specifics.

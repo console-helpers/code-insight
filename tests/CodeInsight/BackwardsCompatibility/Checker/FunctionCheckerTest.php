@@ -38,6 +38,18 @@ class FunctionCheckerTest extends AbstractCheckerTestCase
 				),
 				array(
 					'type' => FunctionChecker::TYPE_FUNCTION_SIGNATURE_CHANGED,
+					'element' => 'functionIncompatibleSig2',
+					'old' => '$p1, $p2',
+					'new' => '$p1',
+				),
+				array(
+					'type' => FunctionChecker::TYPE_FUNCTION_SIGNATURE_CHANGED,
+					'element' => 'functionIncompatibleSig3',
+					'old' => '$p1, $p2 = NULL',
+					'new' => '$p1',
+				),
+				array(
+					'type' => FunctionChecker::TYPE_FUNCTION_SIGNATURE_CHANGED,
 					'element' => 'functionSiFromEmptyToNonEmpty',
 					'old' => '',
 					'new' => '$p1',

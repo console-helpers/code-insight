@@ -111,6 +111,18 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'new' => '$p2, $p1 = NULL',
 				),
 				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassD::protectedMethodIncompatibleSig2',
+					'old' => '$p1, $p2',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassD::protectedMethodIncompatibleSig3',
+					'old' => '$p1, $p2 = NULL',
+					'new' => '$p1',
+				),
+				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
 					'element' => 'ClassD::protectedMethodMns',
 				),
@@ -159,6 +171,18 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassD::publicMethodIncompatibleSig1',
 					'old' => '$p1',
 					'new' => '$p2, $p1 = NULL',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassD::publicMethodIncompatibleSig2',
+					'old' => '$p1, $p2',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassD::publicMethodIncompatibleSig3',
+					'old' => '$p1, $p2 = NULL',
+					'new' => '$p1',
 				),
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
@@ -247,6 +271,18 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassG::publicMethodIncompatibleSig1',
 					'old' => '$p1',
 					'new' => '$p2, $p1 = NULL',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassG::publicMethodIncompatibleSig2',
+					'old' => '$p1, $p2',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassG::publicMethodIncompatibleSig3',
+					'old' => '$p1, $p2 = NULL',
+					'new' => '$p1',
 				),
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
@@ -355,6 +391,18 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'new' => '$p2, $p1 = NULL',
 				),
 				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::protectedMethodIncompatibleSig2',
+					'old' => '$p1, $p2',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::protectedMethodIncompatibleSig3',
+					'old' => '$p1, $p2 = NULL',
+					'new' => '$p1',
+				),
+				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
 					'element' => 'ClassH::protectedMethodMns',
 				),
@@ -403,6 +451,18 @@ class InPortalClassCheckerTest extends AbstractCheckerTestCase
 					'element' => 'ClassH::publicMethodIncompatibleSig1',
 					'old' => '$p1',
 					'new' => '$p2, $p1 = NULL',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::publicMethodIncompatibleSig2',
+					'old' => '$p1, $p2',
+					'new' => '$p1',
+				),
+				array(
+					'type' => InPortalClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
+					'element' => 'ClassH::publicMethodIncompatibleSig3',
+					'old' => '$p1, $p2 = NULL',
+					'new' => '$p1',
 				),
 				array(
 					'type' => InPortalClassChecker::TYPE_METHOD_MADE_NON_STATIC,
