@@ -79,6 +79,20 @@ abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 	}
 
 	/**
+	 * Asserts that two arrays are equal ignoring element order.
+	 *
+	 * @param array  $expected Expected.
+	 * @param array  $actual   Actual.
+	 * @param string $message  Message.
+	 *
+	 * @return void
+	 */
+	protected function assertArrayEquals(array $expected, array $actual, $message = '')
+	{
+		$this->assertEquals($expected, $actual, $message, 0.0, 10, true);
+	}
+
+	/**
 	 * Creates checker.
 	 *
 	 * @return AbstractChecker

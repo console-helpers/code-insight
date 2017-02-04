@@ -24,7 +24,7 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 
 	public function testCheck()
 	{
-		$this->assertEquals(
+		$this->assertArrayEquals(
 			array(
 				array(
 					'type' => ClassChecker::TYPE_CLASS_DELETED,
