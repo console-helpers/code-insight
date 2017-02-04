@@ -14,7 +14,6 @@ php:
 
 before_install:
     - composer config -g github-oauth.github.com 8a184177873281ce443912bd9f8fc4a959f7e7bb
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require satooshi/php-coveralls:^1.0 --no-update; fi;
 
 install:
     - composer update --prefer-dist --no-interaction
@@ -25,7 +24,9 @@ before_script:
 script:
     - phpunit --coverage-clover build/logs/clover.xml
 
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
+
 after_script:
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php vendor/bin/coveralls -v; fi;
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar -t 3; fi;
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi;
+    - wget https://scrutinizer-ci.com/ocular.phar -t 3
+    - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml

@@ -1,7 +1,7 @@
 # Code-Insight
 
 [![Build Status](https://travis-ci.org/console-helpers/code-insight.svg?branch=master)](https://travis-ci.org/console-helpers/code-insight)
-[![Coverage Status](https://coveralls.io/repos/github/console-helpers/code-insight/badge.svg?branch=master)](https://coveralls.io/github/console-helpers/code-insight?branch=master)
+[![codecov](https://codecov.io/gh/console-helpers/code-insight/branch/master/graph/badge.svg)](https://codecov.io/gh/console-helpers/code-insight)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/console-helpers/code-insight/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/console-helpers/code-insight/?branch=master)
 
 
