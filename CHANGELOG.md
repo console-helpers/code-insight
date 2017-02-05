@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added `cache.provider` setting to `~/.code-insight/config.json` file, that can be set to `memcache` to use locally installed Memcache server for caching.
 - Adding/removing `static` from class property/method is considered as a BC break.
 - Allow specifying BC breaks, that were detected but should be ignored via `bc_ignore` setting in `.code-insight.json` file.
+- The project paths are now auto-completed in Bash.
 
 ### Changed
 - The `refresh` option of `report` command was removed in favor of new `sync` command.
@@ -21,7 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Data processed by `bc` command is now cached for 1 hour for performance reasons. This however results in project code changes not being detected within that hour.
 
 ### Fixed
-- The `in sync` state of changed files wasn't updated on subsquential code syncs resulting is slower syncing process.
+- The `in sync` state of changed files wasn't updated on subsequent code syncs resulting is slower syncing process.
 - The non-tag methods in TagProcessor classes were detected as tags.
 - Renaming of PHP5 into PHP4 constructor is no longer considered a BC break.
 - Changes to protected members in final classes are no longer considered a BC break.

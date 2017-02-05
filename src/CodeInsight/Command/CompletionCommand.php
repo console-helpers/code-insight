@@ -29,7 +29,22 @@ class CompletionCommand extends SymfonyCompletionCommand
 	protected function configureCompletion(CompletionHandler $handler)
 	{
 		$handler->addHandler(new ShellPathCompletion(
-			'report:create',
+			'sync',
+		    'project-path',
+		    Completion::TYPE_ARGUMENT
+		));
+		$handler->addHandler(new ShellPathCompletion(
+			'bc',
+		    'source-project-path',
+		    Completion::TYPE_ARGUMENT
+		));
+		$handler->addHandler(new ShellPathCompletion(
+			'bc',
+		    'target-project-path',
+		    Completion::TYPE_ARGUMENT
+		));
+		$handler->addHandler(new ShellPathCompletion(
+			'report',
 		    'project-path',
 		    Completion::TYPE_ARGUMENT
 		));
