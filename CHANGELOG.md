@@ -29,6 +29,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changes to protected members in final classes are no longer considered a BC break.
 - Adding new optional parameters to the function/method no longer considered a BC break.
 - Making existing parameter of a function/method into optional no longer considered a BC break.
+- BC breaks weren't sorted by their type (class > constant > property > method).
 
 ## [0.0.1] - 2016-05-07
 ### Added

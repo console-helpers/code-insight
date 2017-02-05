@@ -11,10 +11,26 @@
 namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker;
 
 
+use Doctrine\Common\Cache\CacheProvider;
+
 class ConstantChecker extends AbstractChecker
 {
 
 	const TYPE_CONSTANT_DELETED = 'constant.deleted';
+
+	/**
+	 * Constructor.
+	 *
+	 * @param CacheProvider $cache Cache provider.
+	 */
+	public function __construct(CacheProvider $cache)
+	{
+		parent::__construct($cache);
+
+		$this->typeSorting = array(
+			self::TYPE_CONSTANT_DELETED => 1,
+		);
+	}
 
 	/**
 	 * Returns backwards compatibility checker name.

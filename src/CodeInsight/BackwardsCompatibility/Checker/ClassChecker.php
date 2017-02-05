@@ -13,6 +13,7 @@ namespace ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker;
 
 use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ClassDataCollector;
+use Doctrine\Common\Cache\CacheProvider;
 
 class ClassChecker extends AbstractChecker
 {
@@ -76,6 +77,34 @@ class ClassChecker extends AbstractChecker
 	 * @var array
 	 */
 	protected $targetMethodData = array();
+
+	/**
+	 * Constructor.
+	 *
+	 * @param CacheProvider $cache Cache provider.
+	 */
+	public function __construct(CacheProvider $cache)
+	{
+		parent::__construct($cache);
+
+		$this->typeSorting = array(
+			self::TYPE_CLASS_DELETED => 1,
+			self::TYPE_CLASS_MADE_ABSTRACT => 2,
+			self::TYPE_CLASS_MADE_FINAL => 3,
+			self::TYPE_CLASS_CONSTANT_DELETED => 4,
+			self::TYPE_PROPERTY_DELETED => 5,
+			self::TYPE_PROPERTY_MADE_STATIC => 6,
+			self::TYPE_PROPERTY_MADE_NON_STATIC => 7,
+			self::TYPE_PROPERTY_SCOPE_REDUCED => 8,
+			self::TYPE_METHOD_DELETED => 9,
+			self::TYPE_METHOD_MADE_ABSTRACT => 10,
+			self::TYPE_METHOD_MADE_FINAL => 11,
+			self::TYPE_METHOD_MADE_STATIC => 12,
+			self::TYPE_METHOD_MADE_NON_STATIC => 13,
+			self::TYPE_METHOD_SCOPE_REDUCED => 14,
+			self::TYPE_METHOD_SIGNATURE_CHANGED => 15,
+		);
+	}
 
 	/**
 	 * Returns backwards compatibility checker name.

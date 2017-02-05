@@ -46,6 +46,13 @@ abstract class AbstractChecker
 	private $_incidents = array();
 
 	/**
+	 * Determines the order used to sort incidents with different types.
+	 *
+	 * @var array
+	 */
+	protected $typeSorting = array();
+
+	/**
 	 * AbstractChecker constructor.
 	 *
 	 * @param CacheProvider $cache Cache provider.
@@ -77,7 +84,29 @@ abstract class AbstractChecker
 
 		$this->doCheck();
 
-		return array_filter($this->_incidents);
+		usort($this->_incidents, array($this, 'sortByType'));
+
+		return $this->_incidents;
+	}
+
+	/**
+	 * Sorts incidents by type.
+	 *
+	 * @param array $incident_a Incident A.
+	 * @param array $incident_b Incident B.
+	 *
+	 * @return integer
+	 */
+	public function sortByType(array $incident_a, array $incident_b)
+	{
+		$sort_key_a = $this->typeSorting[$incident_a['type']];
+		$sort_key_b = $this->typeSorting[$incident_b['type']];
+
+		if ( $sort_key_a === $sort_key_b ) {
+			return 0;
+		}
+
+		return $sort_key_a > $sort_key_b ? 1 : -1;
 	}
 
 	/**
