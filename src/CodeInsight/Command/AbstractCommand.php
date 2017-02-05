@@ -40,6 +40,11 @@ abstract class AbstractCommand extends BaseCommand
 	protected function getPath($argument_name)
 	{
 		$raw_path = $this->io->getArgument($argument_name);
+
+		if ( !$raw_path ) {
+			return '';
+		}
+
 		$path = realpath($raw_path);
 
 		if ( !$path || !file_exists($path) || !is_dir($path) ) {
