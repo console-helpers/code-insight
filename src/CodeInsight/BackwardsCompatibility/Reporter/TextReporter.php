@@ -50,6 +50,7 @@ class TextReporter extends AbstractReporter
 					$ret .= ' * <fg=white;options=bold>' . $incident_data['element'] . '</>' . PHP_EOL;
 					$ret .= '   OLD: ' . $incident_data['old'] . PHP_EOL;
 					$ret .= '   NEW: ' . $incident_data['new'] . PHP_EOL;
+					$ret .= PHP_EOL;
 				}
 				else {
 					$ret .= ' * ' . $incident_data['element'] . PHP_EOL;
