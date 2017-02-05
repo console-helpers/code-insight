@@ -57,7 +57,7 @@ HTML;
 			$ret .= "\t\t" . '<h2>' . $bc_break . ' (' . count($incidents) . ')</h2>' . PHP_EOL;
 			$ret .= "\t\t" . '<ol class="bc-report">' . PHP_EOL;
 
-			foreach ( $incidents as $incident_data ) {
+			foreach ( $this->sortByElement($incidents) as $incident_data ) {
 				if ( array_key_exists('old', $incident_data) ) {
 					$ret .= "\t\t\t" . '<li>' . PHP_EOL;
 					$ret .= "\t\t\t\t" . '<strong>' . $incident_data['element'] . '</strong><br/>' . PHP_EOL;

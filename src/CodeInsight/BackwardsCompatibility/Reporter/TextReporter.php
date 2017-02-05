@@ -45,7 +45,7 @@ class TextReporter extends AbstractReporter
 			$bc_break = ucwords(str_replace(array('.', '_'), ' ', $bc_break));
 			$ret .= '<fg=red>=== ' . $bc_break . ' (' . count($incidents) . ') ===</>' . PHP_EOL;
 
-			foreach ( $incidents as $incident_data ) {
+			foreach ( $this->sortByElement($incidents) as $incident_data ) {
 				if ( array_key_exists('old', $incident_data) ) {
 					$ret .= ' * <fg=white;options=bold>' . $incident_data['element'] . '</>' . PHP_EOL;
 					$ret .= '   OLD: ' . $incident_data['old'] . PHP_EOL;

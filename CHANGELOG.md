@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - The `code-insight.sqlite` database is now stored in `~/.code-insight` folder's sub-folder instead of scanned project folder.
 - Data processed by `bc` command is now cached for 1 hour for performance reasons. This however results in project code changes not being detected within that hour.
 - The `source-project-path` argument of `bc` command is no longer required, when `--source-project-fork` option is specified.
+- The BC breaks are sorted by element alphabetically (e.g. several BC breaks from same class would be shown next to each other).
 
 ### Fixed
 - The `in sync` state of changed files wasn't updated on subsequent code syncs resulting is slower syncing process.

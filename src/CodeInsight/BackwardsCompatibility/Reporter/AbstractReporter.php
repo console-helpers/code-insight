@@ -54,4 +54,31 @@ abstract class AbstractReporter
 		return $ret;
 	}
 
+	/**
+	 * Sorts BC breaks by element.
+	 *
+	 * @param array $bc_breaks BC breaks.
+	 *
+	 * @return array
+	 */
+	protected function sortByElement(array $bc_breaks)
+	{
+		usort($bc_breaks, array($this, 'sortByElementCallback'));
+
+		return $bc_breaks;
+	}
+
+	/**
+	 * Sorts BC breaks by element.
+	 *
+	 * @param array $incident_a Incident A.
+	 * @param array $incident_b Incident B.
+	 *
+	 * @return integer
+	 */
+	public function sortByElementCallback(array $incident_a, array $incident_b)
+	{
+		return strcmp($incident_a['element'], $incident_b['element']);
+	}
+
 }
