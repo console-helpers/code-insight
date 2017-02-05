@@ -18,6 +18,7 @@ use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\CheckerFactory;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\ReporterFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
 use Stecman\Component\Symfony\Console\BashCompletion\CompletionContext;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -64,7 +65,7 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 			->setDescription('Detects backwards compatibility breaks between 2 project versions')
 			->addArgument(
 				'source-project-path',
-				InputArgument::REQUIRED,
+				InputArgument::OPTIONAL,
 				'Path to source project root folder (where <comment>.code-insight.json</comment> is located)'
 			)
 			->addArgument(
@@ -132,19 +133,37 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @throws RuntimeException When source project path is missing.
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		// Get reporter upfront so that we can error out early for invalid reporters.
 		$reporter = $this->_reporterFactory->get($this->io->getOption('format'));
 
+		$source_path = $this->getPath('source-project-path');
+		$target_path = $this->getPath('target-project-path');
+
+		$source_fork = $this->io->getOption('source-project-fork');
+
+		if ( !$source_path ) {
+			if ( $source_fork ) {
+				// Single code base, but comparing with fork.
+				$source_path = $target_path;
+			}
+			else {
+				// Not using fork, then need to specify project path.
+				throw new RuntimeException('Not enough arguments (missing: "source-project-path").');
+			}
+		}
+
 		$source_knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
-			$this->getPath('source-project-path'),
-			$this->io->getOption('source-project-fork'),
+			$source_path,
+			$source_fork,
 			$this->io
 		);
 		$target_knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
-			$this->getPath('target-project-path'),
+			$target_path,
 			$this->io->getOption('target-project-fork'),
 			$this->io
 		);
