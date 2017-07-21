@@ -17,20 +17,20 @@ For each analyzed project the `.code-insight.json` file needs to be placed at pr
 
 ```json
 {
-	"finder": [
-		{
-			"name": "*.php",
-			"in": ["src"]
+    "finder": [
+        {
+            "name": "*.php",
+            "in": ["src"]
         }
-	],
-	"bc_checkers": ["class", "function", "constant"],
-	"bc_ignore": [
-		{
-			"type": "constant.deleted",
-			"element": "ADODB_DATE_VERSION",
-			"why": "The ADODB DateTime library was removed."
-		}
-	],
+    ],
+    "bc_checkers": ["class", "function", "constant"],
+    "bc_ignore": [
+        {
+            "type": "constant.deleted",
+            "element": "ADODB_DATE_VERSION",
+            "why": "The ADODB DateTime library was removed."
+        }
+    ],
     "class_locator": "vendor/autoload.php"
 }
 ```
