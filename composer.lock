@@ -97,20 +97,20 @@
         },
         {
             "name": "console-helpers/console-kit",
-            "version": "v0.1.0",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/console-helpers/console-kit.git",
-                "reference": "147afbf8393af25c5122017235f32d7b74fc7c15"
+                "reference": "2a19a9ca2c2143afd7ba6c73dbb84878edb7cc32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/console-helpers/console-kit/zipball/147afbf8393af25c5122017235f32d7b74fc7c15",
-                "reference": "147afbf8393af25c5122017235f32d7b74fc7c15",
+                "url": "https://api.github.com/repos/console-helpers/console-kit/zipball/2a19a9ca2c2143afd7ba6c73dbb84878edb7cc32",
+                "reference": "2a19a9ca2c2143afd7ba6c73dbb84878edb7cc32",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2",
+                "php": ">=5.4.0",
                 "pimple/pimple": "^2.0|^3.0",
                 "stecman/symfony-console-completion": "^0.6.1",
                 "symfony/console": "^2.7"
@@ -141,7 +141,7 @@
                 }
             ],
             "description": "Toolkit for creating command line applications using Symfony Console component",
-            "time": "2016-03-19T21:40:46+00:00"
+            "time": "2017-10-12T14:00:31+00:00"
         },
         {
             "name": "console-helpers/db-migration",

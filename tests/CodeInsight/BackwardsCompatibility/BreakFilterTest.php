@@ -12,8 +12,9 @@ namespace Tests\ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\BreakFilter;
+use PHPUnit\Framework\TestCase;
 
-class BreakFilterTest extends \PHPUnit_Framework_TestCase
+class BreakFilterTest extends TestCase
 {
 
 	/**

@@ -15,8 +15,9 @@ use Aura\Sql\ExtendedPdo;
 use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\Container;
 use ConsoleHelpers\DatabaseMigration\MigrationContext;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractDatabaseAwareTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractDatabaseAwareTestCase extends TestCase
 {
 
 	/**
