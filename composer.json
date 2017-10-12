@@ -3,10 +3,10 @@
 	"description": "A tool for analysing other project code bases",
 	"license": "BSD-3-Clause",
 	"require": {
-		"php": ">=5.4.7",
+		"php": ">=5.6.0",
 		"console-helpers/console-kit": "^0.1",
 		"symfony/finder": "^2.8",
-		"console-helpers/parser-reflection": "^1.0@dev",
+		"goaop/parser-reflection": "^1.4",
 		"console-helpers/db-migration": "^0.1.0",
 		"aura/sql": "^2.5",
 		"doctrine/cache": "^1.5",
