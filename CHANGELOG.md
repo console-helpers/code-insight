@@ -4,6 +4,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+...
+
+### Changed
+...
+
+### Fixed
+...
+
+## [0.0.2] - 2019-08-01
+### Added
 - Added `tests` command, that shows missing test files for given source files.
 - Added `--format` option to `bc` command to allow generating BC report in different formats: text, html, json.
 - The list of BC checkers now can be configured in new `bc_checkers` array-type setting of `.code-insight.json` file.
