@@ -5,7 +5,7 @@
 	"require": {
 		"php": ">=5.6.0",
 		"console-helpers/console-kit": "^0.1",
-		"symfony/finder": "^2.8",
+		"symfony/finder": "^3.4",
 		"goaop/parser-reflection": "^1.4",
 		"console-helpers/db-migration": "^0.1.0",
 		"aura/sql": "^2.5",
