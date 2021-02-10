@@ -321,7 +321,7 @@ class KnowledgeBase
 				SET Found = 1, Size = :size
 				WHERE Id = :file_id';
 		$this->db->perform($sql, array(
-			'file_id' => $file_data['Id'],
+			'file_id' => $file_id,
 			'size' => $size,
 		));
 
