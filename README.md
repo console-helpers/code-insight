@@ -1,6 +1,6 @@
 # Code-Insight
 
-[![Build Status](https://travis-ci.org/console-helpers/code-insight.svg?branch=master)](https://travis-ci.org/console-helpers/code-insight)
+[![CI](https://github.com/console-helpers/code-insight/workflows/CI/badge.svg)](https://github.com/console-helpers/code-insight/actions?query=workflow%3ACI)
 [![codecov](https://codecov.io/gh/console-helpers/code-insight/branch/master/graph/badge.svg)](https://codecov.io/gh/console-helpers/code-insight)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/console-helpers/code-insight/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/console-helpers/code-insight/?branch=master)
 

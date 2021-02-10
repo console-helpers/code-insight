@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php-versions: '5.6'
+            phpunit-versions: '5.7.27'
+          - php-versions: '7.0'
+            phpunit-versions: '6.5.14'
+          - php-versions: '7.1'
+            phpunit-versions: '7.5.20'
+          - php-versions: '7.2'
+            phpunit-versions: '7.5.20'
+          - php-versions: '7.3'
+            phpunit-versions: '7.5.20'
+          - php-versions: '7.4'
+            phpunit-versions: '7.5.20'
+#          - php-versions: '8.0'
+#            phpunit-versions: '9.5.1'
+
+    name: PHP ${{ matrix.php-versions }}, PHPUnit ${{ matrix.phpunit-versions }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: xdebug
+        tools: phpunit:${{ matrix.phpunit-versions }}
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install Dependencies
+      run: composer update --prefer-dist --no-interaction
+
+    - name: Run Tests
+      run: |
+        mkdir -p build/logs
+        phpunit --coverage-clover build/logs/clover.xml
+
+    - name: Downloading Scrutinizer CI binary
+      run: wget https://scrutinizer-ci.com/ocular.phar
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+
+    - name: Uploading code coverage to Scrutinizer CI
+      run: php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+
