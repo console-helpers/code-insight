@@ -33,7 +33,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }}, PHPUnit ${{ matrix.phpunit-versions }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -66,7 +66,7 @@ jobs:
       run: wget https://scrutinizer-ci.com/ocular.phar
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
 
     - name: Uploading code coverage to Scrutinizer CI
       run: php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
