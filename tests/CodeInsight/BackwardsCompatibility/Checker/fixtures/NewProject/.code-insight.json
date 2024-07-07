@@ -3,6 +3,10 @@
         {
             "name": "example.php",
 			"in": ["."]
+        },
+        {
+            "name": "example_ns.php",
+			"in": ["."]
         }
     ],
     "class_locator": "class_locator.php"

@@ -66,6 +66,12 @@ class FunctionCheckerTest extends AbstractCheckerTestCase
 					'old' => '$p1',
 					'new' => '$p1, $p2',
 				),
+                array(
+					'type' => FunctionChecker::TYPE_FUNCTION_SIGNATURE_CHANGED,
+					'element' => 'TestNS\functionParamTypeChange',
+					'old' => 'TestNS\kEventNS $event',
+					'new' => '$event',
+				),
 			),
 			$this->checker->check(static::$oldKnowledgeBase->getDatabase(), static::$newKnowledgeBase->getDatabase())
 		);
