@@ -93,7 +93,7 @@ abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 	 */
 	protected function assertArrayEquals(array $expected, array $actual, $message = '')
 	{
-		$this->assertEquals($expected, $actual, $message, 0.0, 10, true);
+		$this->assertEqualsCanonicalizing($expected, $actual, $message);
 	}
 
 	/**
