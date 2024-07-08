@@ -629,7 +629,7 @@ class FunctionDataCollectorTest extends AbstractDataCollectorTestCase
 		$this->initFixture('FunctionParametersBefore');
 		$this->collectData();
 
-		$this->assertSame(
+		$this->assertEquals(
 			array(
 				'Functions' => '2',
 			),

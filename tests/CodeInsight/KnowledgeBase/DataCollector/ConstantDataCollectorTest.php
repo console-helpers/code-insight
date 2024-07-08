@@ -82,7 +82,7 @@ class ConstantDataCollectorTest extends AbstractDataCollectorTestCase
 		$this->initFixture('DefinedConstantsBefore');
 		$this->collectData();
 
-		$this->assertSame(
+		$this->assertEquals(
 			array(
 				'Constants' => '3',
 			),

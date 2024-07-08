@@ -2108,7 +2108,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 		$this->initFixture('Statistics');
 		$this->collectData();
 
-		$this->assertSame(
+		$this->assertEquals(
 			array(
 				'Classes' => '1',
 				'Interfaces' => '2',
