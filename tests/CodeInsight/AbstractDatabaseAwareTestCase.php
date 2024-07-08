@@ -15,9 +15,9 @@ use Aura\Sql\ExtendedPdo;
 use Aura\Sql\ExtendedPdoInterface;
 use ConsoleHelpers\CodeInsight\Container;
 use ConsoleHelpers\DatabaseMigration\MigrationContext;
-use PHPUnit\Framework\TestCase;
+use Tests\ConsoleHelpers\ConsoleKit\AbstractTestCase;
 
-abstract class AbstractDatabaseAwareTestCase extends TestCase
+abstract class AbstractDatabaseAwareTestCase extends AbstractTestCase
 {
 
 	/**
@@ -27,10 +27,11 @@ abstract class AbstractDatabaseAwareTestCase extends TestCase
 	 */
 	protected $database;
 
-	protected function setUp()
+    /**
+     * @before
+     */
+	public function setUpTest()
 	{
-		parent::setUp();
-
 		$this->database = self::createDatabase();
 	}
 

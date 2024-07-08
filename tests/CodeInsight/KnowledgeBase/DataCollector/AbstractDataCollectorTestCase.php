@@ -65,11 +65,14 @@ abstract class AbstractDataCollectorTestCase extends AbstractDatabaseAwareTestCa
 	 */
 	private $_nonEmptyTables = array();
 
-	protected function setUp()
+    /**
+     * @before
+     */
+	public function setUpTest()
 	{
-		parent::setUp();
+		parent::setUpTest();
 
-		$this->dataCollector = $this->createDataCollector();
+        $this->dataCollector = $this->createDataCollector();
 	}
 
 	/**

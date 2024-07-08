@@ -42,9 +42,12 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 		'DynamicDataRemovalTwo' => 'DynamicDataRemoval.php',
 	);
 
-	protected function setUp()
+    /**
+     * @before
+     */
+	public function setUpTest()
 	{
-		parent::setUp();
+		parent::setUpTest();
 
 		ReflectionEngine::init(new CallableLocator(array($this, 'locateFixtureClass')));
 	}
