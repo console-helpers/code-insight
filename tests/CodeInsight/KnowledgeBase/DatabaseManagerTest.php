@@ -11,6 +11,7 @@
 namespace Tests\ConsoleHelpers\CodeInsight\KnowledgeBase;
 
 
+use Aura\Sql\ExtendedPdo;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DatabaseManager;
 use Prophecy\Prophecy\ObjectProphecy;
 use Tests\ConsoleHelpers\ConsoleKit\WorkingDirectoryAwareTestCase;
@@ -69,7 +70,7 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		$this->assertFileNotExists($this->workingDirectory . '/databases/absolute/path/code_insight.sqlite');
 		$this->assertEquals(
 			'sqlite:' . $this->workingDirectory . '/databases/absolute/path/code_insight.sqlite',
-			$database->getDsn()
+			$this->getDSN($database)
 		);
 	}
 
@@ -82,7 +83,7 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		$this->assertFileNotExists($this->workingDirectory . '/databases/absolute/path/code_insight-fork.sqlite');
 		$this->assertEquals(
 			'sqlite:' . $this->workingDirectory . '/databases/absolute/path/code_insight-fork.sqlite',
-			$database->getDsn()
+			$this->getDSN($database)
 		);
 	}
 
@@ -105,8 +106,28 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		$this->assertFileExists($this->workingDirectory . '/databases/absolute/path/code_insight-fork.sqlite');
 		$this->assertEquals(
 			'sqlite:' . $this->workingDirectory . '/databases/absolute/path/code_insight-fork.sqlite',
-			$database->getDsn()
+			$this->getDSN($database)
 		);
+	}
+
+	/**
+	 * Returns database DSN.
+	 *
+	 * @param ExtendedPdo $database Datbase.
+	 *
+	 * @return string
+	 */
+	protected function getDSN(ExtendedPdo $database)
+	{
+		// Aura.Sql 2.5.
+		if ( method_exists($database, 'getDsn') ) {
+			return $database->getDsn();
+		}
+
+		// Aura.Sql 3.0+.
+		$debug_info = $database->__debugInfo();
+
+		return $debug_info['args']['0'];
 	}
 
 	public function testRunMigrations()
