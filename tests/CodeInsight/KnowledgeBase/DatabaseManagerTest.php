@@ -14,6 +14,8 @@ namespace Tests\ConsoleHelpers\CodeInsight\KnowledgeBase;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DatabaseManager;
 use Prophecy\Prophecy\ObjectProphecy;
 use Tests\ConsoleHelpers\ConsoleKit\WorkingDirectoryAwareTestCase;
+use ConsoleHelpers\DatabaseMigration\MigrationManager;
+use ConsoleHelpers\DatabaseMigration\MigrationContext;
 
 class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 {
@@ -40,7 +42,7 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		parent::setUpTest();
 
 		$this->workingDirectory = $this->getWorkingDirectory();
-		$this->migrationManager = $this->prophesize('\ConsoleHelpers\DatabaseMigration\MigrationManager');
+		$this->migrationManager = $this->prophesize(MigrationManager::class);
 	}
 
 	public function testTheDatabasesFolderIsCreated()
@@ -109,7 +111,7 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 
 	public function testRunMigrations()
 	{
-		$context = $this->prophesize('\ConsoleHelpers\DatabaseMigration\MigrationContext')->reveal();
+		$context = $this->prophesize(MigrationContext::class)->reveal();
 		$this->migrationManager->run($context)->shouldBeCalled();
 
 		$this->getDatabaseManager()->runMigrations($context);

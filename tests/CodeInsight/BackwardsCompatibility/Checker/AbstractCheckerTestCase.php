@@ -67,7 +67,7 @@ abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 	{
 		parent::setUpTest();
 
-		$cache = $this->prophesize('\Doctrine\Common\Cache\CacheProvider');
+		$cache = $this->prophesize(CacheProvider::class);
 		$cache->fetch(Argument::any())->willReturn(false);
 		$cache->save(Argument::cetera())->willReturn(true);
 

@@ -2126,7 +2126,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 	 */
 	protected function expectClassRelationProcessing()
 	{
-		$knowledge_base = $this->prophesize('\ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBase');
+		$knowledge_base = $this->prophesize(KnowledgeBase::class);
 		$knowledge_base
 			->processFile(new RegExToken('/^' . preg_quote($this->getFixturePath(''), '/') . '.*$/'))
 			->willReturn($this->fileId);
