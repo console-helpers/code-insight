@@ -16,9 +16,12 @@ use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBase;
 use Doctrine\Common\Cache\CacheProvider;
 use Prophecy\Argument;
 use Tests\ConsoleHelpers\CodeInsight\AbstractDatabaseAwareTestCase;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertEqualsSpecializations;
 
 abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 {
+
+	use AssertEqualsSpecializations;
 
 	/**
 	 * Cache.
