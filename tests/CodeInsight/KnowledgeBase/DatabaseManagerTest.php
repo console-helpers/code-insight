@@ -15,11 +15,14 @@ use Aura\Sql\ExtendedPdo;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\DatabaseManager;
 use Prophecy\Prophecy\ObjectProphecy;
 use Tests\ConsoleHelpers\ConsoleKit\WorkingDirectoryAwareTestCase;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
 use ConsoleHelpers\DatabaseMigration\MigrationManager;
 use ConsoleHelpers\DatabaseMigration\MigrationContext;
 
 class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 {
+
+    use AssertionRenames;
 
 	/**
 	 * Working directory.
@@ -67,7 +70,7 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		$database = $database_manager->getDatabase('/absolute/path');
 
 		$this->assertFileExists($this->workingDirectory . '/databases/absolute/path');
-		$this->assertFileNotExists($this->workingDirectory . '/databases/absolute/path/code_insight.sqlite');
+		$this->assertFileDoesNotExist($this->workingDirectory . '/databases/absolute/path/code_insight.sqlite');
 		$this->assertEquals(
 			'sqlite:' . $this->workingDirectory . '/databases/absolute/path/code_insight.sqlite',
 			$this->getDSN($database)
@@ -80,7 +83,7 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		$database = $database_manager->getDatabase('/absolute/path', 'fork');
 
 		$this->assertFileExists($this->workingDirectory . '/databases/absolute/path');
-		$this->assertFileNotExists($this->workingDirectory . '/databases/absolute/path/code_insight-fork.sqlite');
+		$this->assertFileDoesNotExist($this->workingDirectory . '/databases/absolute/path/code_insight-fork.sqlite');
 		$this->assertEquals(
 			'sqlite:' . $this->workingDirectory . '/databases/absolute/path/code_insight-fork.sqlite',
 			$this->getDSN($database)
