@@ -48,7 +48,7 @@ class BreakFilterTest extends AbstractTestCase
 		$this->assertEquals($result, $this->breakFilter->removeMatching($bc_breaks, $ignore_rules));
 	}
 
-	public function removeIgnoredDataProvider()
+	public static function removeIgnoredDataProvider()
 	{
 		return array(
 			'type only' => array(
