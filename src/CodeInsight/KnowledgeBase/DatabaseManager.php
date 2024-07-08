@@ -72,7 +72,7 @@ class DatabaseManager
 
 		$db_file = $project_path . '/code_insight.sqlite';
 
-		if ( !strlen($fork) ) {
+		if ( empty($fork) ) {
 			return new ExtendedPdo('sqlite:' . $db_file);
 		}
 

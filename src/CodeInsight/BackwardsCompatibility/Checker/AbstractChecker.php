@@ -138,7 +138,7 @@ abstract class AbstractChecker
 			$type = $parameter_data['TypeClass'];
 		}
 
-		$hash_part = strlen($type) ? $type . ' ' : '';
+		$hash_part = !empty($type) ? $type . ' ' : '';
 
 		if ( $parameter_data['IsPassedByReference'] ) {
 			$hash_part .= '&$' . $parameter_data['Name'];
