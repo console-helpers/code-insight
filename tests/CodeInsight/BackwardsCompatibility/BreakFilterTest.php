@@ -12,9 +12,9 @@ namespace Tests\ConsoleHelpers\CodeInsight\BackwardsCompatibility;
 
 
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\BreakFilter;
-use PHPUnit\Framework\TestCase;
+use Tests\ConsoleHelpers\ConsoleKit\AbstractTestCase;
 
-class BreakFilterTest extends TestCase
+class BreakFilterTest extends AbstractTestCase
 {
 
 	/**
@@ -24,10 +24,11 @@ class BreakFilterTest extends TestCase
 	 */
 	protected $breakFilter;
 
-	protected function setUp()
+    /**
+     * @before
+     */
+	public function setUpTest()
 	{
-		parent::setUp();
-
 		$this->breakFilter = new BreakFilter();
 	}
 

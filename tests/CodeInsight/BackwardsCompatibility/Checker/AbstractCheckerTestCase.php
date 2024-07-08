@@ -48,10 +48,11 @@ abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 	 */
 	protected static $newKnowledgeBase;
 
-	public static function setUpBeforeClass()
+    /**
+     * @beforeClass
+     */
+	public static function setUpBeforeClassTest()
 	{
-		parent::setUpBeforeClass();
-
 		static::$oldKnowledgeBase = new KnowledgeBase(__DIR__ . '/fixtures/OldProject', static::createDatabase());
 		static::$oldKnowledgeBase->silentRefresh();
 
@@ -59,9 +60,12 @@ abstract class AbstractCheckerTestCase extends AbstractDatabaseAwareTestCase
 		static::$newKnowledgeBase->silentRefresh();
 	}
 
-	protected function setUp()
+    /**
+     * @before
+     */
+	public function setUpTest()
 	{
-		parent::setUp();
+		parent::setUpTest();
 
 		$cache = $this->prophesize('\Doctrine\Common\Cache\CacheProvider');
 		$cache->fetch(Argument::any())->willReturn(false);

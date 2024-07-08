@@ -32,9 +32,12 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 	 */
 	protected $migrationManager;
 
-	protected function setUp()
+    /**
+     * @before
+     */
+	public function setUpTest()
 	{
-		parent::setUp();
+		parent::setUpTest();
 
 		$this->workingDirectory = $this->getWorkingDirectory();
 		$this->migrationManager = $this->prophesize('\ConsoleHelpers\DatabaseMigration\MigrationManager');
@@ -47,12 +50,11 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		$this->assertFileExists($this->workingDirectory . '/databases');
 	}
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage The "$project_path" argument must contain absolute path.
-	 */
 	public function testRelativeProjectPathError()
 	{
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "$project_path" argument must contain absolute path.');
+
 		$this->getDatabaseManager()->getDatabase('relative/path');
 	}
 

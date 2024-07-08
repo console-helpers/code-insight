@@ -4,7 +4,7 @@
 	"license": "BSD-3-Clause",
 	"require": {
 		"php": ">=5.6.0",
-		"console-helpers/console-kit": "^0.1",
+		"console-helpers/console-kit": "^0.3",
 		"symfony/finder": "^2.8",
 		"goaop/parser-reflection": "^1.4",
 		"console-helpers/db-migration": "^0.1.0",
@@ -13,7 +13,10 @@
 		"camspiers/json-pretty": "^1.0"
 	},
 	"require-dev": {
-		"aik099/coding-standard": "dev-master"
+		"aik099/coding-standard": "dev-master",
+		"yoast/phpunit-polyfills": "^2.0",
+		"phpspec/prophecy": "^1.10",
+		"console-helpers/prophecy-phpunit": "^2.0@dev"
 	},
 	"autoload": {
 		"psr-4": {
