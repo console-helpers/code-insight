@@ -260,7 +260,17 @@ abstract class AbstractChecker
 	 */
 	protected function getCacheKey(ExtendedPdoInterface $db, $cache_key)
 	{
-		return sha1($db->getDsn()) . ':' . $cache_key;
+		if ( method_exists($db, 'getDsn') ) {
+			// Aura.Sql 2.5.
+			$dsn = $db->getDsn();
+		}
+		else {
+			// Aura.Sql 3.0+.
+			$debug_info = $db->__debugInfo();
+			$dsn = $debug_info['args']['0'];
+		}
+
+		return sha1($dsn) . ':' . $cache_key;
 	}
 
 }
