@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76cf6cd7a31554aa05fec7427bd42e1e",
+    "content-hash": "80d4a7a7966ea3bbb34b809cfabf177c",
     "packages": [
         {
             "name": "aura/sql",
@@ -2586,6 +2586,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "goaop/parser-reflection": 5,
         "aik099/coding-standard": 20,
         "console-helpers/prophecy-phpunit": 20
     },

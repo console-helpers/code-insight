@@ -9,7 +9,7 @@ class MethodParameters
 		callable $param_three,
 		string $param_four,
 		$param_five = 'def',
-		&$param_six,
+		&$param_six = true,
 		$param_seven = null,
 		$param_eight = PHP_EOL
 	) {
