@@ -14,12 +14,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
+        include:
+          - php: '5.6'
+            phpunit_config: 'phpunit.xml.dist' # PHPUnit 5.7
+          - php: '7.0'
+            phpunit_config: 'phpunit.xml.dist' # PHPUnit 6.5
+          - php: '7.1'
+            phpunit_config: 'phpunit.xml.dist' # PHPUnit 7.5
+          - php: '7.2'
+            phpunit_config: 'phpunit.xml.dist' # PHPUnit 8.5
+          - php: '7.3'
+            phpunit_config: 'phpunit9.xml.dist' # PHPUnit 9.6
+          - php: '7.4'
+            phpunit_config: 'phpunit9.xml.dist' # PHPUnit 9.6
+#          - php: '8.0'
+#            phpunit_config: 'phpunit9.xml.dist' # PHPUnit 9.6
+#          - php: '8.1'
+#            phpunit_config: 'phpunit10.xml.dist' # PHPUnit 10.5
+          - php: '8.2'
+            phpunit_config: 'phpunit10.xml.dist' # PHPUnit 10.5
+          - php: '8.3'
+            phpunit_config: 'phpunit10.xml.dist' # PHPUnit 10.5
 
     name: Tests (PHP ${{ matrix.php }})
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -31,19 +53,24 @@ jobs:
     - name: Install Dependencies
       uses: ramsey/composer-install@v3
       with:
-          dependency-versions: "highest"
+        dependency-versions: "highest"
 
     - name: Run Tests
       run: |
         mkdir -p build/logs
-        vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-
-    - name: Downloading Scrutinizer CI binary
-      run: wget https://scrutinizer-ci.com/ocular.phar
+        vendor/bin/phpunit --configuration ${{ matrix.phpunit_config }} --coverage-clover build/logs/clover.xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
 
-    - name: Uploading code coverage to Scrutinizer CI
-      run: php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+    - name: Upload Coverage to Scrutinizer CI (PHP < 8.0)
+      if: "${{ matrix.php < '8.0' }}"
+      run: |
+        wget https://scrutinizer-ci.com/ocular.phar
+        php ocular.phar code-coverage:upload --repository=g/console-helpers/code-insight --format=php-clover coverage.clover
 
+    - name: Upload Coverage to Scrutinizer CI (PHP >= 8.0)
+      if: "${{ matrix.php >= '8.0' }}"
+      run: |
+         composer require scrutinizer/ocular
+         vendor/bin/ocular code-coverage:upload --repository=g/console-helpers/code-insight --format=php-clover coverage.clover
