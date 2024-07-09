@@ -16,6 +16,7 @@ use ConsoleHelpers\CodeInsight\KnowledgeBase\DataCollector\ClassDataCollector;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBase;
 use Go\ParserReflection\Locator\CallableLocator;
 use Go\ParserReflection\ReflectionEngine;
+use PhpParser\BuilderHelpers;
 use Tests\ConsoleHelpers\CodeInsight\ProphecyToken\RegExToken;
 
 class ClassDataCollectorTest extends AbstractDataCollectorTestCase
@@ -888,6 +889,15 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 
 	public function testMethodParameterChanges()
 	{
+		if ( class_exists(BuilderHelpers::class) ) {
+			// The "nikic/php-parser:4.x+" doesn't prefix top level namespace classes with "\".
+			$type_name = 'stdClass';
+		}
+		else {
+			// The "nikic/php-parser:3.x" prefixes top level namespace classes with "\".
+			$type_name = '\\stdClass';
+		}
+
 		$this->initFixture('MethodParametersBefore');
 		$this->collectData();
 
@@ -967,7 +977,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					'Position' => '1',
 					'TypeClass' => 'stdClass',
 					'HasType' => '1',
-					'TypeName' => '\\stdClass',
+					'TypeName' => $type_name,
 					'AllowsNull' => '0',
 					'IsArray' => '0',
 					'IsCallable' => '0',
@@ -1152,7 +1162,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					'ClassId' => '1',
 					'Name' => 'greedyMethod',
 					'ParameterCount' => '8',
-					'RequiredParameterCount' => '6',
+					'RequiredParameterCount' => '4',
 					'Scope' => (string)ClassDataCollector::SCOPE_PUBLIC,
 					'IsAbstract' => '0',
 					'IsFinal' => '0',
@@ -1188,7 +1198,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					'Position' => '0',
 					'TypeClass' => 'stdClass',
 					'HasType' => '1',
-					'TypeName' => '\\stdClass',
+					'TypeName' => $type_name,
 					'AllowsNull' => '0',
 					'IsArray' => '0',
 					'IsCallable' => '0',
@@ -1264,7 +1274,7 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					'AllowsNull' => '1',
 					'IsArray' => '0',
 					'IsCallable' => '0',
-					'IsOptional' => '0',
+					'IsOptional' => '1',
 					'IsVariadic' => '0',
 					'CanBePassedByValue' => '1',
 					'IsPassedByReference' => '0',
@@ -1282,12 +1292,12 @@ class ClassDataCollectorTest extends AbstractDataCollectorTestCase
 					'AllowsNull' => '1',
 					'IsArray' => '0',
 					'IsCallable' => '0',
-					'IsOptional' => '0',
+					'IsOptional' => '1',
 					'IsVariadic' => '0',
 					'CanBePassedByValue' => '0',
 					'IsPassedByReference' => '1',
-					'HasDefaultValue' => '0',
-					'DefaultValue' => null,
+					'HasDefaultValue' => '1',
+					'DefaultValue' => 'true',
 					'DefaultConstant' => null,
 				),
 				array(

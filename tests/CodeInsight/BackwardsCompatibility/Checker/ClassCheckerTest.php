@@ -13,6 +13,7 @@ namespace Tests\ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker;
 
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\AbstractChecker;
 use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Checker\ClassChecker;
+use PhpParser\BuilderHelpers;
 
 class ClassCheckerTest extends AbstractCheckerTestCase
 {
@@ -24,6 +25,15 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 
 	public function testCheck()
 	{
+		if ( class_exists(BuilderHelpers::class) ) {
+			// The "nikic/php-parser:4.x+" doesn't prefix top level namespace classes with "\".
+			$type_name = 'kEvent';
+		}
+		else {
+			// The "nikic/php-parser:3.x" prefixes top level namespace classes with "\".
+			$type_name = '\\kEvent';
+		}
+
 		$this->assertArrayEquals(
 			array(
 				array(
@@ -513,13 +523,13 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
 					'element' => 'ExampleEventHandler::OnEventSig2',
 					'old' => '&$event',
-					'new' => '\kEvent $event',
+					'new' => $type_name . ' $event',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
 					'element' => 'ExampleEventHandler::OnEventSig3',
 					'old' => '$event',
-					'new' => '\kEvent $event',
+					'new' => $type_name . ' $event',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SCOPE_REDUCED,
@@ -549,13 +559,13 @@ class ClassCheckerTest extends AbstractCheckerTestCase
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
 					'element' => 'AdminEventsHandler::OnEventSig2',
 					'old' => '&$event',
-					'new' => '\kEvent $event',
+					'new' => $type_name . ' $event',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SIGNATURE_CHANGED,
 					'element' => 'AdminEventsHandler::OnEventSig3',
 					'old' => '$event',
-					'new' => '\kEvent $event',
+					'new' => $type_name . ' $event',
 				),
 				array(
 					'type' => ClassChecker::TYPE_METHOD_SCOPE_REDUCED,
