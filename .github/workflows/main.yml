@@ -40,6 +40,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -58,12 +60,17 @@ jobs:
         mkdir -p build/logs
         vendor/bin/phpunit --configuration ${{ matrix.phpunit_config }} --coverage-clover build/logs/clover.xml
 
-    - name: Downloading Scrutinizer CI binary
-      run: wget https://scrutinizer-ci.com/ocular.phar
-
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
 
-    - name: Uploading code coverage to Scrutinizer CI
-      run: php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+    - name: Upload Coverage to Scrutinizer CI (PHP < 8.0)
+      if: "${{ matrix.php < '8.0' }}"
+      run: |
+        wget https://scrutinizer-ci.com/ocular.phar
+        php ocular.phar code-coverage:upload --repository=g/console-helpers/code-insight --format=php-clover coverage.clover
 
+    - name: Upload Coverage to Scrutinizer CI (PHP >= 8.0)
+      if: "${{ matrix.php >= '8.0' }}"
+      run: |
+         composer require scrutinizer/ocular
+         vendor/bin/ocular code-coverage:upload --repository=g/console-helpers/code-insight --format=php-clover coverage.clover
