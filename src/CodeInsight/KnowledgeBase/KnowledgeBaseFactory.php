@@ -58,4 +58,16 @@ class KnowledgeBaseFactory
 		return $knowledge_base;
 	}
 
+	/**
+	 * Returns forks for given project.
+	 *
+	 * @param string $project_path Project path.
+	 *
+	 * @return string[]
+	 */
+	public function getForks($project_path)
+	{
+		return $this->_databaseManager->getForks($project_path);
+	}
+
 }

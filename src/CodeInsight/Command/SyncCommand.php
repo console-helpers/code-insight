@@ -12,6 +12,7 @@ namespace ConsoleHelpers\CodeInsight\Command;
 
 
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
+use Stecman\Component\Symfony\Console\BashCompletion\CompletionContext;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -64,12 +65,35 @@ class SyncCommand extends AbstractCommand
 	}
 
 	/**
+	 * Return possible values for the named option
+	 *
+	 * @param string            $optionName Option name.
+	 * @param CompletionContext $context    Completion context.
+	 *
+	 * @return array
+	 */
+	public function completeOptionValues($optionName, CompletionContext $context)
+	{
+		$ret = parent::completeOptionValues($optionName, $context);
+
+		if ( $optionName === 'project-fork' ) {
+			$input = $this->getInputFromCompletionContext($context);
+
+			return $this->_knowledgeBaseFactory->getForks(
+				$this->getPath($input->getArgument('project-path'))
+			);
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
-			$this->getPath('project-path'),
+			$this->getPath($this->io->getArgument('project-path')),
 			$this->io->getOption('project-fork'),
 			$this->io
 		);

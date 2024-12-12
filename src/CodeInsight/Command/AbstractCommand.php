@@ -12,6 +12,9 @@ namespace ConsoleHelpers\CodeInsight\Command;
 
 
 use ConsoleHelpers\ConsoleKit\Command\AbstractCommand as BaseCommand;
+use Stecman\Component\Symfony\Console\BashCompletion\CompletionContext;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Base command class.
@@ -30,17 +33,30 @@ abstract class AbstractCommand extends BaseCommand
 	}
 
 	/**
+	 * Returns input from completion context.
+	 *
+	 * @param CompletionContext $context Completion context.
+	 *
+	 * @return InputInterface
+	 */
+	protected function getInputFromCompletionContext(CompletionContext $context)
+	{
+		$words = $context->getWords();
+		array_splice($words, 1, 1); // Remove the command name.
+
+		return new ArgvInput($words, $this->getDefinition());
+	}
+
+	/**
 	 * Returns and validates path.
 	 *
-	 * @param string $argument_name Argument name, that contains path.
+	 * @param string $raw_path Raw path.
 	 *
 	 * @return string
 	 * @throws \InvalidArgumentException When path isn't valid.
 	 */
-	protected function getPath($argument_name)
+	protected function getPath($raw_path)
 	{
-		$raw_path = $this->io->getArgument($argument_name);
-
 		if ( !$raw_path ) {
 			return '';
 		}

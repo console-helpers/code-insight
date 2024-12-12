@@ -113,6 +113,47 @@ class DatabaseManagerTest extends WorkingDirectoryAwareTestCase
 		);
 	}
 
+	public function testRelativeProjectPathForksError()
+	{
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('The "$project_path" argument must contain absolute path.');
+
+		$this->getDatabaseManager()->getForks('relative/path');
+	}
+
+	/**
+	 * @depends testCreatingDatabase
+	 */
+	public function testNoForksWithProjectDatabase()
+	{
+		$database_manager = $this->getDatabaseManager();
+		$database_manager->getDatabase('/absolute/path');
+
+		$this->assertEmpty($database_manager->getForks('/absolute/path'));
+	}
+
+	public function testNoForksWithoutProjectDatabase()
+	{
+		$database_manager = $this->getDatabaseManager();
+
+		$this->assertEmpty($database_manager->getForks('/absolute/path'));
+	}
+
+	public function testGetForks()
+	{
+		$database_manager = $this->getDatabaseManager();
+		$original_database = $database_manager->getDatabase('/absolute/path');
+		$original_database->perform('CREATE TABLE "SampleTableOrg" ("Name" TEXT(255,0) NOT NULL, PRIMARY KEY("Name"))');
+
+		$db_fork1 = $database_manager->getDatabase('/absolute/path', 'fork1');
+		$db_fork1->perform('CREATE TABLE "SampleTableFork1" ("Name" TEXT(255,0) NOT NULL, PRIMARY KEY("Name"))');
+
+		$db_fork2 = $database_manager->getDatabase('/absolute/path', 'fork2');
+		$db_fork2->perform('CREATE TABLE "SampleTableFork2" ("Name" TEXT(255,0) NOT NULL, PRIMARY KEY("Name"))');
+
+		$this->assertEquals(array('fork1', 'fork2'), $database_manager->getForks('/absolute/path'));
+	}
+
 	/**
 	 * Returns database DSN.
 	 *

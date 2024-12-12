@@ -60,7 +60,7 @@ class DatabaseManager
 	 */
 	public function getDatabase($project_path, $fork = null)
 	{
-		if ( substr($project_path, 0, 1) !== '/' ) {
+		if ( strpos($project_path, '/') !== 0 ) {
 			throw new \InvalidArgumentException('The "$project_path" argument must contain absolute path.');
 		}
 
@@ -83,6 +83,40 @@ class DatabaseManager
 		}
 
 		return new ExtendedPdo('sqlite:' . $fork_db_file);
+	}
+
+	/**
+	 * Returns forks for given project.
+	 *
+	 * @param string $project_path Project path.
+	 *
+	 * @return string[]
+	 * @throws \InvalidArgumentException When relative project path is given.
+	 */
+	public function getForks($project_path)
+	{
+		if ( strpos($project_path, '/') !== 0 ) {
+			throw new \InvalidArgumentException('The "$project_path" argument must contain absolute path.');
+		}
+
+		$project_path = $this->_databaseDirectory . $project_path;
+
+		if ( !file_exists($project_path) ) {
+			return array();
+		}
+
+		$ret = array();
+		$absolute_forks = glob($project_path . '/code_insight-*.sqlite');
+
+		foreach ( $absolute_forks as $absolute_fork ) {
+			$ret[] = preg_replace(
+				'/^' . preg_quote($project_path . '/code_insight-', '/') . '(.+).sqlite/',
+				'$1',
+				$absolute_fork
+			);
+		}
+
+		return $ret;
 	}
 
 	/**

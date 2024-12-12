@@ -69,7 +69,7 @@ class ReportCommand extends AbstractCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
-			$this->getPath('project-path'),
+			$this->getPath($this->io->getArgument('project-path')),
 			$this->io->getOption('project-fork'),
 			$this->io
 		);

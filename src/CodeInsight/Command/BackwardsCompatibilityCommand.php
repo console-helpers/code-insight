@@ -19,6 +19,7 @@ use ConsoleHelpers\CodeInsight\BackwardsCompatibility\Reporter\ReporterFactory;
 use ConsoleHelpers\CodeInsight\KnowledgeBase\KnowledgeBaseFactory;
 use Stecman\Component\Symfony\Console\BashCompletion\CompletionContext;
 use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -124,6 +125,18 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 	{
 		$ret = parent::completeOptionValues($optionName, $context);
 
+		if ( $optionName === 'source-project-fork' ) {
+			$input = $this->getInputFromCompletionContext($context);
+
+			return $this->_knowledgeBaseFactory->getForks($this->getSourcePath($input, true));
+		}
+
+		if ( $optionName === 'target-project-fork' ) {
+			$input = $this->getInputFromCompletionContext($context);
+
+			return $this->_knowledgeBaseFactory->getForks($this->getTargetPath($input));
+		}
+
 		if ( $optionName === 'format' ) {
 			return $this->_reporterFactory->getNames();
 		}
@@ -133,33 +146,18 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 
 	/**
 	 * {@inheritdoc}
-	 *
-	 * @throws RuntimeException When source project path is missing.
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		// Get reporter upfront so that we can error out early for invalid reporters.
 		$reporter = $this->_reporterFactory->get($this->io->getOption('format'));
 
-		$source_path = $this->getPath('source-project-path');
-		$target_path = $this->getPath('target-project-path');
-
-		$source_fork = $this->io->getOption('source-project-fork');
-
-		if ( !$source_path ) {
-			if ( $source_fork ) {
-				// Single code base, but comparing with fork.
-				$source_path = $target_path;
-			}
-			else {
-				// Not using fork, then need to specify project path.
-				throw new RuntimeException('Not enough arguments (missing: "source-project-path").');
-			}
-		}
+		$source_path = $this->getSourcePath($input, false);
+		$target_path = $this->getTargetPath($input);
 
 		$source_knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
 			$source_path,
-			$source_fork,
+			$this->io->getOption('source-project-fork'),
 			$this->io
 		);
 		$target_knowledge_base = $this->_knowledgeBaseFactory->getKnowledgeBase(
@@ -179,6 +177,44 @@ class BackwardsCompatibilityCommand extends AbstractCommand
 		);
 
 		$this->io->writeln($reporter->generate($bc_breaks));
+	}
+
+	/**
+	 * Returns source path.
+	 *
+	 * @param InputInterface $input        Input.
+	 * @param boolean        $autocomplete Autocomplete.
+	 *
+	 * @return string
+	 * @throws RuntimeException When source project path is missing.
+	 */
+	protected function getSourcePath(InputInterface $input, $autocomplete)
+	{
+		$source_path = $this->getPath($input->getArgument('source-project-path'));
+
+		if ( $source_path ) {
+			return $source_path;
+		}
+
+		// Single code base, but comparing with fork OR autocompleting forks.
+		if ( $autocomplete || $input->getOption('source-project-fork') ) {
+			return $this->getTargetPath($input);
+		}
+
+		// Not using fork, then need to specify project path.
+		throw new RuntimeException('Not enough arguments (missing: "source-project-path").');
+	}
+
+	/**
+	 * Returns target path.
+	 *
+	 * @param InputInterface $input Input.
+	 *
+	 * @return string
+	 */
+	protected function getTargetPath(InputInterface $input)
+	{
+		return $this->getPath($input->getArgument('target-project-path'));
 	}
 
 	/**

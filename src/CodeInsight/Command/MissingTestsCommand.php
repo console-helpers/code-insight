@@ -46,8 +46,8 @@ class MissingTestsCommand extends AbstractCommand
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$src_path = $this->getPath('src-path');
-		$tests_path = $this->getPath('tests-path');
+		$src_path = $this->getPath($this->io->getArgument('src-path'));
+		$tests_path = $this->getPath($this->io->getArgument('tests-path'));
 
 		$finder = new Finder();
 		$finder->files()->name('*.php')->notName('/^(I[A-Z]|Abstract[A-Z])/')->in($src_path);
