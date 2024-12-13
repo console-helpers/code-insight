@@ -1,3 +1,4 @@
 vendor
 phpunit.xml
 build
+.phpunit.result.cache
