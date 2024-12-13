@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Compatibility with PHP 8.
+- Compatibility with PHPUnit 9 and PHPUnit 10.
 - The fork names are auto-completed for `sync` (`--project-fork` option) and `bc` (`--source-project-fork` and `--target-project-fork` options) commands.
 
 ### Changed
