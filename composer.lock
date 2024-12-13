@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "571157d1b269e3ba4684cd7e3a08bcff",
+    "content-hash": "7b577bee9e17c17fc2ab54ec0083ef9f",
     "packages": [
         {
             "name": "aura/sql",
@@ -161,24 +161,27 @@
         },
         {
             "name": "console-helpers/db-migration",
-            "version": "v0.1.1",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/console-helpers/db-migration.git",
-                "reference": "cde8df8975bb9bb8ed641ce1558d3b070c764dac"
+                "reference": "48d4680c8ec81d4a701821689dd842bb37a3ec5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/console-helpers/db-migration/zipball/cde8df8975bb9bb8ed641ce1558d3b070c764dac",
-                "reference": "cde8df8975bb9bb8ed641ce1558d3b070c764dac",
+                "url": "https://api.github.com/repos/console-helpers/db-migration/zipball/48d4680c8ec81d4a701821689dd842bb37a3ec5f",
+                "reference": "48d4680c8ec81d4a701821689dd842bb37a3ec5f",
                 "shasum": ""
             },
             "require": {
-                "aura/sql": "^2.5 | ^3.0",
-                "php": ">=5.3.7"
+                "aura/sql": "^2.5 || ^3.0 || ^4.0 || ^5.0",
+                "php": ">=5.6"
             },
             "require-dev": {
-                "aik099/coding-standard": "dev-master"
+                "aik099/coding-standard": "dev-master",
+                "console-helpers/prophecy-phpunit": "^3.0",
+                "phpspec/prophecy": "^1.10",
+                "yoast/phpunit-polyfills": "^2.0"
             },
             "type": "library",
             "extra": {
@@ -209,9 +212,9 @@
             ],
             "support": {
                 "issues": "https://github.com/console-helpers/db-migration/issues",
-                "source": "https://github.com/console-helpers/db-migration/tree/v0.1.1"
+                "source": "https://github.com/console-helpers/db-migration/tree/v0.2.0"
             },
-            "time": "2020-12-21T10:18:04+00:00"
+            "time": "2024-12-13T22:11:54+00:00"
         },
         {
             "name": "doctrine/cache",
