@@ -58,10 +58,19 @@ jobs:
     - name: Run Tests
       run: |
         mkdir -p build/logs
-        vendor/bin/phpunit --configuration ${{ matrix.phpunit_config }} --coverage-clover build/logs/clover.xml
+        vendor/bin/phpunit --configuration ${{ matrix.phpunit_config }} --log-junit junit.xml --coverage-clover build/logs/clover.xml
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
+      if: ${{ !cancelled() }}
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Upload test results to Codecov
+      uses: codecov/test-results-action@v1
+      if: ${{ !cancelled() }}
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Upload Coverage to Scrutinizer CI (PHP < 8.0)
       if: "${{ matrix.php < '8.0' }}"
