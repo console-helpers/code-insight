@@ -35,6 +35,8 @@ jobs:
             phpunit_config: 'phpunit10.xml.dist' # PHPUnit 10.5
           - php: '8.3'
             phpunit_config: 'phpunit10.xml.dist' # PHPUnit 10.5
+          - php: '8.4'
+            phpunit_config: 'phpunit10.xml.dist' # PHPUnit 10.5
 
     name: Tests (PHP ${{ matrix.php }})
     steps:
