@@ -27,6 +27,7 @@ jobs:
             phpunit_config: 'phpunit9.xml.dist' # PHPUnit 9.6
           - php: '7.4'
             phpunit_config: 'phpunit9.xml.dist' # PHPUnit 9.6
+# Don't test on PHP 8.0 and PHP 8.1 due to "goaop/parser-reflection" bug: https://github.com/goaop/parser-reflection/issues/138
 #          - php: '8.0'
 #            phpunit_config: 'phpunit9.xml.dist' # PHPUnit 9.6
 #          - php: '8.1'
