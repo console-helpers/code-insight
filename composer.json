@@ -10,7 +10,8 @@
 		"console-helpers/db-migration": "^0.2.0",
 		"aura/sql": "^2.5 || ^3.0 || ^4.0 || ^5.0",
 		"doctrine/cache": "^1.5",
-		"camspiers/json-pretty": "^1.0"
+		"camspiers/json-pretty": "^1.0",
+		"ext-json": "*"
 	},
 	"require-dev": {
 		"aik099/coding-standard": "dev-master",
